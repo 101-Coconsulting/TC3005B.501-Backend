@@ -1,0 +1,29 @@
+{
+  "name": "tc3005b-501-backend",
+  "version": "1.0.0",
+  "description": "API y Base de Datos para la conexión y el funcionamiento del portal del sistema gestor de viajes",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/TC3005B.501-Backend.git"
+  },
+  "keywords": [
+    "travel",
+    "management",
+    "system",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
