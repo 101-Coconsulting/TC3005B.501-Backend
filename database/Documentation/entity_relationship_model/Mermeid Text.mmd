@@ -1,0 +1,134 @@
+---
+config:
+  theme: neo-dark
+---
+erDiagram
+
+    User }|--o{ Role : "1 : M"
+    User }|--o{ Department : "1 : M"
+    User }o--|{ Alert : "M : 1"
+    User }o--|{ Request : "M : 1"
+
+    Request }o--|{ Route_Request : "M : 1"
+    Route_Request }|--o{ Route : "1 : M"
+    Route ||--|| Country : "2 : M"
+    Route ||--|| City : "2 : M"
+
+    Request }o--|{ Receipt : "M : 1"
+    Receipt }o--|{ Receipt_Type : "M : 1"
+
+
+
+    User {
+        int user_id PK
+        string user_name
+        string password
+        
+        int role_id FK
+
+        string workstation
+        string user_email
+        string user_phone_number
+        
+        date creation_date
+        date last_mod_date
+        time last_mod_time
+
+        bool active
+
+        int department_id FK
+    }
+
+    Role {
+        int role_id PK
+        string role_name
+    }
+
+    Department {
+        int department_id PK
+        string department_name
+        string costs_center
+        bool active
+    }
+
+    Alert {
+        int alert_id PK
+        int user_id FK
+        longtext alert_text
+        date alert_date
+        time alert_time
+    }
+
+
+
+    Request {
+        int request_id PK
+        int user_id FK
+        enum status
+
+        longstring notes
+        float requested_fee
+        float imposed_fee
+
+        int route_request_id FK
+
+        date request_date
+        time request_time
+        date last_mod_date
+        time last_mod_time
+        
+        bool active
+    }
+
+    Route_Request {
+        int route_request_id PK
+        int request_id FK
+        int route_id FK
+    }
+
+    Route {
+        int route_id PK
+        int router_index
+
+        string id_origin_country FK
+        string id_origin_city FK
+        string id_destination_country FK
+        string id_destination_city FK
+
+        bool plane_needed
+        bool hotel_needed
+
+        date begining_date
+        time begining_time
+        date ending_date
+        time ending_time
+    }
+
+    City {
+        int city_id PK
+        string city_name
+    }
+
+    Country {
+        int country_id PK
+        string country_name
+    }
+
+    Receipt {
+        int receipt_id PK
+        
+        enum validation
+
+        date submission_date
+        time submission_time
+        date validation_date
+        time validation_time
+
+        int receipt_type_id FK
+        int request_id FK
+    }
+
+    Receipt_Type {
+        int receipt_type_id PK
+        string receipt_type_name
+    }
