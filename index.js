@@ -35,3 +35,33 @@ const httpsServer = https.createServer(credentials, app);
 httpsServer.listen(PORT, () => console.log(`Server running on port ${PORT} with HTTPS`));
 
  
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// API Routes
+app.use("/api/applicants", applicantRoutes);
+app.use("/api/users", userRoutes);
+
+// Basic route
+app.get('/', (req, res) => {
+  res.json({ message: "This is my backend endpoint for the travel management system" });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal server error' });
+});
+
+module.exports = app;
