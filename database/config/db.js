@@ -1,8 +1,8 @@
 /*DB connection
 To use this functionality, please refer to the example
 under this same folder 'db_example.js'*/
-import dotenv from 'dotenv';
-import mariadb from 'mariadb';
+const dotenv = require ('dotenv');
+const mariadb = require ('mariadb');
 
 dotenv.config({path: '../../.env'});
 
@@ -14,4 +14,4 @@ const pool = mariadb.createPool({
      database: process.env.DB_NAME
 });
 
-export default pool;
+module.exports = pool;
