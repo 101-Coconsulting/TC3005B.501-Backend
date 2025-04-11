@@ -4,7 +4,7 @@ under this same folder 'db_example.js'*/
 import dotenv from 'dotenv';
 import mariadb from 'mariadb';
 
-dotenv.config({path: '../../.env'});
+dotenv.config();
 
 const pool = mariadb.createPool({
      host: process.env.DB_HOST,
