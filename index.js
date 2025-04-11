@@ -1,12 +1,18 @@
 // Main entry point for the backend application
+import dotenv from 'dotenv';
+dotenv.config();
+
+import applicantRoutes from './routes/applicantRoutes.js';
 
 // Import required modules
-const express = require('express');
+import express from 'express';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware for parsing JSON
 app.use(express.json());
+
+app.use("/api/applicants", applicantRoutes);
 
 // Basic route
 app.get('/', (req, res) => {
