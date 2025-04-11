@@ -11,6 +11,12 @@
 4. [Testing and General Quality](#testing-and-general-quality)
 5. [Security Practices](#security-practices)
 6. [Performance](#performance)
+7. [Architecture & Best Practices Guide for Endpoints in Node.js/Express](#architecture--best-practices-guide-for-endpoints-in-nodejsexpress)
+   7.1 [Models (Data Access)](#1-models-data-access)
+   7.2 [Services (Business Logic)](#2-services-business-logic)
+   7.3 [Controllers](#3-controllers)
+   7.4 [Router](#4-router)
+
 
 ---
 
@@ -283,3 +289,204 @@
 
 - **Prefer native methods over third-party utilities:**  
   In many cases, native JavaScript methods provide superior performance compared to utility libraries like Lodash or Underscore, while also reducing external dependencies.
+
+---
+
+─────────────────────────────  
+# **Architecture & Best Practices Guide for Endpoints in Node.js/Express**
+
+*Note: Everything presented below is an example to illustrate one approach. You should adapt these examples to fit your specific requirements and production standards.*
+
+This guide explains how to organize a project using four main folders:  
+- **Models:** Encapsulates data access (queries, stored procedures, or views).  
+- **Services:** Contains business logic, validations, calculations, and data transformations.  
+- **Controllers:** Handles HTTP requests, delegates to Services, and returns responses.  
+- **Router:** Defines and groups the API endpoints.
+
+This structure is considered a best practice because it keeps the code clean, modular, and easy to maintain while promoting reusability and testability.
+
+─────────────────────────────  
+## **Project Structure**
+
+The recommended organization is as follows:
+
+```
+/my-project
+├── models/
+│    └── productsModel.js        // Functions for querying product data from the database (example)
+├── services/
+│    └── productsService.js      // Business logic for products (example)
+├── controllers/
+│    └── productsController.js   // Handles HTTP requests for products (example)
+└── router/
+     └── productsRouter.js       // Defines the API routes for products (example)
+```
+
+─────────────────────────────  
+## **1. MODELS (Data Access)**
+
+**Role:**  
+Models encapsulate data access and contain functions that perform SQL queries, call stored procedures, or use views.
+
+**Example – models/productsModel.js:**
+
+```javascript
+// models/productsModel.js
+import pool from '../db.js'; // Assumes that db.js exports the connection pool as default
+
+// Function to get a product by its ID
+export async function getProductById(productId) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const query = 'SELECT id, name, price, stock FROM products WHERE id = ?';
+    const rows = await conn.query(query, [productId]);
+    return rows.length > 0 ? rows[0] : null;
+  } catch (error) {
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
+}
+```
+
+**Best Practices in Models (Example):**
+- Use parameterized queries to prevent SQL injection.  
+- Properly handle and propagate errors so that the Services layer can manage them.  
+- Always ensure that connections are released after each query.
+
+─────────────────────────────  
+## **2. SERVICES (Business Logic)**
+
+**Role:**  
+The Services layer contains business logic, validations, calculations, and data transformations. It coordinates operations between the Models and prepares the information for the Controllers.
+
+**Example – services/productsService.js:**
+
+```javascript
+// services/productsService.js
+import { getProductById } from '../models/productsModel.js';
+
+export async function getProductWithDiscount(productId, quantity) {
+  // Retrieve the product from the model
+  const product = await getProductById(productId);
+  if (!product) {
+    throw new Error('Product not found');
+  }
+
+  // Validate that the requested quantity does not exceed the stock
+  if (quantity > product.stock) {
+    throw new Error(
+      `Insufficient stock. Available stock: ${product.stock}. Requested quantity: ${quantity}.`
+    );
+  }
+
+  // Apply discount logic
+  let discountRate = 0;
+  if (quantity >= 10) {
+    discountRate = 0.10; // 10% discount for 10 or more units
+  } else if (quantity >= 5) {
+    discountRate = 0.05; // 5% discount for between 5 and 9 units
+  }
+
+  // Calculate pricing
+  const unitPrice = product.price;
+  const totalPriceWithoutDiscount = unitPrice * quantity;
+  const discountAmount = totalPriceWithoutDiscount * discountRate;
+  const finalPrice = totalPriceWithoutDiscount - discountAmount;
+
+  // Return the processed information
+  return {
+    productId: product.id,
+    productName: product.name,
+    quantity,
+    unitPrice,
+    discountRate,
+    discountAmount,
+    finalPrice,
+    stockAvailable: product.stock
+  };
+}
+```
+
+**Best Practices in Services (Example):**
+- Keep business logic separate from data access.  
+- Avoid direct dependencies on framework-specific objects (e.g., refrain from using `req` or `res` here).  
+- Write functions as purely as possible to facilitate unit testing.
+
+─────────────────────────────  
+## **3. CONTROLLERS**
+
+**Role:**  
+Controllers handle HTTP requests, perform basic parameter validations, call the Services, and send responses back to the client.
+
+**Example – controllers/productsController.js:**
+
+```javascript
+// controllers/productsController.js
+import { getProductWithDiscount } from '../services/productsService.js';
+
+export async function getProductInfo(req, res) {
+  try {
+    // Extract parameters from the request (assumed to be provided in the query)
+    const productId = req.query.productId;
+    const quantity = parseInt(req.query.quantity, 10);
+
+    if (!productId || isNaN(quantity) || quantity <= 0) {
+      return res.status(400).json({ error: 'Invalid parameters' });
+    }
+
+    // Call the Service to get the processed information
+    const result = await getProductWithDiscount(productId, quantity);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+```
+
+**Best Practices in Controllers (Example):**
+- Keep Controllers as lean as possible by delegating most business logic to the Services layer.  
+- Perform basic input validations on parameters.  
+- Properly handle and propagate errors, responding with the appropriate HTTP status codes.
+
+─────────────────────────────  
+## **4. ROUTER**
+
+**Role:**  
+The Router defines and groups the API endpoints by associating each route with its corresponding Controller. This maintains organization and enhances scalability.
+
+**Example – router/productsRouter.js:**
+
+```javascript
+// router/productsRouter.js
+import express from 'express';
+import { getProductInfo } from '../controllers/productsController.js';
+
+const router = express.Router();
+
+// Define the endpoint for retrieving product information with a discount applied
+router.get('/info', getProductInfo);
+
+export default router;
+```
+
+**Best Practices in Router (Example):**
+- Use `express.Router()` to organize and modularize your routes.  
+- Keep routes simple; any complex logic should reside in the Controllers or Services.  
+- Adhere to a consistent naming standard to ensure maintainability.
+
+─────────────────────────────  
+**Summary & Additional Tips**
+
+- Clearly separate responsibilities into distinct layers:  
+  – **Models:** Data access.  
+  – **Services:** Business logic.  
+  – **Controllers:** HTTP request handling.  
+  – **Router:** Endpoints organization and definition.
+
+- This modular structure facilitates code reuse, scalability, and testability, and it is widely regarded as best practice in Node.js/Express applications.  
+- Use consistent naming conventions for folders and files, and document each function so that every team member understands how the system works.
+
+
+─────────────────────────────
