@@ -34,3 +34,8 @@ CREATE TABLE Request (
     user_id INT,
     route_request_id INT
 );
+
+CREATE TABLE Country (
+    country_id INT PRIMARY KEY,
+    country_name VARCHAR(10)
+);
