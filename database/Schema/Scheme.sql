@@ -34,3 +34,14 @@ CREATE TABLE Request (
     user_id INT,
     route_request_id INT
 );
+
+CREATE TABLE Receipt (
+    receipt_id INT PRIMARY KEY AUTO_INCREMENT,
+    validation ENUM('Pending', 'Approved', 'Rejected'),
+    submission_date DATE,
+    submission_time TIME,
+    validation_date DATE,
+    validation_time TIME,
+    receipt_type_id INT ,
+    request_id INT
+) ;
