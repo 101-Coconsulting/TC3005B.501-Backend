@@ -34,3 +34,11 @@ CREATE TABLE Request (
     user_id INT,
     route_request_id INT
 );
+
+CREATE TABLE Alert (
+    alert_id INT PRIMARY KEY,
+    alert_text LONGTEXT,
+    alert_date DATE,
+    alert_time TIME,
+    user_id INT
+);
