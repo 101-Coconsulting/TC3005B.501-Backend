@@ -34,3 +34,8 @@ CREATE TABLE Request (
     user_id INT,
     route_request_id INT
 );
+
+CREATE TABLE Receipt_Type(
+    receipt_type_id INT PRIMARY KEY,
+    receipt_type_name TEXT
+);
