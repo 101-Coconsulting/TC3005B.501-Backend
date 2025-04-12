@@ -34,3 +34,10 @@ CREATE TABLE Request (
     user_id INT,
     route_request_id INT
 );
+
+CREATE TABLE Department (
+    department_id INT PRIMARY KEY,
+    department_name TEXT,
+    costs_center TEXT,
+    active BOOL
+);
