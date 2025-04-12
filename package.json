@@ -1,6 +1,7 @@
 {
   "name": "tc3005b-501-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "API y Base de Datos para la conexión y el funcionamiento del portal del sistema gestor de viajes",
   "main": "index.js",
   "scripts": {

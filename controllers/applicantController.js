@@ -1,7 +1,7 @@
 /*
 Applicant Controller
 */
-import Applicant from "../models/applicant.js";
+import Applicant from "../models/applicantModel.js";
 
 const getApplicantById = async (req, res) => {
     const id = req.params.id;
