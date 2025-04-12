@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS CocoScheme;
+USE CocoScheme;
