@@ -34,3 +34,8 @@ CREATE TABLE Request (
     user_id INT,
     route_request_id INT
 );
+
+CREATE TABLE City (
+    city_id INT PRIMARY KEY,
+    city_name VARCHAR(100) 
+);
