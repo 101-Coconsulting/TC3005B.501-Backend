@@ -15,3 +15,19 @@ CREATE TABLE Request (
     user_id INT,
     route_request_id INT
 );
+
+
+CREATE TABLE Route (
+    route_id INT PRIMARY KEY,
+    router_index INT,
+    id_origin_country VARCHAR(10),
+    id_origin_city VARCHAR(10),
+    id_destination_country VARCHAR(10),
+    id_destination_city VARCHAR(10),
+    plane_needed BOOL,
+    hotel_needed BOOL,
+    begining_date DATE,
+    begining_time TIME,
+    ending_date DATE,
+    ending_time TIME
+);
