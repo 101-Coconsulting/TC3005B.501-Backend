@@ -34,3 +34,9 @@ CREATE TABLE Request (
     user_id INT,
     route_request_id INT
 );
+
+CREATE TABLE Route_Request (
+    route_request_id INT ,
+    request_id INT ,
+    route_id INT
+);
