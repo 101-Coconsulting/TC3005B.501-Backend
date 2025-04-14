@@ -13,4 +13,7 @@ router.use((req, res, next) => {
 router.route("/:id")
     .get(applicantController.getApplicantById);
 
+router.route("/get-completed-requests/:id")
+    .get(applicantController.getCompletedRequests);
+
 export default router;
