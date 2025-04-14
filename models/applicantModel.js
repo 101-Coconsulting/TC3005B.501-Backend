@@ -21,6 +21,31 @@ const Applicant = {
       } 
     }
   },
+  async getCompletedRequests(id) {
+    let conn;
+    const query = `
+      SELECT request_id,
+        destination_country,
+        request_date,
+        status
+      FROM requests
+      WHERE applicant_id = ?
+        AND status = 'completed'
+    `;
+    try {
+      conn = await pool.getConnection();
+      const [rows] = await conn.query(query, [id]);
+      console.log(rows[0].destination_country);
+      return rows;
+    } catch (error) {
+      console.error('Error getting completed requests:', error);
+      throw error;
+    } finally {
+      if (conn){
+        conn.release();
+      } 
+    }
+  },
 };
 
 export default Applicant;
