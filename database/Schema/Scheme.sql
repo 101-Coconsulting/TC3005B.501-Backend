@@ -6,7 +6,12 @@ CREATE TABLE IF NOT EXISTS Roles(
     role_name VARCHAR(20)
 );
 
-(department)
+CREATE TABLE Department (
+    department_id INT PRIMARY KEY,
+    department_name VARCHAR(20),
+    costs_center VARCHAR(20),
+    active BOOL
+);
 
 CREATE TABLE IF NOT EXISTS User(
     user_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -22,6 +27,7 @@ CREATE TABLE IF NOT EXISTS User(
     active BOOLEAN,
   
     FOREIGN KEY (role_id) REFERENCES Roles(role_id)
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
 
 CREATE TABLE IF NOT EXISTS Request (
