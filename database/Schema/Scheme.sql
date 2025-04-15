@@ -51,7 +51,6 @@ CREATE TABLE IF NOT EXISTS Country (
     country_name VARCHAR(20)
 );
 
-
 CREATE TABLE IF NOT EXISTS City (
     city_id INT PRIMARY KEY,
     city_name VARCHAR(20) 
@@ -82,12 +81,17 @@ CREATE TABLE IF NOT EXISTS Route_Request (
     route_id INT
 );
 
+CREATE TABLE IF NOT EXISTS Receipt_Type(
+    receipt_type_id INT PRIMARY KEY,
+    receipt_type_name VARCHAR(20)
+);
+
 CREATE TABLE IF NOT EXISTS Receipt (
     receipt_id INT PRIMARY KEY AUTO_INCREMENT,
     validation ENUM('Pending', 'Approved', 'Rejected') NOT NULL,
     submission_date DEFAULT CURRENT_TIMESTAMP NOT NULL,
     validation_date DEFAULT CURRENT_TIMESTAMP,
   
-    receipt_type_id INT ,
+    receipt_type_id INT,
     request_id INT
 ) ;
