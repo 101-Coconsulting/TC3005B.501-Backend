@@ -45,6 +45,12 @@ CREATE TABLE IF NOT EXISTS Country (
     country_name VARCHAR(20)
 );
 
+
+CREATE TABLE IF NOT EXISTS City (
+    city_id INT PRIMARY KEY,
+    city_name VARCHAR(20) 
+);
+
 CREATE TABLE IF NOT EXISTS Route (
     route_id INT PRIMARY KEY,
     router_index INT,
