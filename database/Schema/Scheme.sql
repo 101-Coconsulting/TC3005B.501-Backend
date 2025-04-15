@@ -9,18 +9,18 @@ CREATE TABLE IF NOT EXISTS Roles(
 CREATE TABLE IF NOT EXISTS User(
     user_id INT PRIMARY KEY AUTO_INCREMENT,
     role_id INT,
-    user_name VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    workstation VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    phone_number VARCHAR(20) UNIQUE NOT NULL,
+    user_name VARCHAR(25) UNIQUE NOT NULL,
+    password VARCHAR(25) NOT NULL,
+    workstation VARCHAR(25) NOT NULL,
+    email VARCHAR(25) UNIQUE NOT NULL,
+    phone_number VARCHAR(30) UNIQUE NOT NULL,
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     active BOOLEAN,
     FOREIGN KEY (role_id) REFERENCES roles(role_id)
 );
 
-CREATE TABLE Request (
+CREATE TABLE IF NOT EXISTS Request (
     request_id INT PRIMARY KEY,
     status enum,
     notes losngtext,
@@ -28,15 +28,20 @@ CREATE TABLE Request (
     imposed_fee FLOAT,
     request_date DATE,
     request_time TIME,
-    last_mod_date DATE,
-    last_mod_time TIME,
+    last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    last_mod_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     active BOOL,
     user_id INT,
     route_request_id INT
 );
 
 
-CREATE TABLE Route (
+CREATE TABLE IF NOT EXISTS Country (
+    country_id INT PRIMARY KEY,
+    country_name VARCHAR(25)
+);
+
+CREATE TABLE IF NOT EXISTS Route (
     route_id INT PRIMARY KEY,
     router_index INT,
     id_origin_country VARCHAR(50),
