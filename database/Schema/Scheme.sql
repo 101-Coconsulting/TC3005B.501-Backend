@@ -6,9 +6,12 @@ CREATE TABLE IF NOT EXISTS Roles(
     role_name VARCHAR(20)
 );
 
+(department)
+
 CREATE TABLE IF NOT EXISTS User(
     user_id INT PRIMARY KEY AUTO_INCREMENT,
     role_id INT,
+    department_id INT,
     user_name VARCHAR(20) UNIQUE NOT NULL,
     password VARCHAR(20) NOT NULL,
     workstation VARCHAR(20),
@@ -45,16 +48,26 @@ CREATE TABLE IF NOT EXISTS Country (
 CREATE TABLE IF NOT EXISTS Route (
     route_id INT PRIMARY KEY,
     router_index INT,
+  
     id_origin_country VARCHAR(20),
     id_origin_city VARCHAR(20),
     id_destination_country VARCHAR(20),
     id_destination_city VARCHAR(20),
+  
     plane_needed BOOL,
     hotel_needed BOOL,
     begining_date DATE,
     begining_time TIME,
     ending_date DATE,
     ending_time TIME
+  
+);
+
+CREATE TABLE IF NOT EXISTS Route_Request (
+    route_request_id INT PRIMARY KEY,
+    
+    request_id INT,
+    route_id INT
 );
 
 CREATE TABLE IF NOT EXISTS Receipt (
