@@ -15,7 +15,7 @@ CREATE TABLE Department (
 );
 
 CREATE TABLE IF NOT EXISTS `User`(
-    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT PRIMARY KEY,
     role_id INT,
     department_id INT,
     user_name VARCHAR(30) UNIQUE NOT NULL,
