@@ -54,8 +54,7 @@ CREATE TABLE IF NOT EXISTS `Request` (
     last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     active BOOL,
   
-    FOREIGN KEY (user_id) REFERENCES `User`(user_id),
-    FOREIGN KEY (route_request_id) REFERENCES Route_Request(route_request_id)
+    FOREIGN KEY (user_id) REFERENCES `User`(user_id)
 );
 
 CREATE TABLE IF NOT EXISTS Country (
