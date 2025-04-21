@@ -1,7 +1,12 @@
-// controllers/userController.js
-const db = require('../database/db');
+import * as userModel from '../models/userModel.js';
 
-const getUserData = async (req, res) => {
+/**
+ * Get user data by ID
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON response with user data
+ */
+export async function getUserData(req, res) {
   try {
     const userId = parseInt(req.params.user_id);
 
@@ -28,7 +33,7 @@ const getUserData = async (req, res) => {
 
     return res.status(200).json(formattedResponse);
   } catch (error) {
-    console.error('Error fetching user data:', error);
+    console.error('Error retrieving user data:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
