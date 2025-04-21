@@ -30,12 +30,11 @@ const Applicant = {
         status
       FROM requests
       WHERE applicant_id = ?
-        AND status = 'completed'
+        AND status = 'closed'
     `;
     try {
       conn = await pool.getConnection();
-      const [rows] = await conn.query(query, [id]);
-      console.log(rows[0].destination_country);
+      const rows = await conn.query(query, [id]);
       return rows;
     } catch (error) {
       console.error('Error getting completed requests:', error);
