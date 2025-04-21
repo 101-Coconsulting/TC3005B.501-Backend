@@ -83,10 +83,10 @@ CREATE TABLE IF NOT EXISTS Route (
     ending_date DATE,
     ending_time TIME,
     
-    FOREIGN KEY (id_origin_country) REFERENCES Country(id_origin_country),
-    FOREIGN KEY (id_origin_city) REFERENCES City(id_origin_city),
-    FOREIGN KEY (id_destination_country) REFERENCES Country(id_destination_country),
-    FOREIGN KEY (id_destination_city) REFERENCES City(id_destination_city)
+    FOREIGN KEY (id_origin_country) REFERENCES Country(country_id),
+    FOREIGN KEY (id_origin_city) REFERENCES City(city_id),
+    FOREIGN KEY (id_destination_country) REFERENCES Country(country_id),
+    FOREIGN KEY (id_destination_city) REFERENCES City(city_id)
 );
 
 CREATE TABLE IF NOT EXISTS Route_Request (
