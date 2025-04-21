@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS Role(
     role_name VARCHAR(20)
 );
 
-CREATE TABLE Department (
+CREATE TABLE IF NOT EXISTS Department (
     department_id INT PRIMARY KEY AUTO_INCREMENT,
     department_name VARCHAR(20),
     costs_center VARCHAR(20),
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `User`(
     FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
 
-CREATE TABLE `Alert` (
+CREATE TABLE IF NOT EXISTS `Alert` (
     alert_id INT PRIMARY KEY,
     user_id INT,
     alert_text LONGTEXT,
