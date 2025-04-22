@@ -34,7 +34,7 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: javascript
-        config-file: .github/codeql-config.yml
+        config-file: .github/workflows/codeql-config.yml
 
     # Step 4: Run CodeQL Analysis
     - name: Perform CodeQL Analysis
