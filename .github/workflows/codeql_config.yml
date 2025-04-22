@@ -11,6 +11,9 @@ on:
   schedule:
     - cron: '0 2 * * 0' # Runs every Sunday at 2 am
 
+permissions:
+  security-events: write
+
 jobs:
   analyze:
     name: Analyze code
@@ -27,11 +30,11 @@ jobs:
 
     # Step 3: Initialize CodeQL
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: javascript
-        queries: +security-extended, +performance, +security-and-quality, +deprecated
+        queries: +security-extended, +security-and-quality, +deprecated, codeql/javascript-queries:codeql-suites/javascript-performance.qls
 
     # Step 4: Run CodeQL Analysis
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
