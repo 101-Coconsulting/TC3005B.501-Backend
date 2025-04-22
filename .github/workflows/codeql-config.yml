@@ -1,4 +1,4 @@
 name: "Custom CodeQL Config"
-disable-default-queries: true|
+disable-default-queries: true
 packs:
   - codeql/javascript-queries
