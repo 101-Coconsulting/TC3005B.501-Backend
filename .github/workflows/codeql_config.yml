@@ -33,7 +33,7 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: javascript
-        queries: +security-extended, +deprecated
+        queries: +default, +security-extended
 
     # Step 4: Run CodeQL Analysis
     - name: Perform CodeQL Analysis
