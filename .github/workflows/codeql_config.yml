@@ -1,0 +1,37 @@
+name: "CodeQL Analysis - Backend"
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - main
+      - development
+  schedule:
+    - cron: '0 2 * * 0' # Runs every Sunday at 2 am
+
+jobs:
+  analyze:
+    name: Analyze code
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Download the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Step 3: Initialize CodeQL
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: javascript
+        queries: +security-extended, +performance, +security-and-quality, +deprecated
+
+    # Step 4: Run CodeQL Analysis
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
