@@ -15,9 +15,11 @@ CREATE TABLE IF NOT EXISTS Department (
 );
 
 CREATE TABLE IF NOT EXISTS `User`(
-    user_id INT PRIMARY KEY,
+    user_id VARCHAR(20) PRIMARY KEY AUTO_INCREMENT,
     role_id INT,
     department_id INT,
+
+    employee_id VARCHAR(20) UNIQUE, -- add NOT NULL if implemented
     user_name VARCHAR(60) UNIQUE NOT NULL,
     password VARCHAR(60) NOT NULL,
     workstation VARCHAR(20),
@@ -34,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `User`(
 CREATE TABLE IF NOT EXISTS Alert (
     alert_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
+
     alert_text LONGTEXT,
     alert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -112,6 +115,7 @@ CREATE TABLE IF NOT EXISTS `Receipt` (
     receipt_id INT PRIMARY KEY AUTO_INCREMENT,
     receipt_type_id INT,
     request_id INT,
+
     validation ENUM('Pending', 'Approved', 'Rejected') NOT NULL DEFAULT 'Pending',
     submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     validation_date TIMESTAMP,
