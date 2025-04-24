@@ -11,8 +11,8 @@ const getApplicantById = async (req, res) => {
             return res.status(404).json({error: "Applicant not found"});
         }
         const applicantWithId = {
-            id: applicant.id,
-            name: applicant.name
+            user_id: applicant.user_id,
+            user_name: applicant.user_name
         };
         res.json(applicantWithId);
     } catch(err) {
