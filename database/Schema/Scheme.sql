@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `Request` (
     requested_fee FLOAT,
     imposed_fee FLOAT,
     request_days FLOAT,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     active BOOL NOT NULL DEFAULT TRUE,
   
