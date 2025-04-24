@@ -1,6 +1,6 @@
 USE CocoScheme;
 
-INSERT INTO Country (receipt_type_name) VALUES
+INSERT INTO Country (country_name) VALUES
     ('España'),
     ('México'),
     ('Estados Únidos'),
