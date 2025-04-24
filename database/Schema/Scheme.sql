@@ -1,4 +1,5 @@
-CREATE DATABASE IF NOT EXISTS CocoScheme;
+DROP DATABASE IF EXISTS CocoScheme;
+CREATE DATABASE CocoScheme;
 USE CocoScheme;
 
 
@@ -15,15 +16,14 @@ CREATE TABLE IF NOT EXISTS Department (
 );
 
 CREATE TABLE IF NOT EXISTS `User`(
-    user_id VARCHAR(20) PRIMARY KEY AUTO_INCREMENT,
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
     role_id INT,
     department_id INT,
 
-    employee_id VARCHAR(20) UNIQUE, -- add NOT NULL if implemented
     user_name VARCHAR(60) UNIQUE NOT NULL,
     password VARCHAR(60) NOT NULL,
     workstation VARCHAR(20),
-    email VARCHAR(60) UNIQUE NOT NULL,
+    email VARCHAR(254) UNIQUE NOT NULL,
     phone_number VARCHAR(20),
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS Alert (
 
 CREATE TABLE IF NOT EXISTS Request_status (
     request_status_id INT PRIMARY KEY AUTO_INCREMENT,
-    status INT NOT NULL
+    status VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `Request` (
@@ -58,9 +58,9 @@ CREATE TABLE IF NOT EXISTS `Request` (
     imposed_fee FLOAT,
     request_days FLOAT,
     last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    active BOOL NOT NULL DEFAULT TRUE
+    active BOOL NOT NULL DEFAULT TRUE,
   
-    FOREIGN KEY (user_id) REFERENCES `User`(user_id)
+    FOREIGN KEY (user_id) REFERENCES `User`(user_id),
     FOREIGN KEY (request_status_id) REFERENCES Request_status(request_status_id)
 );
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS Country (
 
 CREATE TABLE IF NOT EXISTS City (
     city_id INT PRIMARY KEY AUTO_INCREMENT,
-    city_name VARCHAR(60) NOT NULL
+    city_name VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Route (
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `Receipt` (
     receipt_type_id INT,
     request_id INT,
 
-    validation ENUM('Pending', 'Approved', 'Rejected') NOT NULL DEFAULT 'Pending',
+    validation ENUM('Pendiente', 'Aprovado', 'Rechazado') NOT NULL DEFAULT 'Pendiente',
     submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     validation_date TIMESTAMP,
   
