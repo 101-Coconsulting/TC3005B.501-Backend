@@ -18,11 +18,13 @@ INSERT INTO Role (role_name) VALUES
     ('Administrador');
 
 INSERT INTO Request_status (status) VALUES
-    (1),
-    (2),
-    (3),
-    (4),
-    (5),
-    (6),
-    (7),
-    (8);
+    ('Abierto'),
+    ('Primera Revisión'),
+    ('Segunda Revisión'),
+    ('Atención Agencia de Viajes'),
+    ('Cotización del Viaje'),
+    ('Comprobación gastos del viaje'),
+    ('Validación de comprobantes'),
+    ('Finalizado'),
+    ('Cancelado'),
+    ('Rechazado');
