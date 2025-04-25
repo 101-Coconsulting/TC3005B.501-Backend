@@ -1,5 +1,16 @@
 USE CocoScheme;
 
+INSERT INTO Department (department_name, costs_center, active) VALUES
+  ('Finanzas', 'CC001', TRUE),
+  ('Recursos Humanos', 'CC002', TRUE),
+  ('IT', 'CC003', TRUE),
+  ('Marketing', 'CC004', TRUE),
+  ('Operaciones', 'CC005', TRUE),
+  ('Servicios Generales', 'CC006', TRUE),
+  ('Administración ', 'CC007', TRUE),  
+  ('Sistemas Avanzadosna', 'CC008', FALSE), 
+  ('Desarrollo y Calidad', 'CC009', TRUE),  
+  ('Recursos No Humanos', 'CC010', TRUE);
 
 INSERT INTO Route (
     id_origin_country,
@@ -51,14 +62,34 @@ INSERT INTO City (city_name) VALUES
     ('Pisos Picados'),
     ('Bombardino Cocodrilo');
 
-INSERT INTO Department (department_name, costs_center, active) VALUES
-('Finanzas', 'CC001', TRUE),
-('Recursos Humanos', 'CC002', TRUE),
-('IT', 'CC003', TRUE),
-('Marketing', 'CC004', TRUE),
-('Operaciones', 'CC005', TRUE),
-('Servicios Generales', 'CC006', TRUE),
-('Administración ', 'CC007', TRUE),  
-('Sistemas Avanzadosna', 'CC008', FALSE), 
-('Desarrollo y Calidad', 'CC009', TRUE),  
-('Recursos No Humanos', 'CC010', TRUE);  
+INSERT INTO Request (
+    user_id,
+    request_status_id,
+    notes,
+    requested_fee,
+    imposed_fee,
+    request_days,
+    active
+) VALUES
+  (1, 1, 'Solicito viáticos para viaje a conferencia en Barcelona.', 1500.00, 1200.00, 3.0, TRUE),
+  (2, 2, 'Reembolso por gastos médicos durante viaje.', 800.00, 750.00, 1.0, TRUE),
+  (3, 1, 'Solicitud de apoyo económico para capacitación online.', 500.00, 500.00, 0.0, TRUE),
+  (1, 3, 'Viáticos para taller de liderazgo en Madrid.', 1200.00, 1000.00, 2.0, TRUE),
+  (2, 1, 'Reembolso de transporte.', 300.00, 250.00, 0.5, TRUE),
+  (3, 2, 'Apoyo para participación en congreso internacional.', 2000.00, 1800.00, 4.0, TRUE),
+  (1, 2, 'Gastos operativos extraordinarios.', 650.00, 600.00, 0.0, TRUE),
+  (2, 3, 'Viaje urgente por representación institucional.', 1750.00, 1500.00, 3.5, TRUE),
+  (3, 1, 'Solicito anticipo para misión técnica en el extranjero.', 2200.00, 2000.00, 5.0, TRUE),
+  (1, 2, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, TRUE);
+ 
+ INSERT INTO Route_Request (request_id, route_id) VALUES
+    (1, 1),
+    (1, 2),
+    (2, 3),
+    (3, 4),
+    (4, 5),
+    (5, 6),
+    (6, 7),
+    (7, 8),
+    (8, 9),
+    (9, 10);
