@@ -12,6 +12,38 @@ INSERT INTO Department (department_name, costs_center, active) VALUES
   ('Desarrollo y Calidad', 'CC009', TRUE),  
   ('Recursos No Humanos', 'CC010', TRUE);
 
+INSERT INTO Alert (user_id, alert_text, alert_date) VALUES
+    (1, 'Your password will expire in 3 days.', '2025-04-20 08:00:00'),
+    (2, 'XXXXXXXXXXXXXXXXXXX', '2025-04-20 09:00:00'),
+    (3, 'XXXXXXXXXXXXXXXXXXXX', '1850-04-15 10:00:00'),
+    (4, 'New login from an unknown device detected.', '1993-04-21 11:15:00'),
+    (5, '', '2025-04-21 12:00:000'),
+    (5, 'Lorem ipsumjjj.', '2025-04-18 11:33:27'),
+    (7, 'A very long alert message.  11?', '2025-04-22 08:45:00'),
+    (1, 'System maintenance scheduled at midnight. ffff', '2025-09-23 18:00:00'),
+    (9, 'Error processing your last request, please try again.', '2025-04-23 19:20:00'),
+    (10, 'Backup completed successfully.', '2020-18-24 06:10:00');
+
+
+INSERT INTO Request (
+    user_id,
+    request_status_id,
+    notes,
+    requested_fee,
+    imposed_fee,
+    request_days,
+    active
+) VALUES
+  (1, 1, 'Solicito viáticos para viaje a conferencia en Barcelona.', 1500.00, 1200.00, 3.0, TRUE),
+  (2, 2, 'Reembolso por gastos médicos durante viaje.', 800.00, 750.00, 1.0, TRUE),
+  (3, 1, 'Solicitud de apoyo económico para capacitación online.', 500.00, 500.00, 0.0, TRUE),
+  (1, 3, 'Viáticos para taller de liderazgo en Madrid.', 1200.00, 1000.00, 2.0, TRUE),
+  (2, 1, 'Reembolso de transporte.', 300.00, 250.00, 0.5, TRUE),
+  (3, 2, 'Apoyo para participación en congreso internacional.', 2000.00, 1800.00, 4.0, TRUE),
+  (1, 2, 'Gastos operativos extraordinarios.', 650.00, 600.00, 0.0, TRUE),
+  (2, 3, 'Viaje urgente por representación institucional.', 1750.00, 1500.00, 3.5, TRUE),
+  (3, 1, 'Solicito anticipo para misión técnica en el extranjero.', 2200.00, 2000.00, 5.0, TRUE),
+  (1, 2, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, TRUE);
 
 INSERT INTO Country (country_name) VALUES
     ('España'),
@@ -37,26 +69,6 @@ INSERT INTO City (city_name) VALUES
     ('Reino de Simba'),
     ('Pisos Picados'),
     ('Bombardino Cocodrilo');
-
-INSERT INTO Request (
-    user_id,
-    request_status_id,
-    notes,
-    requested_fee,
-    imposed_fee,
-    request_days,
-    active
-) VALUES
-  (1, 1, 'Solicito viáticos para viaje a conferencia en Barcelona.', 1500.00, 1200.00, 3.0, TRUE),
-  (2, 2, 'Reembolso por gastos médicos durante viaje.', 800.00, 750.00, 1.0, TRUE),
-  (3, 1, 'Solicitud de apoyo económico para capacitación online.', 500.00, 500.00, 0.0, TRUE),
-  (1, 3, 'Viáticos para taller de liderazgo en Madrid.', 1200.00, 1000.00, 2.0, TRUE),
-  (2, 1, 'Reembolso de transporte.', 300.00, 250.00, 0.5, TRUE),
-  (3, 2, 'Apoyo para participación en congreso internacional.', 2000.00, 1800.00, 4.0, TRUE),
-  (1, 2, 'Gastos operativos extraordinarios.', 650.00, 600.00, 0.0, TRUE),
-  (2, 3, 'Viaje urgente por representación institucional.', 1750.00, 1500.00, 3.5, TRUE),
-  (3, 1, 'Solicito anticipo para misión técnica en el extranjero.', 2200.00, 2000.00, 5.0, TRUE),
-  (1, 2, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, TRUE);
 
 INSERT INTO Route (
     id_origin_country,
