@@ -50,3 +50,15 @@ INSERT INTO City (city_name) VALUES
     ('Reino de Simba'),
     ('Pisos Picados'),
     ('Bombardino Cocodrilo');
+
+INSERT INTO Route_Request (request_id, route_id) VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 4),
+(4, 5),
+(5, 6),
+(6, 7),
+(7, 8),
+(8, 9),
+(9, 10);
