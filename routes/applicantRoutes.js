@@ -13,6 +13,7 @@ router.use((req, res, next) => {
 router.route("/:id")
     .get(applicantController.getApplicantById);
 
+// Route to get cost center by user ID
 router.route("/get-cc/:user_id")
     .get(applicantController.getCostCenterByUserId);
 

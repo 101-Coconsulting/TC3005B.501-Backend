@@ -26,6 +26,7 @@ const Applicant = {
 
   async findCostCenterByUserId(user_id) {
     let conn;
+
     try {
       conn = await pool.getConnection();
       const rows = await conn.query(`

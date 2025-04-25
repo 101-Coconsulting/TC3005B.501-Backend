@@ -5,6 +5,7 @@ import Applicant from "../models/applicantModel.js";
 
 const getApplicantById = async (req, res) => {
     const id = req.params.id;
+
     try {
         const applicant = await Applicant.findById(id);
         if (!applicant) {
