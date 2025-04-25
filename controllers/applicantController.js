@@ -35,7 +35,7 @@ const getCompletedRequests = async (req, res) => {
           }));
         res.json(formattedRequests);
     } catch(err) {
-        res.status(500).json({error: "CONTROLLER: Internal server error"});
+        res.status(500).json({error: "Internal server error"});
     }
 }
 
