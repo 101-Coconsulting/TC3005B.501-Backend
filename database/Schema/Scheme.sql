@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `Receipt` (
     request_id INT,
 
     validation ENUM('Pendiente', 'Aprovado', 'Rechazado') NOT NULL DEFAULT 'Pendiente',
-    submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     validation_date TIMESTAMP,
   
     FOREIGN KEY (receipt_type_id) REFERENCES Receipt_Type(receipt_type_id),
