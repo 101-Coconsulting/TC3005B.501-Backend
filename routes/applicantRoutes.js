@@ -13,4 +13,7 @@ router.use((req, res, next) => {
 router.route("/:id")
     .get(applicantController.getApplicantById);
 
+router.route("/create-travel-request")
+    .post(applicantController.createTravelRequest);
+
 export default router;
