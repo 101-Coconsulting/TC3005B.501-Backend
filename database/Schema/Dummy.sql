@@ -1,5 +1,49 @@
 USE CocoScheme;
 
+INSERT INTO Department (department_name, costs_center, active) VALUES
+  ('Finanzas', 'CC001', TRUE),
+  ('Recursos Humanos', 'CC002', TRUE),
+  ('IT', 'CC003', TRUE),
+  ('Marketing', 'CC004', TRUE),
+  ('Operaciones', 'CC005', TRUE),
+  ('Servicios Generales', 'CC006', TRUE),
+  ('Administración ', 'CC007', TRUE),  
+  ('Sistemas Avanzadosna', 'CC008', FALSE), 
+  ('Desarrollo y Calidad', 'CC009', TRUE),  
+  ('Recursos No Humanos', 'CC010', TRUE);
+
+INSERT INTO Alert (user_id, alert_text, alert_date) VALUES
+    (1, 'Your password will expire in 3 days.', '2025-04-20 08:00:00'),
+    (2, 'XXXXXXXXXXXXXXXXXXX', '2025-04-20 09:00:00'),
+    (3, 'XXXXXXXXXXXXXXXXXXXX', '1850-04-15 10:00:00'),
+    (4, 'New login from an unknown device detected.', '1993-04-21 11:15:00'),
+    (5, '', '2025-04-21 12:00:000'),
+    (5, 'Lorem ipsumjjj.', '2025-04-18 11:33:27'),
+    (7, 'A very long alert message.  11?', '2025-04-22 08:45:00'),
+    (1, 'System maintenance scheduled at midnight. ffff', '2025-09-23 18:00:00'),
+    (9, 'Error processing your last request, please try again.', '2025-04-23 19:20:00'),
+    (10, 'Backup completed successfully.', '2020-18-24 06:10:00');
+
+
+INSERT INTO Request (
+    user_id,
+    request_status_id,
+    notes,
+    requested_fee,
+    imposed_fee,
+    request_days,
+    active
+) VALUES
+  (1, 1, 'Solicito viáticos para viaje a conferencia en Barcelona.', 1500.00, 1200.00, 3.0, TRUE),
+  (2, 2, 'Reembolso por gastos médicos durante viaje.', 800.00, 750.00, 1.0, TRUE),
+  (3, 1, 'Solicitud de apoyo económico para capacitación online.', 500.00, 500.00, 0.0, TRUE),
+  (1, 3, 'Viáticos para taller de liderazgo en Madrid.', 1200.00, 1000.00, 2.0, TRUE),
+  (2, 1, 'Reembolso de transporte.', 300.00, 250.00, 0.5, TRUE),
+  (3, 2, 'Apoyo para participación en congreso internacional.', 2000.00, 1800.00, 4.0, TRUE),
+  (1, 2, 'Gastos operativos extraordinarios.', 650.00, 600.00, 0.0, TRUE),
+  (2, 3, 'Viaje urgente por representación institucional.', 1750.00, 1500.00, 3.5, TRUE),
+  (3, 1, 'Solicito anticipo para misión técnica en el extranjero.', 2200.00, 2000.00, 5.0, TRUE),
+  (1, 2, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, TRUE);
 
 INSERT INTO Country (country_name) VALUES
     ('España'),
@@ -26,7 +70,6 @@ INSERT INTO City (city_name) VALUES
     ('Pisos Picados'),
     ('Bombardino Cocodrilo');
 
-
 INSERT INTO Route (
     id_origin_country,
     id_origin_city,
@@ -50,16 +93,27 @@ INSERT INTO Route (
     (8, 5, 9, 6, 1, TRUE, TRUE, '2025-06-03', '07:15:00', '2025-06-03', '10:45:00'),
     (10, 7, 3, 1, 1, FALSE, FALSE, '2025-06-04', '12:00:00', '2025-06-04', '15:00:00'),
     (5, 4, 6, 3, 1, TRUE, FALSE, '2025-06-05', '16:30:00', '2025-06-05', '20:00:00');
+ 
+ INSERT INTO Route_Request (request_id, route_id) VALUES
+    (1, 1),
+    (1, 2),
+    (2, 3),
+    (3, 4),
+    (4, 5),
+    (5, 6),
+    (6, 7),
+    (7, 8),
+    (8, 9),
+    (9, 10);
 
-
-INSERT INTO Alert (user_id, alert_text, alert_date) VALUES
-    (1, 'Your password will expire in 3 days.', '2025-04-20 08:00:00'),
-    (2, 'XXXXXXXXXXXXXXXXXXX', '2025-04-20 09:00:00'),
-    (3, 'XXXXXXXXXXXXXXXXXXXX', '1850-04-15 10:00:00'),
-    (4, 'New login from an unknown device detected.', '1993-04-21 11:15:00'),
-    (5, '', '2025-04-21 12:00:000'),
-    (5, 'Lorem ipsumjjj.', '2025-04-18 11:33:27'),
-    (7, 'A very long alert message.  11?', '2025-04-22 08:45:00'),
-    (1, 'System maintenance scheduled at midnight. ffff', '2025-09-23 18:00:00'),
-    (9, 'Error processing your last request, please try again.', '2025-04-23 19:20:00'),
-    (10, 'Backup completed successfully.', '2020-18-24 06:10:00');
+INSERT INTO Receipt (receipt_type_id, request_id, validation, submission_date, validation_date) VALUES
+    (4, 1, 'Pendiente', '2025-04-20 09:00:00', NULL),
+    (2, 2, 'Aprovado', '2025-04-18 14:45:00', '2025-04-19 09:00:00'),
+    (3, 3, 'Rechazado', '2025-04-19 16:00:00', '2025-04-19 18:00:00'),
+    (7, 4, 'Pendiente', '2025-04-21 08:30:00', '2047-04-19 18:00:59'),
+    (2, 5, 'Aprovado', '2025-04-21 10:00:00', '2025-03-21 10:00:00'),
+    (3, 6, 'Rechazado', '2025-04-22 11:15:00', '2025-04-22 12:00:00'),
+    (6, 7, 'Pendiente', '2025-04-22 13:45:00', '2003-04-19 10:06:43'),
+    (2, 8, 'Aprovado', '2025-04-23 15:20:00', '2025-02-23 16:00:00'),
+    (5, 9, 'Rechazado', '2025-04-23 17:50:00', '2025-04-23 18:30:00'),
+    (1, 10, 'Pendiente', '2025-04-24 06:00:00', '2025-06-19 20:17:24');
