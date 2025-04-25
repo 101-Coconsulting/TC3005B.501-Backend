@@ -5,6 +5,8 @@ dotenv.config();
 import applicantRoutes from './routes/applicantRoutes.js';
 
 // Import required modules
+import fs from 'fs';
+import https from 'https';
 import express from 'express';
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,7 +24,14 @@ app.get('/', (req, res) => {
 // Routes will be imported and used here
 // Example: app.use('/api/users', require('./routes/users'));
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Certificates credentials for usage of HTTPS
+const privateKey = fs.readFileSync('./certs/server.key', 'utf8');
+const certificate = fs.readFileSync('./certs/server.crt', 'utf8');
+const ca = fs.readFileSync('./certs/ca.crt', 'utf8');
+const credentials = { key: privateKey, cert: certificate, ca: ca };
+
+// HTTPS server configuration
+const httpsServer = https.createServer(credentials, app);
+httpsServer.listen(PORT, () => console.log(`Server running on port ${PORT} with HTTPS`));
+
+ 
