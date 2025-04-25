@@ -13,4 +13,7 @@ router.use((req, res, next) => {
 router.route("/:id")
     .get(applicantController.getApplicantById);
 
+router.route("/get-cc/:user_id")
+    .get(applicantController.getCostCenterByUserId);
+
 export default router;
