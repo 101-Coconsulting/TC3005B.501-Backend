@@ -21,7 +21,10 @@ const getApplicantById = async (req, res) => {
 }
 
 const getCompletedRequests = async (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(req.params.id, 10);
+    if (!Number.isInteger(id)) {
+        return res.status(400).json({ error: "Invalid user ID" });
+    }
     try {
         const completedRequests = await Applicant.getCompletedRequests(id);
         if (!completedRequests) {
