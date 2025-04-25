@@ -26,13 +26,10 @@ const Applicant = {
   async getCompletedRequests(id) {
     let conn;
     const query = `
-      SELECT request_id,
-        destination_country,
-        request_date,
-        status
-      FROM requests
-      WHERE applicant_id = ?
-        AND status = 'closed'
+      SELECT *
+      FROM UserRequestHistory
+      WHERE user_id = ?
+        AND status = 'Finalizado';
     `;
     try {
       conn = await pool.getConnection();

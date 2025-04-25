@@ -22,7 +22,6 @@ const getApplicantById = async (req, res) => {
 
 const getCompletedRequests = async (req, res) => {
     const id = req.params.id;
-    console.log(`Getting completed requests for id: ${id}`)
     try {
         const completedRequests = await Applicant.getCompletedRequests(id);
         if (!completedRequests) {
@@ -30,8 +29,8 @@ const getCompletedRequests = async (req, res) => {
         }
         const formattedRequests = completedRequests.map(request => ({
             request_id: request.request_id,
-            destination_country: request.destination_country,
-            request_date: request.request_date,
+            destination_country: request.trip_destinations,
+            request_date: request.creation_date,
             status: request.status
           }));
         res.json(formattedRequests);
