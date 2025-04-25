@@ -50,3 +50,23 @@ INSERT INTO City (city_name) VALUES
     ('Reino de Simba'),
     ('Pisos Picados'),
     ('Bombardino Cocodrilo');
+
+INSERT INTO Request (
+    user_id,
+    request_status_id,
+    notes,
+    requested_fee,
+    imposed_fee,
+    request_days,
+    active
+) VALUES
+(1, 1, 'Solicito viáticos para viaje a conferencia en Barcelona.', 1500.00, 1200.00, 3.0, TRUE),
+(2, 2, 'Reembolso por gastos médicos durante viaje.', 800.00, 750.00, 1.0, TRUE),
+(3, 1, 'Solicitud de apoyo económico para capacitación online.', 500.00, 500.00, 0.0, TRUE),
+(1, 3, 'Viáticos para taller de liderazgo en Madrid.', 1200.00, 1000.00, 2.0, TRUE),
+(2, 1, 'Reembolso de transporte.', 300.00, 250.00, 0.5, TRUE),
+(3, 2, 'Apoyo para participación en congreso internacional.', 2000.00, 1800.00, 4.0, TRUE),
+(1, 2, 'Gastos operativos extraordinarios.', 650.00, 600.00, 0.0, TRUE),
+(2, 3, 'Viaje urgente por representación institucional.', 1750.00, 1500.00, 3.5, TRUE),
+(3, 1, 'Solicito anticipo para misión técnica en el extranjero.', 2200.00, 2000.00, 5.0, TRUE),
+(1, 2, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, TRUE);
