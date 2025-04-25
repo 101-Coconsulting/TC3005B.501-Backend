@@ -50,3 +50,15 @@ INSERT INTO City (city_name) VALUES
     ('Reino de Simba'),
     ('Pisos Picados'),
     ('Bombardino Cocodrilo');
+
+INSERT INTO Department (department_name, costs_center, active) VALUES
+('Finanzas', 'CC001', TRUE),
+('Recursos Humanos', 'CC002', TRUE),
+('IT', 'CC003', TRUE),
+('Marketing', 'CC004', TRUE),
+('Operaciones', 'CC005', TRUE),
+('Servicios Generales', 'CC006', TRUE),
+('Administración ', 'CC007', TRUE),  
+('Sistemas Avanzadosna', 'CC008', FALSE), 
+('Desarrollo y Calidad', 'CC009', TRUE),  
+('Recursos No Humanos', 'CC010', TRUE);  
