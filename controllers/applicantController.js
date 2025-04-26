@@ -1,7 +1,7 @@
 /*
 Applicant Controller
 */
-import { Applicant, TravelRequest } from "../models/applicantModel.js";
+import { Applicant } from "../models/applicantModel.js";
 
 const getApplicantById = async (req, res) => {
     const id = req.params.id;
@@ -21,15 +21,18 @@ const getApplicantById = async (req, res) => {
 }
 
 const createTravelRequest = async (req, res) => {
-    const { applicantId, travelDetails } = req.body;
+    const applicantId = Number(req.params.id);
+    const travelDetails = req.body;
     try {
-        const travelRequest = await TravelRequest.create(applicantId, travelDetails);
+        const travelRequest = await Applicant.createTravelRequest(applicantId, travelDetails); // <-- usa Applicant
         res.status(201).json(travelRequest);
     } catch (err) {
+        console.error('Controller error:', err);
         res.status(500).json({ error: "Controller: Internal Server Error" });
     }
+};
 
-}
+
 
 export default {
     getApplicantById,

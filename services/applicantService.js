@@ -1,67 +1,58 @@
-export const fillRequestTable = async (
-  conn, status, notes, requested_fee, imposed_fee, request_date,
-  request_time, last_mod_date, last_mod_time, active, user_id
-) => {
 
-  try {
-    const insertRequestTable = `
-      INSERT INTO Request (
-        status, notes, requested_fee, imposed_fee, request_date,
-        request_time, last_mod_date, last_mod_time, active, user_id
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    await conn.execute(insertRequestTable, [
-      status, notes, requested_fee, imposed_fee, request_date,
-      request_time, last_mod_date, last_mod_time, active, user_id,
-    ]);
-
-  } catch (error) {
-    console.error("Error inserting into Request table:", error);
-    throw new Error("Database Error: Unable to insert into Request table");
-  }
-
+// Join the two arrays into one object
+export const formatRoutes = (mainRoute, additionalRoutes = []) => {
+  return [
+    {
+      origin_country_name: mainRoute.origin_country_name,
+      origin_city_name: mainRoute.origin_city_name,
+      destination_country_name: mainRoute.destination_country_name,
+      destination_city_name: mainRoute.destination_city_name,
+      router_index: mainRoute.router_index,
+      beginning_date: mainRoute.beginning_date,
+      beginning_time: mainRoute.beginning_time,
+      ending_date: mainRoute.ending_date,
+      ending_time: mainRoute.ending_time,
+      plane_needed: mainRoute.plane_needed,
+      hotel_needed: mainRoute.hotel_needed
+    },
+    ...additionalRoutes.map(route => ({
+      origin_country_name: route.origin_country_name,
+      origin_city_name: route.origin_city_name,
+      destination_country_name: route.destination_country_name,
+      destination_city_name: route.destination_city_name,
+      router_index: route.router_index,
+      beginning_date: route.beginning_date,
+      beginning_time: route.beginning_time,
+      ending_date: route.ending_date,
+      ending_time: route.ending_time,
+      plane_needed: route.plane_needed,
+      hotel_needed: route.hotel_needed
+    }))
+  ];
 };
 
-export const fillRouteTable = async (
-  conn, router_index, plane_needed, hotel_needed,
-  beginning_date, beginning_time, ending_date, ending_time,
-  id_origin_country, id_origin_city, id_destination_country, id_destination_city
-) => {
+// Function to calculate the total number of days from the routes
+export const getRequestDays = (routes) => {
+  if (!routes || routes.length === 0) return 0;
 
-  try {
-    const insertRouteTable = `
-      INSERT INTO Route (
-        router_index, plane_needed, hotel_needed,
-        beginning_date, beginning_time, ending_date, ending_time,
-        id_origin_country, id_origin_city, id_destination_country, id_destination_city
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+  // Sort routes by router_index
+  const sortedRoutes = routes.sort((a, b) => a.router_index - b.router_index);
 
-    await conn.execute(insertRouteTable, [
-      router_index, plane_needed, hotel_needed,
-      beginning_date, beginning_time, ending_date, ending_time,
-      id_origin_country, id_origin_city, id_destination_country, id_destination_city,
-    ]);
+  const firstRoute = sortedRoutes[0];
+  const lastRoute = sortedRoutes[sortedRoutes.length - 1];
 
-  } catch (error) {
-    console.error("Error inserting into Route table:", error);
-    throw new Error("Database Error: Unable to insert into Route table");
-  }
+  // Combine date and time strings to create full datetime objects
+  const startDate = new Date(`${firstRoute.beginning_date}T${firstRoute.beginning_time}`);
+  const endDate = new Date(`${lastRoute.ending_date}T${lastRoute.ending_time}`);
 
-};
+  // Calculate the difference in milliseconds
+  const diffInMs = endDate - startDate;
 
-export const fillRoute_RequestTable = async (conn, route_id, request_id) => {
-  try {
-    const insertRouteRequestTable = `
-      INSERT INTO Route_Request (route_id, request_id)
-      VALUES (?, ?)
-    `;
+  // Convert milliseconds to days (with decimal)
+  const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
 
-    await conn.execute(insertRouteRequestTable, [route_id, request_id]);
+  // Use ceil to always round up if there's any partial day
+  const dayDiff = Math.ceil(diffInDays);
 
-  } catch (error) {
-    console.error("Error inserting into Route_Request table:", error);
-    throw new Error("Database Error: Unable to insert into Route_Request table");
-  }
+  return dayDiff;
 };
