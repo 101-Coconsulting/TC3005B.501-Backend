@@ -9,7 +9,7 @@ on:
       - main
       - development
   schedule:
-    - cron: '0 2 * * 0' # Runs every Sunday at 2 am
+    - cron: '0 7 * * 1' # Runs every Sunday at 2 am
 
 permissions:
   security-events: write
