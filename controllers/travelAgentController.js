@@ -22,7 +22,7 @@ const attendTravelRequest = async (req, res) => {
             return res.status(200).json({ 
                 message: "Travel request status updated successfully",
                 requestId: requestId,
-                newStatus: 4
+                newStatus: 5  // Accounts payable quote.
             });
         } else {
             return res.status(400).json({ error: "Failed to update travel request status" });
