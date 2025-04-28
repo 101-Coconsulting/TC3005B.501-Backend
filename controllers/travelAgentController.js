@@ -7,25 +7,27 @@ import TravelAgent from "../models/travelAgentModel.js";
 
 const attendTravelRequest = async (req, res) => {
     const requestId = req.params.id;
-    
+
     try {
         // Check if request exists
         const exists = await TravelAgent.requestExists(requestId);
         if (!exists) {
             return res.status(404).json({ error: "Travel request not found" });
         }
-        
-        // Update request status to 4 ('Atención Agencia de Viajes', might need to be changed to 5)
+
+        // Update request status to 5
         const updated = await TravelAgent.attendTravelRequest(requestId);
-        
+
         if (updated) {
-            return res.status(200).json({ 
+            return res.status(200).json({
                 message: "Travel request status updated successfully",
                 requestId: requestId,
-                newStatus: 5  // Accounts payable quote.
+                newStatus: 5, // Accounts payable quote.
             });
         } else {
-            return res.status(400).json({ error: "Failed to update travel request status" });
+            return res
+                .status(400)
+                .json({ error: "Failed to update travel request status" });
         }
     } catch (err) {
         console.error("Error in attendTravelRequest controller:", err);
