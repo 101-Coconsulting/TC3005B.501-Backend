@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `User`(
 
     user_name VARCHAR(60) UNIQUE NOT NULL,
     password VARCHAR(60) NOT NULL,
-    workstation VARCHAR(20) NOT NULL,
+    workstation VARCHAR(20),
     email VARCHAR(254) UNIQUE NOT NULL,
     phone_number VARCHAR(20),
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -117,8 +117,8 @@ CREATE TABLE IF NOT EXISTS `Receipt` (
     receipt_type_id INT,
     request_id INT,
 
-    validation ENUM('Pendiente', 'Aprovado', 'Rechazado') DEFAULT 'Pendiente',
-    submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    validation ENUM('Pendiente', 'Aprovado', 'Rechazado') NOT NULL DEFAULT 'Pendiente',
+    submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     validation_date TIMESTAMP,
   
     FOREIGN KEY (receipt_type_id) REFERENCES Receipt_Type(receipt_type_id),
