@@ -13,4 +13,8 @@ router.use((req, res, next) => {
 router.route("/:id")
     .get(applicantController.getApplicantById);
 
+router.route("/edit-travel-request/:request_id")
+    .put(applicantController.editTravelRequest);
+
+
 export default router;
