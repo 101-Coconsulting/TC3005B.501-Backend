@@ -30,10 +30,10 @@ const Applicant = {
     try {
       conn = await pool.getConnection();
       const rows = await conn.query(`
-        SELECT d.*
-        FROM User u
-        JOIN Department d ON u.department_id = d.id
-        WHERE u.id = ?
+        SELECT d.department_name, d.costs_center FROM user u
+        JOIN department d
+        ON u.department_id = d.department_id
+        WHERE u.user_id = ?;
       `, [user_id]);
       console.log(rows[0]);
       return rows[0];
