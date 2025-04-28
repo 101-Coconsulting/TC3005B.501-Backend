@@ -1,7 +1,7 @@
 /*
 Travel Agent Routes
 Miguel Soria 26/04/25
-ROutes for travel agent
+Routes for travel agent
 */
 import express from "express";
 const router = express.Router();
