@@ -1,8 +1,8 @@
 /*
 Applicant Model
 */
-import pool from '../database/config/db.js';
-import { formatRoutes, getRequestDays } from '../services/applicantService.js';
+import pool from "../database/config/db.js";
+import { formatRoutes, getRequestDays } from "../services/applicantService.js";
 
 export const Applicant = {
   // Find applicant by ID
@@ -11,12 +11,13 @@ export const Applicant = {
     console.log(`Searching for user with id: ${id}`);
     try {
       conn = await pool.getConnection();
-      const rows = await conn.query('SELECT * FROM User WHERE id = ?', [id]);
-      console.log(`User found: ${(rows[0]).name}`);
+      const rows = await conn.query("SELECT * FROM User WHERE user_id = ?", [
+        id,
+      ]);
+      console.log(`User found: ${rows[0].name}`);
       return rows[0];
-
     } catch (error) {
-      console.error('Error finding applicant by ID:', error);
+      console.error("Error finding applicant by ID:", error);
       throw error;
     } finally {
       if (conn) {
@@ -24,6 +25,33 @@ export const Applicant = {
       }
     }
   },
+
+  async findCostCenterByUserId(user_id) {
+    let conn;
+
+    try {
+      conn = await pool.getConnection();
+      const rows = await conn.query(
+        `
+        SELECT d.department_name, d.costs_center FROM user u
+        JOIN department d
+        ON u.department_id = d.department_id
+        WHERE u.user_id = ?;
+      `,
+        [user_id],
+      );
+      console.log(rows[0]);
+      return rows[0];
+    } catch (error) {
+      console.error("Error finding cost center by ID:", error);
+      throw error;
+    } finally {
+      if (conn) {
+        conn.release();
+      }
+    }
+  },
+
   async createTravelRequest(user_id, travelDetails) {
     let conn;
     try {
@@ -46,19 +74,25 @@ export const Applicant = {
         ending_time,
         plane_needed,
         hotel_needed,
-        additionalRoutes = []
+        additionalRoutes = [],
       } = travelDetails;
-
 
       // Format the routes into a single array
       const allRoutes = formatRoutes(
         {
-          router_index, origin_country_name, origin_city_name,
-          destination_country_name, destination_city_name,
-          beginning_date, beginning_time, ending_date, ending_time,
-          plane_needed, hotel_needed
+          router_index,
+          origin_country_name,
+          origin_city_name,
+          destination_country_name,
+          destination_city_name,
+          beginning_date,
+          beginning_time,
+          ending_date,
+          ending_time,
+          plane_needed,
+          hotel_needed,
         },
-        additionalRoutes
+        additionalRoutes,
       );
 
       // =======================================
@@ -78,7 +112,7 @@ export const Applicant = {
         notes,
         requested_fee,
         imposed_fee,
-        request_days
+        request_days,
       ]);
 
       const requestId = requestTableResult.insertId;
@@ -89,40 +123,57 @@ export const Applicant = {
 
       for (const route of allRoutes) {
         try {
-          console.log('Processing route:', route);
+          console.log("Processing route:", route);
 
-          let id_origin_country, id_destination_country, id_origin_city, id_destination_city;
+          let id_origin_country,
+            id_destination_country,
+            id_origin_city,
+            id_destination_city;
 
           // Search if the country exists in the database
           const countryQuery = `
           SELECT country_id FROM country WHERE country_name = ?
         `;
-          const [OriginCountryRows] = await conn.query(countryQuery, [route.origin_country_name]);
+          const [OriginCountryRows] = await conn.query(countryQuery, [
+            route.origin_country_name,
+          ]);
           if (OriginCountryRows === undefined) {
             // If not, insert the country
             const insertCountryQuery = `
             INSERT INTO country (country_name) VALUES (?)
           `;
-            const insertedOriginCountry = await conn.execute(insertCountryQuery, [route.origin_country_name]);
+            const insertedOriginCountry = await conn.execute(
+              insertCountryQuery,
+              [route.origin_country_name],
+            );
             id_origin_country = insertedOriginCountry.insertId;
-          }
-          else {
+          } else {
             // If it exists, get the ID
             id_origin_country = OriginCountryRows.country_id;
           }
 
-          const [DestinationCountryRows] = await conn.query(countryQuery, [route.destination_country_name]);
+          const [DestinationCountryRows] = await conn.query(countryQuery, [
+            route.destination_country_name,
+          ]);
           if (DestinationCountryRows === undefined) {
-            console.log('Inserting new country:', route.destination_country_name);
+            console.log(
+              "Inserting new country:",
+              route.destination_country_name,
+            );
             // If not, insert the country
             const insertCountryQuery = `
             INSERT INTO Country (country_name) VALUES (?)
           `;
-            const insertedDestinationCountry = await conn.execute(insertCountryQuery, [route.destination_country_name]);
+            const insertedDestinationCountry = await conn.execute(
+              insertCountryQuery,
+              [route.destination_country_name],
+            );
             id_destination_country = insertedDestinationCountry.insertId;
-          }
-          else {
-            console.log('Country already exists:', route.destination_country_name);
+          } else {
+            console.log(
+              "Country already exists:",
+              route.destination_country_name,
+            );
             // If it exists, get the ID
             id_destination_country = DestinationCountryRows.country_id;
           }
@@ -132,33 +183,40 @@ export const Applicant = {
           SELECT city_id FROM city WHERE city_name = ?
         `;
 
-          const [OriginCityRows] = await conn.query(cityQuery, [route.origin_city_name]);
+          const [OriginCityRows] = await conn.query(cityQuery, [
+            route.origin_city_name,
+          ]);
           if (OriginCityRows === undefined) {
             // If not, insert the city
             const insertCityQuery = `
             INSERT INTO city (city_name) VALUES (?)
           `;
-            const insertedOriginCity = await conn.execute(insertCityQuery, [route.origin_city_name]);
+            const insertedOriginCity = await conn.execute(insertCityQuery, [
+              route.origin_city_name,
+            ]);
 
             id_origin_city = insertedOriginCity.insertId;
-          }
-          else {
+          } else {
             // If it exists, get the ID
             id_origin_city = OriginCityRows.city_id;
           }
 
-          const [DestinationCityRows] = await conn.query(cityQuery, [route.destination_city_name]);
+          const [DestinationCityRows] = await conn.query(cityQuery, [
+            route.destination_city_name,
+          ]);
 
           if (DestinationCityRows === undefined) {
             // If not, insert the city
             const insertCityQuery = `
             INSERT INTO city (city_name) VALUES (?)
           `;
-            const insertedDestinationCity = await conn.execute(insertCityQuery, [route.destination_city_name]);
+            const insertedDestinationCity = await conn.execute(
+              insertCityQuery,
+              [route.destination_city_name],
+            );
 
             id_destination_city = insertedDestinationCity.insertId;
-          }
-          else {
+          } else {
             // If it exists, get the ID
             id_destination_city = DestinationCityRows.city_id;
           }
@@ -186,7 +244,7 @@ export const Applicant = {
             route.beginning_date,
             route.beginning_time,
             route.ending_date,
-            route.ending_time
+            route.ending_time,
           ]);
 
           const routeId = routeTableResult.insertId;
@@ -199,9 +257,8 @@ export const Applicant = {
           INSERT INTO route_request (request_id, route_id) VALUES (?, ?)
         `;
           await conn.query(insertIntoRouteRequestTable, [requestId, routeId]);
-
         } catch (error) {
-          console.error('Error processing route:', error);
+          console.error("Error processing route:", error);
           throw new Error("Database Error: Unable to process route");
         }
       }
@@ -211,17 +268,15 @@ export const Applicant = {
       console.log(`Travel request created with ID: ${requestId}`);
       return {
         requestId: Number(requestId),
-        message: "Travel request successfully created"
+        message: "Travel request successfully created",
       };
-
-
     } catch (error) {
       if (conn) await conn.rollback();
-      console.error('Error creating travel request:', error);
+      console.error("Error creating travel request:", error);
       throw new Error("Database Error: Unable to fill Request table");
     } finally {
       if (conn) conn.release();
     }
   },
-
 };
+

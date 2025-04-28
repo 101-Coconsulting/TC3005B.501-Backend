@@ -7,13 +7,17 @@ const router = express.Router();
 import applicantController from "../controllers/applicantController.js";
 
 router.use((req, res, next) => {
-    next();
+  next();
 });
 
-router.route("/:id")
-    .get(applicantController.getApplicantById);
+router.route("/:id").get(applicantController.getApplicantById);
 
-router.route("/create-travel-request/:id")
-    .post(applicantController.createTravelRequest);
+// Route to get cost center by user ID
+router.route("/get-cc/:user_id").get(applicantController.getCostCenterByUserId);
+
+router
+  .route("/create-travel-request/:id")
+  .post(applicantController.createTravelRequest);
 
 export default router;
+
