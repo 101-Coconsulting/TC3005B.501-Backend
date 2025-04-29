@@ -42,6 +42,40 @@ const getTravelRequest = async (req, res) => {
     }
 }
 
+const getTravelRequestsDept = async (req, res) => {
+    const dept = parseInt(req.params.dept, 10);
+    const status = parseInt(req.params.status, 10);
+    const n = parseInt(req.params.n, 10);
+    if (!Number.isInteger(dept)) {
+        return res.status(400).json({error : "Invalid department"});
+    }
+    if (!Number.isInteger(status)) {
+        return res.status(400).json({error : "Invalid status"});
+    }
+    if (!Number.isInteger(n)) {
+        return res.status(400).json({error : "Invalid number"});
+    }
+    try {
+        const travelRequests = await Authorizer.getTravelRequestsDept(dept, status, n);
+        if (!travelRequests) {
+            return res.status(404).json({error: "No travel requests found"});
+        }
+        const formattedTravelRequests = travelRequests.map(travelRequest => ({
+            request_id: travelRequest.request_id,
+            user_id: travelRequest.user_id,
+            destination_country: travelRequest.destination_countries,
+            beginning_date : travelRequest.beginning_dates,
+            ending_date : travelRequest.ending_dates,
+            status: travelRequest.status,
+            
+        }));
+        res.status(200).json(formattedTravelRequests);
+    } catch(err) {
+        res.status(500).json({error: "Internal Server error"});
+    }
+}
+
 export default {
-    getTravelRequest
+    getTravelRequest,
+    getTravelRequestsDept
 }

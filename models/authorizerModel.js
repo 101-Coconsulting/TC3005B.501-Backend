@@ -41,6 +41,30 @@ const Authorizer = {
             }
         }
     },
+    async getTravelRequestsDept(dept, status, n) {
+        let conn;
+        const query = `SELECT 
+                        request_id,
+                        user_id,
+                        destination_countries,
+                        beginning_dates,
+                        ending_dates,
+                        status
+                        FROM RequestWithRouteDetails 
+                        WHERE department_id = ? AND request_status_id = ? LIMIT ?`;
+        try {
+            conn = await pool.getConnection();
+            const rows = await conn.query(query, [dept, status, n]);
+            return rows;
+        } catch (error) {
+            console.error('Error getting travel requests: ', error);
+            throw error;
+        } finally {
+            if (conn){
+                conn.release();
+            }
+        }
+    },
 };
 
 export default Authorizer;
