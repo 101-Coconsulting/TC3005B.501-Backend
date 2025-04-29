@@ -12,5 +12,7 @@ router.use((req, res, next) => {
 
 router.route("/get-travel-request/:id")
     .get(authorizerController.getTravelRequest);
+router.route("/get-travel-requests/:dept/:status/:n")
+    .get(authorizerController.getTravelRequestsDept);
 
 export default router;
