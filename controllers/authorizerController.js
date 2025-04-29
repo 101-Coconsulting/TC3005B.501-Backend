@@ -8,11 +8,12 @@ const declineTravelRequest = async (req, res) => {
     try {
         const userRequest = await Authorizer.declineTravelRequest(id);
         if (!userRequest) {
-            return res.status(404).json({error: "No user request found"});
+            return res.status(404).json({ error: "No user request found" });
         }
-        return res.json({error: "Request declined succesfully"});
-    } catch(err) {
-        res.status(500).json({error: "CONTROLLER: Internal server error"});
+        return res.status(200).json({ message: "Request declined successfully" });
+    } catch (err) {
+        console.error("Error en declineTravelRequest:", err);
+        return res.status(500).json({ error: "CONTROLLER: Internal server error" });
     }
 }
 
