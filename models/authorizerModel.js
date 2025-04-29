@@ -46,21 +46,15 @@ const Authorizer = {
         const query = `SELECT 
                         request_id,
                         user_id,
-                        request_status_id,
-                        notes,
-                        requested_fee,
-                        imposed_fee,
                         destination_countries,
-                        destination_cities,
-                        creation_date,
-                        last_mod_date,
-                        active 
+                        beginning_dates,
+                        ending_dates,
+                        status
                         FROM RequestWithRouteDetails 
-                        WHERE dept = ? AND status = ? LIMIT ?`;
+                        WHERE department_id = ? AND request_status_id = ? LIMIT ?`;
         try {
             conn = await pool.getConnection();
-            const rows = await conn.query(query, [dept], [status], [n]);
-            console.log(rows);
+            const rows = await conn.query(query, [dept, status, n]);
             return rows;
         } catch (error) {
             console.error('Error getting travel requests: ', error);

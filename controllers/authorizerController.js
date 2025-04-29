@@ -56,22 +56,18 @@ const getTravelRequestsDept = async (req, res) => {
         return res.status(400).json({error : "Invalid number"});
     }
     try {
-        const travelRequests = await Authorizer.getTravelRequest(dept, status, id);
+        const travelRequests = await Authorizer.getTravelRequestsDept(dept, status, n);
         if (!travelRequests) {
             return res.status(404).json({error: "No travel requests found"});
         }
-        const formattedTravelRequests = formattedTravelRequests.map(travelRequest => ({
+        const formattedTravelRequests = travelRequests.map(travelRequest => ({
             request_id: travelRequest.request_id,
             user_id: travelRequest.user_id,
+            destination_country: travelRequest.destination_countries,
+            beginning_date : travelRequest.beginning_dates,
+            ending_date : travelRequest.ending_dates,
             status: travelRequest.status,
-            notes: travelRequest.notes,
-            requested_fee: travelRequest.requested_fee,
-            imposed_fee: travelRequest.imposed_fee,
-            destination_countries: travelRequest.destination_countries,
-            destination_cities: travelRequest.destination_cities,
-            creation_date: travelRequest.creation_date,
-            last_mod: travelRequest.last_mod_date,
-            active: travelRequest.active
+            
         }));
         res.status(200).json(formattedTravelRequests);
     } catch(err) {
