@@ -9,8 +9,8 @@ const user = {
     async getStatusId(id) {
       let conn;
       const query = `
-        SELECT status_id,
-        FROM requests
+        SELECT request_status_id,
+        FROM Request
         WHERE request_id = ?
       `;
       try {
@@ -31,7 +31,7 @@ const user = {
         let conn;
         const query = `
             UPDATE Request
-            SET status = ?
+            SET request_status_id = ?
             WHERE request_id = ?
         `;
         try {

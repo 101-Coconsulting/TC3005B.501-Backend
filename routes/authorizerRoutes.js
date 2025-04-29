@@ -11,6 +11,6 @@
     });
 
     router.route("/authorize-travel-request/:id")
-        .get(authorizerController.authorizeTravelRequest);
+        .put(authorizerController.authorizeTravelRequest);
 
     export default router;

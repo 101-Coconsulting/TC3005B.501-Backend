@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import applicantRoutes from './routes/applicantRoutes.js';
+import authorizerRoutes from './routes/authorizerRoutes.js';
 
 // Import required modules
 import fs from 'fs';
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use("/api/applicants", applicantRoutes);
+app.use("/api/authorizer", authorizerRoutes);
 
 // Basic route
 app.get('/', (req, res) => {
