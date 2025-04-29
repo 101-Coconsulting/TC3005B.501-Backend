@@ -27,21 +27,12 @@ CREATE TABLE IF NOT EXISTS `User`(
     phone_number VARCHAR(20),
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    active BOOL NOT NULL DEFAULT TRUE,
+    active BOOL DEFAULT TRUE,
   
     FOREIGN KEY (role_id) REFERENCES Role(role_id),
     FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
 
-CREATE TABLE IF NOT EXISTS Alert (
-    alert_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
-
-    alert_text LONGTEXT,
-    alert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    FOREIGN KEY (user_id) REFERENCES `User`(user_id)
-);
 
 CREATE TABLE IF NOT EXISTS Request_status (
     request_status_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -59,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `Request` (
     request_days FLOAT,
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    active BOOL NOT NULL DEFAULT TRUE,
+    active BOOL DEFAULT TRUE,
   
     FOREIGN KEY (user_id) REFERENCES `User`(user_id),
     FOREIGN KEY (request_status_id) REFERENCES Request_status(request_status_id)
@@ -83,8 +74,8 @@ CREATE TABLE IF NOT EXISTS Route (
     id_destination_city INT,
 
     router_index INT,
-    plane_needed BOOL NOT NULL DEFAULT FALSE,
-    hotel_needed BOOL NOT NULL DEFAULT FALSE,
+    plane_needed BOOL DEFAULT FALSE,
+    hotel_needed BOOL DEFAULT FALSE,
     beginning_date DATE,
     beginning_time TIME,
     ending_date DATE,
@@ -117,10 +108,23 @@ CREATE TABLE IF NOT EXISTS `Receipt` (
     receipt_type_id INT,
     request_id INT,
 
-    validation ENUM('Pendiente', 'Aprovado', 'Rechazado') DEFAULT 'Pendiente',
+    validation ENUM('Pendiente', 'Aprobado', 'Rechazado') DEFAULT 'Pendiente',
     submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     validation_date TIMESTAMP,
   
     FOREIGN KEY (receipt_type_id) REFERENCES Receipt_Type(receipt_type_id),
     FOREIGN KEY (request_id) REFERENCES Request(request_id)
+);
+
+
+CREATE TABLE IF NOT EXISTS Alert (
+    alert_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    request_id INT,
+
+    alert_text LONGTEXT,
+    alert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id) REFERENCES `User`(user_id),
+    FOREIGN KEY (request_id) REFERENCES `Request`(request_id)
 );

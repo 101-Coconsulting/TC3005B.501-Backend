@@ -26,19 +26,6 @@ INSERT INTO `User` (role_id, department_id, user_name, password, workstation, em
   (1, 5, 'miguel.de.cervantes', 'donquixote2023', 'DON-QUI', 'miguel@delamancha.com', '555-0000', FALSE);
 
 
-INSERT INTO Alert (user_id, alert_text) VALUES
-  (1, 'Your password will expire in 3 days.'),
-  (2, 'XXXXXXXXXXXXXXXXXXX'),
-  (3, 'XXXXXXXXXXXXXXXXXXXX'),
-  (4, 'New login from an unknown device detected.'),
-  (5, ''),
-  (5, 'Lorem ipsumjjj.'),
-  (7, 'A very long alert message.  11?'),
-  (1, 'System maintenance scheduled at midnight. ffff'),
-  (9, 'Error processing your last request, please try again.'),
-  (10, 'Backup completed successfully.');
-
-
 INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_fee, request_days, active) VALUES
   (1, 1, 'Solicito viáticos para viaje a conferencia en Barcelona.', 1500.00, 1200.00, 3.0, FALSE),
   (2, 2, 'Reembolso por gastos médicos durante viaje.', 800.00, 750.00, 1.0, TRUE),
@@ -107,12 +94,25 @@ INSERT INTO Route (id_origin_country, id_origin_city, id_destination_country, id
 
 INSERT INTO Receipt (receipt_type_id, request_id, validation, validation_date) VALUES
   (4, 1, 'Pendiente', NULL),
-  (2, 2, 'Aprovado', '2025-04-19 09:00:00'),
+  (2, 2, 'Aprobado', '2025-04-19 09:00:00'),
   (3, 3, 'Rechazado', '2025-04-19 18:00:00'),
   (7, 4, 'Pendiente', '2047-04-19 18:00:59'),
-  (2, 5, 'Aprovado', '2025-03-21 10:00:00'),
+  (2, 5, 'Aprobado', '2025-03-21 10:00:00'),
   (3, 6, 'Rechazado', '2025-04-22 12:00:00'),
   (6, 7, 'Pendiente', '2003-04-19 10:06:43'),
-  (2, 8, 'Aprovado', '2025-02-23 16:00:00'),
+  (2, 8, 'Aprobado', '2025-02-23 16:00:00'),
   (5, 9, 'Rechazado', '2025-04-23 18:30:00'),
   (1, 10, 'Pendiente', '2025-06-19 20:17:24');
+
+
+INSERT INTO Alert (user_id, alert_text) VALUES
+  (1, 1, 'Your password will expire in 3 days ñ[é.'),
+  (2, 1, 'XXXXXXXXXXXXXXXXXXX'),
+  (3, 2, 'XXXXXXXXXXXXXXXXXXXX'),
+  (4, 3, 'New login from an unknown device detected.'),
+  (5, 4, ''),
+  (5, 5, 'Lorem ipsumjjj.'),
+  (7, 6, 'A very long alert message.  11?'),
+  (1, 7, 'System maintenance scheduled at midnight. ffff'),
+  (9, 8, 'Error processing your last request, please try again.'),
+  (10, 9, 'Backup completed successfully.');
