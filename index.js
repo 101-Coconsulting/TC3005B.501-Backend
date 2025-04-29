@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import applicantRoutes from './routes/applicantRoutes.js';
+import authorizerRoutes from './routes/authorizerRoutes.js';
 
 // Import required modules
 import fs from 'fs';
