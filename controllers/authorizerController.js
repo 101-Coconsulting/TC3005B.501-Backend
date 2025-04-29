@@ -10,6 +10,7 @@ const declineTravelRequest = async (req, res) => {
         if (!userRequest) {
             return res.status(404).json({error: "No user request found"});
         }
+        return res.json({error: "Request declined succesfully"});
     } catch(err) {
         res.status(500).json({error: "CONTROLLER: Internal server error"});
     }

@@ -4,7 +4,7 @@ Authorizer Model
 
 import pool from '../database/config/db.js';
 
-const user = {
+const Authorizer = {
 
     async declineTravelRequest(id) {
         let conn;
@@ -16,7 +16,7 @@ const user = {
         try {
             conn = await pool.getConnection();
             const rows = await conn.query(query, [id]);
-            return rows;
+            return true;
         } catch (error) {
             console.error('Error getting completed requests:', error);
             throw error;
@@ -28,3 +28,5 @@ const user = {
         },
 
 };
+
+export default Authorizer;
