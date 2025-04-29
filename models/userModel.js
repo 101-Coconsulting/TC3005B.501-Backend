@@ -15,7 +15,6 @@ export async function getUserData(userId) {
         u.email, 
         u.phone_number, 
         u.date_of_creation, 
-        u.wallet_balance, 
         r.role_name
       FROM users u
       JOIN roles r ON u.role_id = r.id
