@@ -10,15 +10,15 @@ export async function getUserData(userId) {
   try {
     const [rows] = await connection.query(
       `SELECT 
-        u.id, 
+        u.user_id, 
         u.user_name, 
         u.email, 
         u.phone_number, 
         u.date_of_creation, 
         r.role_name
       FROM users u
-      JOIN roles r ON u.role_id = r.id
-      WHERE u.id = ?`,
+      JOIN roles r ON u.role_id = r.role_id
+      WHERE u.user_id = ?`,
       [userId]
     );
     
