@@ -3,21 +3,24 @@ Authorizer services
 */
 import Authorizer from "../models/authorizerModel.js";
 
-const getRequestStatusId = async (req, res) => {
-    const id = req.params.id;
+const getRequestStatusId = async (id) => {
     try {
-        const idRequest = await Authorizer.getStatusId(id)
+        const idRequest = await Authorizer.getStatusId(id);
+        console.log("ID recibido:", idRequest);
         if (!idRequest) {
-            return res.status(404).json({error: "No user request found"});
+            return null;
         }
         else {
             if (idRequest == 1)
-                return status_id = 2;
+                return 2;
+            else if (idRequest == 2)
+                return 3;
             else
-                return status_id = 3;
-        }        
+            console.error("Error request ya autorizada, declinada o cancelada:", err);
+        }
     } catch(err) {
-        res.status(500).json({error: "CONTROLLER: Internal server error"});
+        console.error("Error en getRequestStatusId:", err);
+        throw err;
     }
 }
 

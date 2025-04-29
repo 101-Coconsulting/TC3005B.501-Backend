@@ -4,19 +4,23 @@ Authorizer Model
 
 import pool from '../database/config/db.js';
 
-const user = {
+const Authorizer = {
 
     async getStatusId(id) {
       let conn;
       const query = `
-        SELECT request_status_id,
+        SELECT request_status_id
         FROM Request
         WHERE request_id = ?
       `;
       try {
         conn = await pool.getConnection();
         const rows = await conn.query(query, [id]);
-        return rows;
+        if (rows.length > 0) {
+          return rows[0].request_status_id;
+      } else {
+          return null; // o undefined si prefieres
+      }
       } catch (error) {
         console.error('Error getting completed requests:', error);
         throw error;
@@ -36,7 +40,7 @@ const user = {
         `;
         try {
           conn = await pool.getConnection();
-          const rows = await conn.query(query, [status_id],[id]);
+          const rows = await conn.query(query, [status_id, id]);
           return rows;
         } catch (error) {
           console.error('Error getting completed requests:', error);
@@ -50,3 +54,5 @@ const user = {
 
 
 };
+
+export default Authorizer;
