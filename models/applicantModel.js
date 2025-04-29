@@ -23,6 +23,27 @@ const Applicant = {
       } 
     }
   },
+  async getCompletedRequests(id) {
+    let conn;
+    const query = `
+      SELECT *
+      FROM UserRequestHistory
+      WHERE user_id = ?
+        AND status = 'Finalizado';
+    `;
+    try {
+      conn = await pool.getConnection();
+      const rows = await conn.query(query, [id]);
+      return rows;
+    } catch (error) {
+      console.error('Error getting completed requests:', error);
+      throw error;
+    } finally {
+      if (conn){
+        conn.release();
+      } 
+    }
+  },
 };
 
 export default Applicant;
