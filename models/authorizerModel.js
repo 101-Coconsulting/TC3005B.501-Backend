@@ -35,6 +35,36 @@ const Authorizer = {
             }
         }
     },
+    async getTravelRequestsDept(dept, status, n) {
+        let conn;
+        const query = `SELECT 
+                        request_id,
+                        user_id,
+                        request_status_id,
+                        notes,
+                        requested_fee,
+                        imposed_fee,
+                        destination_countries,
+                        destination_cities,
+                        creation_date,
+                        last_mod_date,
+                        active 
+                        FROM RequestWithRouteDetails 
+                        WHERE dept = ? AND status = ? LIMIT ?`;
+        try {
+            conn = await pool.getConnection();
+            const rows = await conn.query(query, [dept], [status], [n]);
+            console.log(rows);
+            return rows;
+        } catch (error) {
+            console.error('Error getting travel requests: ', error);
+            throw error;
+        } finally {
+            if (conn){
+                conn.release();
+            }
+        }
+    },
 };
 
 export default Authorizer;
