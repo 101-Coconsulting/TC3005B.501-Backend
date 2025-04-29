@@ -16,6 +16,6 @@ const declineTravelRequest = async (req, res) => {
 }
 
 export default {
-    declineTravelRequest
+    declineTravelRequest,
     // other functions go here
 };

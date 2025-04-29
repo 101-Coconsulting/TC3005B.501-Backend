@@ -10,7 +10,7 @@ const user = {
         let conn;
         const query = `
             UPDATE Request
-            SET status = Rechazado
+            SET request_status_id = 10
             WHERE request_id = ?
         `;
         try {
