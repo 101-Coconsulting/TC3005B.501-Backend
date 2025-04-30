@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import applicantRoutes from './routes/applicantRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 // Import required modules
 import fs from 'fs';
@@ -15,14 +16,13 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use("/api/applicants", applicantRoutes);
+app.use("/api/user", userRoutes);
 
 // Basic route
 app.get('/', (req, res) => {
   res.json({ message: "This is my backend endpoint for the travel management system" });
 });
 
-// Routes will be imported and used here
-// Example: app.use('/api/users', require('./routes/users'));
 
 // Certificates credentials for usage of HTTPS
 const privateKey = fs.readFileSync('./certs/server.key', 'utf8');
