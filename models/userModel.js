@@ -14,18 +14,17 @@ export async function getUserData(userId) {
         u.user_name, 
         u.email, 
         u.phone_number, 
-        u.date_of_creation, 
+        u.creation_date, 
         r.role_name
-      FROM users u
-      JOIN roles r ON u.role_id = r.role_id
+      FROM User u
+      JOIN Role r ON u.role_id = r.role_id
       WHERE u.user_id = ?`,
       [userId]
     );
-    console.log('Query result:', rows); // Debugging log
-    return rows.length ? rows[0] : null;
-  } catch (error) {
-    console.error('Database query error:', error); // Log any query errors
-    throw error;
+
+    
+    return rows[0];
+
   } finally {
     connection.release();
   }
