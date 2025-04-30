@@ -8,7 +8,7 @@ import db from '../database/config/db.js';
 export async function getUserData(userId) {
   const connection = await db.getConnection();
   try {
-    const [rows] = await connection.query(
+    const rows = await connection.query(
       `SELECT 
         u.user_id, 
         u.user_name, 
@@ -21,8 +21,11 @@ export async function getUserData(userId) {
       WHERE u.user_id = ?`,
       [userId]
     );
-    
+    console.log('Query result:', rows); // Debugging log
     return rows.length ? rows[0] : null;
+  } catch (error) {
+    console.error('Database query error:', error); // Log any query errors
+    throw error;
   } finally {
     connection.release();
   }
