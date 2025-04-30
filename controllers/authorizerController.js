@@ -14,7 +14,7 @@ const getAlerts = async (req, res) => {
     }
     return res.status(200).json(userRequest);
   } catch (error) {
-    return res.status(500).json({error: "Something went wrong on the server"});
+    return res.status(400).json({error: "Bad Request"});
   }
 }
 
