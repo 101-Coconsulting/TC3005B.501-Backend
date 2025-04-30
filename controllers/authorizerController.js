@@ -19,7 +19,11 @@ const authorizeTravelRequest = async (req, res) => {
         }
         return res.status(200).json({ message: "Request authorized successfully" });
     } catch(err) {
-        res.status(500).json({error: "CONTROLLER: Internal server error"});
+        if (err.status) {
+            return res.status(err.status).json({ error: err.message });
+        }
+        console.error("Error inesperado:", err);
+        return res.status(500).json({ error: "CONTROLLER: Internal server error" });
     }
 }
 

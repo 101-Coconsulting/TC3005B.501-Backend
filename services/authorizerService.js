@@ -6,7 +6,7 @@ import Authorizer from "../models/authorizerModel.js";
 const getRequestStatusId = async (id) => {
     try {
         const idRequest = await Authorizer.getStatusId(id);
-        console.log("ID recibido:", idRequest);
+        console.log("ID a comprobar:", idRequest);
         if (!idRequest) {
             return null;
         }
@@ -16,7 +16,7 @@ const getRequestStatusId = async (id) => {
             else if (idRequest == 2)
                 return 3;
             else
-            console.error("Error request ya autorizada, declinada o cancelada:", err);
+            throw { status: 401, message: "La solicitud ya fue autorizada, declinada o cancelada" };
         }
     } catch(err) {
         console.error("Error en getRequestStatusId:", err);
