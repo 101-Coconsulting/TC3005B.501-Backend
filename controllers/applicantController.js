@@ -32,7 +32,10 @@ const getCompletedRequests = async (req, res) => {
         }
         const formattedRequests = completedRequests.map(request => ({
             request_id: request.request_id,
-            destination_country: request.trip_destinations,
+            destination_country: request.destination_countries,
+            destination_city: request.destination_cities,
+            beginning_date: request.beginning_dates,
+            ending_date: request.ending_date,
             request_date: request.creation_date,
             status: request.status
           }));
