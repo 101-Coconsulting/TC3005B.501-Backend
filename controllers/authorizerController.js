@@ -7,13 +7,9 @@ import authorizerServices from "../services/authorizerService.js";
 const authorizeTravelRequest = async (req, res) => {
     const id = req.params.id;
     try {
-        console.log("ID recibido:", id);
-
         const idRequest = await authorizerServices.getRequestStatusId(id);
-        console.log("ID de solicitud obtenido:", idRequest);
 
         const userRequest = await Authorizer.authorizeTravelRequest(id, idRequest);
-        console.log("Resultado de autorización:", userRequest);
         if (!userRequest) {
             return res.status(404).json({error: "No user request found"});
         }
