@@ -96,7 +96,7 @@ INSERT INTO Receipt (receipt_type_id, request_id, validation, validation_date) V
   (4, 1, 'Pendiente', NULL),
   (2, 2, 'Aprobado', '2025-04-19 09:00:00'),
   (3, 3, 'Rechazado', '2025-04-19 18:00:00'),
-  (7, 4, 'Pendiente', '2047-04-19 18:00:59'),
+  (7, 4, 'Pendiente', '2037-04-19 18:00:59'),
   (2, 5, 'Aprobado', '2025-03-21 10:00:00'),
   (3, 6, 'Rechazado', '2025-04-22 12:00:00'),
   (6, 7, 'Pendiente', '2003-04-19 10:06:43'),
@@ -105,8 +105,8 @@ INSERT INTO Receipt (receipt_type_id, request_id, validation, validation_date) V
   (1, 10, 'Pendiente', '2025-06-19 20:17:24');
 
 
-INSERT INTO Alert (user_id, alert_text) VALUES
-  (1, 1, 'Your password will expire in 3 days ñ[é.'),
+INSERT INTO Alert (user_id, request_id, alert_text) VALUES
+  (1, 1, 'Your password will expire in 3 days 😀.'),
   (2, 1, 'XXXXXXXXXXXXXXXXXXX'),
   (3, 2, 'XXXXXXXXXXXXXXXXXXXX'),
   (4, 3, 'New login from an unknown device detected.'),
