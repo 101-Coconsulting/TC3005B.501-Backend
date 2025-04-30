@@ -3,10 +3,10 @@ Authorizer Controller
 */
 import Authorizer from "../models/authorizerModel.js";
 
-const getAlerts = (req, res) => {
-  const id = req.params.dept_id;
-  const status = req.params.status;
-  const n = req.params.status;
+const getAlerts = async (req, res) => {
+  const id = Number(req.params.dept_id);
+  const status = Number(req.params.status_id);
+  const n = Number(req.params.n);
   try {
     const userRequest = await Authorizer.getAlerts(id, status, n);
     if (!userRequest) {
@@ -19,7 +19,7 @@ const getAlerts = (req, res) => {
 }
 
 export default {
-
     getAlerts,
+    // other functions go here
 };
 
