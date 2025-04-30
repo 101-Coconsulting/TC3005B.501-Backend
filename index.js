@@ -4,6 +4,7 @@ dotenv.config();
 
 import applicantRoutes from './routes/applicantRoutes.js';
 import travelAgentRoutes from './routes/travelAgentRoutes.js';
+import adminRoutes from './routes/adminRoutes.js'
 
 // Import required modules
 import fs from 'fs';
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use("/api/applicants", applicantRoutes);
 app.use("/api/travel-agent", travelAgentRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Basic route
 app.get('/', (req, res) => {
