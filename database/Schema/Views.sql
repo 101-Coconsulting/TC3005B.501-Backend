@@ -99,3 +99,16 @@ CREATE OR REPLACE VIEW RequestWithRouteDetails AS
         Request_status.status,
         Department.department_name,
         Department.department_id;
+
+
+CREATE OR REPLACE VIEW UserFullInfo AS
+    SELECT
+        u.user_id,
+        u.user_name,
+        u.email,
+        r.role_name,
+        d.department_name
+    FROM
+        `User` u
+        LEFT JOIN `Role` r ON u.role_id = r.role_id
+        LEFT JOIN `Department` d ON u.department_id = d.department_id;
