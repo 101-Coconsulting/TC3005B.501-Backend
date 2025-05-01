@@ -13,11 +13,15 @@ export async function getUserData(userId) {
         u.user_id, 
         u.user_name, 
         u.email, 
-        u.phone_number, 
+        u.phone_number,
+        u.workstation,
+        d.department_name,
+        d.costs_center,
         u.creation_date, 
         r.role_name
       FROM User u
       JOIN Role r ON u.role_id = r.role_id
+      JOIN Department d ON u.department_id = d.department_id
       WHERE u.user_id = ?`,
       [userId]
     );
