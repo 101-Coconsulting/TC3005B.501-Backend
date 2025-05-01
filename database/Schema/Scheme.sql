@@ -48,6 +48,8 @@ CREATE TABLE IF NOT EXISTS Request_status (
     status VARCHAR(30) NOT NULL
 );
 
+
+
 CREATE TABLE IF NOT EXISTS `Request` (
     request_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
@@ -118,6 +120,9 @@ CREATE TABLE IF NOT EXISTS `Receipt` (
     request_id INT,
 
     validation ENUM('Pendiente', 'Aprobado', 'Rechazado') DEFAULT 'Pendiente',
+    amount FLOAT NOT NULL,
+    refund BOOL NOT NULL DEFAULT TRUE,
+
     submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     validation_date TIMESTAMP,
   
