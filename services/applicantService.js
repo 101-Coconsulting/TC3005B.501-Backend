@@ -56,3 +56,35 @@ export const getRequestDays = (routes) => {
 
   return dayDiff;
 };
+
+// Check if the country exists in the database If not, insert it
+export const getCountryId = async (conn, countryName) => {
+  console.log("Checking country:", countryName);
+  const countryQuery = `SELECT country_id FROM country WHERE country_name = ?`;
+  const [CountryRows] = await conn.query(countryQuery, [countryName]);
+  //If country does not exist, insert it
+  if (CountryRows === undefined) {
+    console.log("Country not found, inserting:", countryName);
+    const insertCountryQuery = `INSERT INTO country (country_name) VALUES (?)`;
+    const insertedCountry = await conn.execute(insertCountryQuery, [countryName]);
+    return insertedCountry.insertId;
+  } else {
+    //If country exists, return the id
+    return CountryRows.country_id;
+  }
+};
+
+export const getCityId = async (conn, cityName) => {
+  console.log("Checking city:", cityName);
+  const cityQuery = `SELECT city_id FROM city WHERE city_name = ?`;
+  const [CityRows] = await conn.query(cityQuery, [cityName]);
+  //If city does not exist, insert it
+  if (CityRows === undefined) {
+    const insertCityQuery = `INSERT INTO city (city_name) VALUES (?)`;
+    const insertedCity = await conn.execute(insertCityQuery, [cityName]);
+    return insertedCity.insertId;
+  } else {
+    //If city exists, return the id
+    return CityRows.city_id;
+  }
+}
