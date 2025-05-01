@@ -31,7 +31,31 @@ const authorizeRequest = async (request_id, user_id) => {
   }
 };
 
+const declineRequest = async (request_id, user_id) => {
+  try {
+    const role_id = await Authorizer.getUserRole(user_id);
+    if (!role_id) {
+      throw { status: 404, message: "User not found" };
+    }
+
+    if (![4, 5].includes(role_id)) {
+      throw { status: 400, message: "User role not authorized to decline request" };
+    }
+
+    await Authorizer.declineTravelRequest(request_id);
+
+    return {
+      message: "Request declined successfully",
+      new_status: "Rechazado"
+    };
+  } catch (err) {
+    console.error("Error in declineRequest service:", err);
+    throw err;
+  }
+};
+
 export default {
   authorizeRequest,
+  declineRequest,
 
 };

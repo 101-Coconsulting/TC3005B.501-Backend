@@ -14,7 +14,7 @@ router.route("/authorize-travel-request/:id/:user_id")
     .put(authorizerController.authorizeTravelRequest);
 
 
-router.route("/decline-travel-request/:id")
+router.route("/decline-travel-request/:id/:user_id")
     .put(authorizerController.declineTravelRequest);
 
 export default router;

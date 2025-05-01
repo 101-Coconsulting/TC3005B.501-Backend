@@ -22,19 +22,20 @@ const authorizeTravelRequest = async (req, res) => {
     }
   };
 
-const declineTravelRequest = async (req, res) => {
-    const id = req.params.id;
+  const declineTravelRequest = async (req, res) => {
+    const { id: request_id, user_id } = req.params;
+  
     try {
-        const userRequest = await Authorizer.declineTravelRequest(id);
-        if (!userRequest) {
-            return res.status(404).json({ error: "No user request found" });
-        }
-        return res.status(200).json({ message: "Request declined successfully" });
+      const result = await authorizerServices.declineRequest(Number(request_id), Number(user_id));
+      return res.status(200).json(result);
     } catch (err) {
-        console.error("Error en declineTravelRequest:", err);
-        return res.status(500).json({ error: "CONTROLLER: Internal server error" });
+      if (err.status) {
+        return res.status(err.status).json({ error: err.message });
+      }
+      console.error("Unexpected error in declineTravelRequest controller:", err);
+      return res.status(500).json({ error: "Internal server error" });
     }
-}
+  };
 
 export default {
     authorizeTravelRequest,
