@@ -41,7 +41,7 @@ export async function createExpenseValidationHandler(req, res) {
     }
   }
 
-const getApplicantRequest = async (req, res) => {
+export const getApplicantRequest = async (req, res) => {
     const id = req.params.id;
     try {
         const requestData = await Applicant.getApplicantRequest(id);

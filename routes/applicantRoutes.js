@@ -4,7 +4,7 @@ Applicant Routes
 import express from "express";
 const router = express.Router();
 
-import { getApplicantById, createExpenseValidationHandler } from "../controllers/applicantController.js";
+import { getApplicantById, createExpenseValidationHandler, getApplicantRequest } from "../controllers/applicantController.js";
 
 router.use((req, res, next) => {
     next();
@@ -17,6 +17,6 @@ router.route("/create-expense-validation")
     .post(createExpenseValidationHandler);
 
 router.route("/get-user-request/:id")
-    .get(applicantController.getApplicantRequest);
+    .get(getApplicantRequest);
 
 export default router;
