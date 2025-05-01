@@ -1,16 +1,20 @@
-    /*
-    User Routes
-    */
-    import express from "express";
-    const router = express.Router();
+/*
+User Routes
+*/
+import express from "express";
+const router = express.Router();
 
-    import authorizerController from "../controllers/authorizerController.js";
+import authorizerController from "../controllers/authorizerController.js";
 
-    router.use((req, res, next) => {
-        next();
-    });
+router.use((req, res, next) => {
+    next();
+});
 
-    router.route("/authorize-travel-request/:id")
-        .put(authorizerController.authorizeTravelRequest);
+router.route("/authorize-travel-request/:id")
+    .put(authorizerController.authorizeTravelRequest);
 
-    export default router;
+
+router.route("/decline-travel-request/:id")
+    .put(authorizerController.declineTravelRequest);
+
+export default router;
