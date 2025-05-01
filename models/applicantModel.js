@@ -278,5 +278,42 @@ export const Applicant = {
       if (conn) conn.release();
     }
   },
+
+  async getRequestStatus(request_id) {
+    let conn;
+    const query = `SELECT request_status_id FROM Request WHERE request_id = ?`;
+    try {
+      conn = await pool.getConnection();
+      const rows = await conn.query(query, [request_id]);
+      return rows.length > 0 ? rows[0].request_status_id : null;
+    } catch (error) {
+      console.error('Error getting request status:', error);
+      throw error;
+    } finally {
+      if (conn) conn.release();
+    }
+  },
+
+  async cancelTravelRequest(request_id) {
+    let conn;
+    const query = `
+      UPDATE Request
+      SET request_status_id = 9,
+          active = FALSE
+      WHERE request_id = ?
+    `;
+    try {
+      conn = await pool.getConnection();
+      await conn.query(query, [request_id]);
+      return true;
+    } catch (error) {
+      console.error('Error cancelling request:', error);
+      throw error;
+    } finally {
+      if (conn) conn.release();
+    }
+  },
+
 };
 
+export default Applicant;
