@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import applicantRoutes from './routes/applicantRoutes.js';
+import authorizerRoutes from './routes/authorizerRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import travelAgentRoutes from './routes/travelAgentRoutes.js';
 
@@ -16,7 +17,8 @@ const PORT = process.env.PORT || 3000;
 // Middleware for parsing JSON
 app.use(express.json());
 
-app.use("/api/applicants", applicantRoutes);
+app.use("/api/applicant", applicantRoutes);
+app.use("/api/authorizer", authorizerRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/travel-agent", travelAgentRoutes);
 
