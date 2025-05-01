@@ -4,14 +4,17 @@ Applicant Routes
 import express from "express";
 const router = express.Router();
 
-import applicantController from "../controllers/applicantController.js";
+import { getApplicantById, createExpenseValidationHandler } from "../controllers/applicantController.js";
 
 router.use((req, res, next) => {
     next();
 });
 
 router.route("/:id")
-    .get(applicantController.getApplicantById);
+    .get(getApplicantById);
+
+router.route("/create-expense-validation")
+    .post(createExpenseValidationHandler);
 
 router.route("/get-completed-requests/:id")
     .get(applicantController.getCompletedRequests);
