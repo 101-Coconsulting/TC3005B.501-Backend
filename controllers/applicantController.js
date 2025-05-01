@@ -65,6 +65,7 @@ export const getApplicantRequest = async (req, res) => {
         user_phone_number: baseData.user_phone_number
       },
       routes: requestData.map(row => ({
+        router_index: row.router_index,
         origin_country: row.origin_country,
         origin_city: row.origin_city,
         destination_country: row.destination_country,
@@ -75,7 +76,7 @@ export const getApplicantRequest = async (req, res) => {
         ending_time: row.ending_time,
         hotel_needed: row.hotel_needed,
         plane_needed: row.plane_needed
-      }))
+      }))      
     };
     
 

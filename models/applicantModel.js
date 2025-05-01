@@ -36,19 +36,20 @@ const Applicant = {
         u.user_name,
         u.email AS user_email,
         u.phone_number AS user_phone_number,
-  
+
         co1.country_name AS origin_country,
         ci1.city_name AS origin_city,
         co2.country_name AS destination_country,
         ci2.city_name AS destination_city,
-        
+
+        ro.router_index,
         ro.beginning_date,
         ro.beginning_time,
         ro.ending_date,
         ro.ending_time,
         ro.hotel_needed,
         ro.plane_needed
-  
+
       FROM Request r
       JOIN User u ON r.user_id = u.user_id
       JOIN Request_status rs ON r.request_status_id = rs.request_status_id
@@ -58,10 +59,11 @@ const Applicant = {
       LEFT JOIN City ci1 ON ro.id_origin_city = ci1.city_id
       LEFT JOIN Country co2 ON ro.id_destination_country = co2.country_id
       LEFT JOIN City ci2 ON ro.id_destination_city = ci2.city_id
-  
+
       WHERE r.request_id = ?
-      LIMIT 1
+      ORDER BY ro.router_index ASC
     `;
+
     try {
       conn = await pool.getConnection();
       const rows = await conn.query(query, [id]);
