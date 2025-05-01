@@ -44,12 +44,16 @@ INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_f
   (2, 2, 'Reembolso por gastos médicos durante viaje.', 800.00, 750.00, 1.0, TRUE),
   (3, 1, 'Solicitud de apoyo económico para capacitación online.', 500.00, 500.00, 0.0, FALSE),
   (1, 3, 'Viáticos para taller de liderazgo en Madrid.', 1200.00, 1000.00, 2.0, TRUE),
-  (2, 1, 'Reembolso de transporte.', 300.00, 250.00, 0.5, TRUE),
-  (3, 2, 'Apoyo para participación en congreso internacional.', 2000.00, 1800.00, 4.0, FALSE),
-  (1, 2, 'Gastos operativos extraordinarios.', 650.00, 600.00, 0.0, TRUE),
-  (2, 3, 'Viaje urgente por representación institucional.', 1750.00, 1500.00, 3.5, TRUE),
-  (3, 1, 'Solicito anticipo para misión técnica en el extranjero.', 2200.00, 2000.00, 5.0, TRUE),
-  (1, 2, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, FALSE);
+  (2, 9, 'Reembolso de transporte.', 300.00, 250.00, 0.5, TRUE),
+  (3, 10, 'Apoyo para participación en congreso internacional.', 2000.00, 1800.00, 4.0, FALSE),
+  (1, 8, 'Gastos operativos extraordinarios.', 650.00, 600.00, 0.0, TRUE),
+  (2, 7, 'Viaje urgente por representación institucional.', 1750.00, 1500.00, 3.5, TRUE),
+  (3, 6, 'Solicito anticipo para misión técnica en el extranjero.', 2200.00, 2000.00, 5.0, TRUE),
+  (1, 7, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, FALSE),
+  (6, 4, 'Quiero ir a brr brr patapin por favor', 90.00, 80.00, 9, TRUE),
+  (8, 10, 'Yo como cuando 🌴🥥', 9999999.00, 10000, 100, 10.2, TRUE),
+  (5, 5, 'Solicito algo para que me den algo porque quiero algo y por eso solicito las cosas, porque el que quiere puede', 10.00, 8000.00, 3, FALSE),
+  (4, 8, 'Momento gastar cuando gastas mucho', 999999999999999999999999999999999999.9999999999999999999, 1.00, 33, TRUE);
 
 
 INSERT INTO Country (country_name) VALUES
