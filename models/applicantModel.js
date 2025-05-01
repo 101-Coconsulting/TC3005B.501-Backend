@@ -317,7 +317,31 @@ export const Applicant = {
       console.log("New data:", newData);
 
       // =======================================
-      // Step 2: Edit Route & Route_Request table
+      // Step 2: Delete old routes
+      // =======================================
+
+      const oldRoutesIds = await conn.query(
+        `SELECT route_id FROM route_request WHERE request_id = ?`,
+        [requestId]
+      );
+
+      // Delete old route request table data related to the request
+      const deleteRouteRequest = `
+        DELETE FROM route_request WHERE request_id = ?
+      `;
+      await conn.execute(deleteRouteRequest, [requestId]);
+
+      // Delete old routes from Route_Request table
+      for (const route_id of oldRoutesIds) {
+        const deleteRoute = `
+          DELETE FROM route WHERE route_id = ?
+        `;
+        await conn.execute(deleteRoute, [route_id.route_id]);
+      }
+
+
+      // =======================================
+      // Step 3: Edit Route & Route_Request table
       // =======================================
 
       for (const route of allRoutes) {
@@ -335,7 +359,47 @@ export const Applicant = {
           id_origin_country = await getCountryId(conn, route.origin_country_name);
           id_destination_country = await getCountryId(conn, route.destination_country_name);
 
-          console.log("Country IDs:", id_origin_country, id_destination_country);
+          // Search if the city exists in the database
+          id_origin_city = await getCityId(conn, route.origin_city_name);
+          id_destination_city = await getCityId(conn, route.destination_city_name);
+
+
+          // Insert into Route table
+
+          const insertRouteTable = `
+          INSERT INTO route (
+            id_origin_country, id_origin_city,
+            id_destination_country, id_destination_city,
+            router_index, plane_needed, hotel_needed,
+            beginning_date, beginning_time,
+            ending_date, ending_time
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+          let routeTableResult = await conn.query(insertRouteTable, [
+            id_origin_country,
+            id_origin_city,
+            id_destination_country,
+            id_destination_city,
+            route.router_index,
+            route.plane_needed,
+            route.hotel_needed,
+            route.beginning_date,
+            route.beginning_time,
+            route.ending_date,
+            route.ending_time,
+          ]);
+
+          const routeId = routeTableResult.insertId;
+
+          // ======================================
+          // Step 3: Insert into Route_Request table
+          // ======================================
+
+          const insertIntoRouteRequestTable = `
+          INSERT INTO route_request (request_id, route_id) VALUES (?, ?)
+        `;
+          await conn.query(insertIntoRouteRequestTable, [requestId, routeId]);
         } catch (error) {
           console.error("Error processing route:", error);
           throw new Error("Database Error: Unable to process route");
