@@ -41,7 +41,7 @@ export async function createExpenseValidationHandler(req, res) {
     }
   }
 
-const getCompletedRequests = async (req, res) => {
+export const getCompletedRequests = async (req, res) => {
     const id = parseInt(req.params.id, 10);
     if (!Number.isInteger(id)) {
         return res.status(400).json({ error: "Invalid user ID" });
