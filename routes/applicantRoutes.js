@@ -13,4 +13,7 @@ router.use((req, res, next) => {
 router.route("/:id")
     .get(applicantController.getApplicantById);
 
+router.route("/get-applicant-requests/:id")
+    .get(applicantController.getApplicantRequests);
+
 export default router;
