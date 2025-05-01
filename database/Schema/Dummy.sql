@@ -109,7 +109,7 @@ INSERT INTO Receipt (receipt_type_id, request_id, validation, validation_date) V
   (4, 1, 'Pendiente', NULL),
   (2, 2, 'Aprovado', '2025-04-19 09:00:00'),
   (3, 3, 'Rechazado', '2025-04-19 18:00:00'),
-  (7, 4, 'Pendiente', '2047-04-19 18:00:59'),
+  (7, 4, 'Pendiente', '2037-04-19 18:00:59'),
   (2, 5, 'Aprovado', '2025-03-21 10:00:00'),
   (3, 6, 'Rechazado', '2025-04-22 12:00:00'),
   (6, 7, 'Pendiente', '2003-04-19 10:06:43'),
