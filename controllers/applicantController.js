@@ -35,11 +35,12 @@ const getApplicantRequest = async (req, res) => {
         notes: baseData.notes,
         requested_fee: baseData.requested_fee,
         imposed_fee: baseData.imposed_fee,
-        creation_date: baseData.creation_date,
-        last_mod_date: baseData.last_mod_date,
-        user_name: baseData.user_name,
-        email: baseData.email,
-        phone_number: baseData.phone_number,
+        request_date: baseData.creation_date,
+        user: {
+            user_name: baseData.user_name,
+            email: baseData.email,
+            phone_number: baseData.phone_number
+        },
         routes: requestData.map(row => ({
             id_origin_country: row.id_origin_country,
             id_origin_city: row.id_origin_city,
