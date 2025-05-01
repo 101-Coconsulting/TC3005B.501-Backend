@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `Receipt` (
 
     validation ENUM('Pendiente', 'Aprobado', 'Rechazado') DEFAULT 'Pendiente',
     amount FLOAT NOT NULL,
-    refund BOOL NOT NULL DEFAULT TRUE,
+    refund BOOL DEFAULT TRUE,
 
     submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     validation_date TIMESTAMP,
