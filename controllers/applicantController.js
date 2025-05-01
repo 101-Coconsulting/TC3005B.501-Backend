@@ -23,29 +23,30 @@ const getApplicantById = async (req, res) => {
 const getApplicantRequests = async (req, res) => {
     const id = req.params.id;
     try {
-        const applicantRequests = await Applicant.getApplicantRequests(id);
-        if (!applicantRequests || applicantRequests.length === 0) {
-            return res.status(404).json({error: "No user requests found"});
-        }
-        const formattedRequests = applicantRequests.map(request => ({
-            request_id: request.request_id,
-            country_name: request.destination_country_name,
-            beginning_date: formatDate(request.beginning_date),
-            beginning_time: request.beginning_time,
-            ending_date: formatDate(request.ending_date),
-            ending_time: request.ending_time,
-            request_status: request.request_status
-          }));
-        res.json(formattedRequests);
-    } catch(err) {
-        console.error("Error in getApplicantRequests controller:", err);
-        res.status(500).json({ error: "CONTROLLER: Internal server error" });
+      const applicantRequests = await Applicant.getApplicantRequests(id);
+  
+      if (!applicantRequests || applicantRequests.length === 0) {
+        return res.status(404).json({ error: "No user requests found" });
+      }
+  
+      const formattedRequests = applicantRequests.map(request => ({
+        request_id: request.request_id,
+        destination_country: request.destination_country,
+        beginning_date: formatDate(request.beginning_date),
+        ending_date: formatDate(request.ending_date),
+        status: request.status
+      }));
+  
+      res.json(formattedRequests);
+    } catch (err) {
+      console.error("Error in getApplicantRequests controller:", err);
+      res.status(500).json({ error: "Internal server error" });
     }
-}
-
-const formatDate = (date) => {
-    return new Date(date).toISOString().split('T')[0];
   };
+  
+  const formatDate = (date) => {
+    return new Date(date).toISOString().split('T')[0];
+  };  
 
 export default {
     getApplicantById,

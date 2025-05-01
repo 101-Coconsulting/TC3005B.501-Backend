@@ -27,32 +27,28 @@ const Applicant = {
     const query = `
       SELECT
         r.request_id,
-        rs.status AS request_status,
-        c.country_name AS destination_country_name,
+        rs.status AS status,
+        c.country_name AS destination_country,
         ro.beginning_date,
-        ro.beginning_time,
-        ro.ending_date,
-        ro.ending_time
+        ro.ending_date
       FROM Request r
       JOIN Route_Request rr ON r.request_id = rr.request_id
       JOIN Route ro ON rr.route_id = ro.route_id
       JOIN Country c ON ro.id_destination_country = c.country_id
       JOIN Request_status rs ON r.request_status_id = rs.request_status_id
       WHERE r.user_id = ?
-      AND r.request_status_id NOT IN (8, 9, 10)
-      GROUP BY r.request_id, rs.status, c.country_name;
+        AND r.request_status_id NOT IN (8, 9, 10)
+      GROUP BY r.request_id
     `;
     try {
       conn = await pool.getConnection();
       const rows = await conn.query(query, [id]);
       return rows;
     } catch (error) {
-      console.error('Error getting completed requests:', error);
+      console.error('Error in getApplicantRequests:', error);
       throw error;
     } finally {
-      if (conn){
-        conn.release();
-      } 
+      if (conn) conn.release();
     }
   },
 
