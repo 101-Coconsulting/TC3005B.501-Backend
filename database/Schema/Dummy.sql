@@ -51,7 +51,7 @@ INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_f
   (3, 6, 'Solicito anticipo para misión técnica en el extranjero.', 2200.00, 2000.00, 5.0, TRUE),
   (1, 7, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, FALSE),
   (6, 4, 'Quiero ir a brr brr patapin por favor', 90.00, 80.00, 9, TRUE),
-  (8, 10, 'Yo como cuando 🌴🥥', 9999999.00, 10000, 100, 10.2, TRUE),
+  (8, 10, 'Yo como cuando', 9999999.00, 10000, 100, 10.2, TRUE),
   (5, 5, 'Solicito algo para que me den algo porque quiero algo y por eso solicito las cosas, porque el que quiere puede', 10.00, 8000.00, 3, FALSE),
   (4, 8, 'Momento gastar cuando gastas mucho', 999999999999999999999999999999999999.9999999999999999999, 1.00, 33, TRUE);
 
