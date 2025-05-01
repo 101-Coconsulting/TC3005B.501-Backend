@@ -143,3 +143,6 @@ dist
 
 # configuration
 *.cnf
+
+#MacOS Stuff
+.DS_Store
