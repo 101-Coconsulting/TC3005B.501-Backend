@@ -48,7 +48,7 @@ export const getCompletedRequests = async (req, res) => {
     }
     try {
         const completedRequests = await Applicant.getCompletedRequests(id);
-        if (!completedRequests) {
+        if (!completedRequests ||  completedRequests.length === 0) {
             return res.status(404).json({error: "No completed requests found for the user"});
         }
         const formattedRequests = completedRequests.map(request => ({
