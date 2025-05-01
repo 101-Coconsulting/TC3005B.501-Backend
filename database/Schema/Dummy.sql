@@ -12,7 +12,6 @@ INSERT INTO Department (department_name, costs_center, active) VALUES
   ('Desarrollo y Calidad', 'CC009', TRUE),  
   ('Recursos No Humanos', 'CC010', TRUE);
 
-
 INSERT INTO `User` (role_id, department_id, user_name, password, workstation, email, phone_number, active) VALUES
   (1, 1, 'andres.gomez', 'andres123', 'WS101', 'andres.gomez@empresa.com', '555-1001', FALSE),
   (2, 2, 'paula.martinez', 'paula456', 'WS102', 'paula.martinez@empresa.com', '555-1002', TRUE),
@@ -24,7 +23,6 @@ INSERT INTO `User` (role_id, department_id, user_name, password, workstation, em
   (3, 3, 'el_ch4p0', 'p4sSw0rd', 'SOFIA-PC', 'chapo@correo.com', NULL, TRUE),
   (4, 4, 'sofia_r', 'm1cor4zon', 'SOFIA-PC', 'sofia_random@mail.com', '555-ABCD', TRUE),
   (1, 5, 'miguel.de.cervantes', 'donquixote2023', 'DON-QUI', 'miguel@delamancha.com', '555-0000', FALSE);
-
 
 INSERT INTO Alert (user_id, alert_text) VALUES
   (1, 'Your password will expire in 3 days.'),
@@ -38,7 +36,6 @@ INSERT INTO Alert (user_id, alert_text) VALUES
   (9, 'Error processing your last request, please try again.'),
   (10, 'Backup completed successfully.');
 
-
 INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_fee, request_days, active) VALUES
   (1, 1, 'Solicito viáticos para viaje a conferencia en Barcelona.', 1500.00, 1200.00, 3.0, FALSE),
   (2, 2, 'Reembolso por gastos médicos durante viaje.', 800.00, 750.00, 1.0, TRUE),
@@ -50,7 +47,6 @@ INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_f
   (2, 3, 'Viaje urgente por representación institucional.', 1750.00, 1500.00, 3.5, TRUE),
   (3, 1, 'Solicito anticipo para misión técnica en el extranjero.', 2200.00, 2000.00, 5.0, TRUE),
   (1, 2, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, FALSE);
-
 
 INSERT INTO Country (country_name) VALUES
   ('España'),
@@ -64,7 +60,6 @@ INSERT INTO Country (country_name) VALUES
   ('El país de las maravillas'),
   ('Skibidi Island Tralalero Tralala');
 
-
 INSERT INTO City (city_name) VALUES
   ('CDMX'),
   ('Guadalajara'),
@@ -76,7 +71,6 @@ INSERT INTO City (city_name) VALUES
   ('Reino de Simba'),
   ('Pisos Picados'),
   ('Bombardino Cocodrilo');
-
 
 INSERT INTO Route (id_origin_country, id_origin_city, id_destination_country, id_destination_city, router_index,
                    plane_needed, hotel_needed, beginning_date, beginning_time, ending_date, ending_time) VALUES
@@ -91,7 +85,6 @@ INSERT INTO Route (id_origin_country, id_origin_city, id_destination_country, id
   (10, 7, 3, 1, 1, FALSE, FALSE, '2025-06-04', '12:00:00', '2025-06-04', '15:00:00'),
   (5, 4, 6, 3, 1, TRUE, FALSE, '2025-06-05', '16:30:00', '2025-06-05', '20:00:00');
  
- 
  INSERT INTO Route_Request (request_id, route_id) VALUES
   (1, 1),
   (1, 2),
@@ -104,15 +97,14 @@ INSERT INTO Route (id_origin_country, id_origin_city, id_destination_country, id
   (8, 9),
   (9, 10);
 
-
-INSERT INTO Receipt (receipt_type_id, request_id, validation, validation_date) VALUES
-  (4, 1, 'Pendiente', NULL),
-  (2, 2, 'Aprobado', '2025-04-19 09:00:00'),
-  (3, 3, 'Rechazado', '2025-04-19 18:00:00'),
-  (7, 4, 'Pendiente', '2037-04-19 18:00:59'),
-  (2, 5, 'Aprobado', '2025-03-21 10:00:00'),
-  (3, 6, 'Rechazado', '2025-04-22 12:00:00'),
-  (6, 7, 'Pendiente', '2003-04-19 10:06:43'),
-  (2, 8, 'Aprobado', '2025-02-23 16:00:00'),
-  (5, 9, 'Rechazado', '2025-04-23 18:30:00'),
-  (1, 10, 'Pendiente', '2025-06-19 20:17:24');
+INSERT INTO Receipt (receipt_type_id, request_id, validation, amount, validation_date) VALUES
+  (4, 1, 'Pendiente', 1000.00, NULL),
+  (2, 2, 'Aprobado', 2000.00, '2025-04-19 09:00:00'),
+  (3, 3, 'Rechazado', 250.00, '2025-04-19 18:00:00'),
+  (7, 4, 'Pendiente', 3107.03, '2037-04-19 18:00:59'),
+  (2, 5, 'Aprobado', 64.64, '2025-03-21 10:00:00'),
+  (3, 6, 'Rechazado', 518008.00, '2025-04-22 12:00:00'),
+  (6, 7, 'Pendiente', 123456789.10, '2003-04-19 10:06:43'),
+  (2, 8, 'Aprobado', 109876543.21, '2025-02-23 16:00:00'),
+  (5, 9, 'Rechazado', 750.00, '2025-04-23 18:30:00'),
+  (1, 10, 'Pendiente', 100.00, '2025-06-19 20:17:24');
