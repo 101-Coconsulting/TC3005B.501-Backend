@@ -12,7 +12,11 @@ router.use((req, res, next) => {
 
 router.route("/get-travel-request/:id")
     .get(authorizerController.getTravelRequest);
+
 router.route("/get-travel-requests/:dept/:status/:n")
     .get(authorizerController.getTravelRequestsDept);
+
+router.route("/get-alerts/:dept_id/:status_id/:n")
+    .get(authorizerController.getAlerts);
 
 export default router;
