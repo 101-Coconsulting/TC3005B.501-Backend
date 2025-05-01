@@ -58,7 +58,7 @@ export const getApplicantRequest = async (req, res) => {
       requested_fee: baseData.requested_fee,
       imposed_fee: baseData.imposed_fee,
       request_days: baseData.request_days,
-      creation_date: baseData.creation_date,
+      creation_date: formatDate(baseData.creation_date),
       user: {
         user_name: baseData.user_name,
         user_email: baseData.user_email,
@@ -69,9 +69,9 @@ export const getApplicantRequest = async (req, res) => {
         origin_city: row.origin_city,
         destination_country: row.destination_country,
         destination_city: row.destination_city,
-        beginning_date: row.beginning_date,
+        beginning_date: formatDate(row.beginning_date),
         beginning_time: row.beginning_time,
-        ending_date: row.ending_date,
+        ending_date: formatDate(row.ending_date),
         ending_time: row.ending_time,
         hotel_needed: row.hotel_needed,
         plane_needed: row.plane_needed
@@ -84,6 +84,10 @@ export const getApplicantRequest = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+const formatDate = (date) => {
+  return new Date(date).toISOString().split('T')[0];
+};  
 
 
 export default {
