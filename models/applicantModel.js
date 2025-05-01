@@ -27,7 +27,7 @@ const Applicant = {
     const query = `
       SELECT 
         r.request_id,
-        r.request_status_id,
+        rs.status AS request_status,
         r.notes,
         r.requested_fee,
         r.imposed_fee,
@@ -36,7 +36,7 @@ const Applicant = {
         u.user_name,
         u.email AS user_email,
         u.phone_number AS user_phone_number,
-
+  
         co1.country_name AS origin_country,
         ci1.city_name AS origin_city,
         co2.country_name AS destination_country,
@@ -48,16 +48,17 @@ const Applicant = {
         ro.ending_time,
         ro.hotel_needed,
         ro.plane_needed
-
+  
       FROM Request r
       JOIN User u ON r.user_id = u.user_id
+      JOIN Request_status rs ON r.request_status_id = rs.request_status_id
       LEFT JOIN Route_Request rr ON r.request_id = rr.request_id
       LEFT JOIN Route ro ON rr.route_id = ro.route_id
       LEFT JOIN Country co1 ON ro.id_origin_country = co1.country_id
       LEFT JOIN City ci1 ON ro.id_origin_city = ci1.city_id
       LEFT JOIN Country co2 ON ro.id_destination_country = co2.country_id
       LEFT JOIN City ci2 ON ro.id_destination_city = ci2.city_id
-
+  
       WHERE r.request_id = ?
       LIMIT 1
     `;

@@ -53,7 +53,7 @@ export const getApplicantRequest = async (req, res) => {
 
     const response = {
       request_id: baseData.request_id,
-      request_status_id: baseData.request_status_id,
+      request_status: baseData.request_status,
       notes: baseData.notes,
       requested_fee: baseData.requested_fee,
       imposed_fee: baseData.imposed_fee,
@@ -77,6 +77,7 @@ export const getApplicantRequest = async (req, res) => {
         plane_needed: row.plane_needed
       }))
     };
+    
 
     res.json(response);
   } catch (err) {
