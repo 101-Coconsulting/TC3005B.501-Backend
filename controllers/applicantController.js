@@ -41,7 +41,34 @@ export async function createExpenseValidationHandler(req, res) {
     }
   }
 
+export const getCompletedRequests = async (req, res) => {
+    const id = parseInt(req.params.id, 10);
+    if (!Number.isInteger(id)) {
+        return res.status(400).json({ error: "Invalid user ID" });
+    }
+    try {
+        const completedRequests = await Applicant.getCompletedRequests(id);
+        if (!completedRequests ||  completedRequests.length === 0) {
+            return res.status(404).json({error: "No completed requests found for the user"});
+        }
+        const formattedRequests = completedRequests.map(request => ({
+            request_id: request.request_id,
+            destination_country: request.destination_countries,
+            destination_city: request.destination_cities,
+            beginning_date: request.beginning_dates,
+            ending_date: request.ending_date,
+            request_date: request.creation_date,
+            status: request.status
+          }));
+        res.json(formattedRequests);
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({error: "Internal server error"});
+    }
+}
+
 export default {
     getApplicantById,
-    createExpenseValidationHandler,
+    getCompletedRequests,
+    createExpenseValidationHandler
 };
