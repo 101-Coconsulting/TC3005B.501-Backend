@@ -10,7 +10,7 @@ router.use((req, res, next) => {
     next();
 });
 
-router.route("/authorize-travel-request/:id")
+router.route("/authorize-travel-request/:id/:user_id")
     .put(authorizerController.authorizeTravelRequest);
 
 
