@@ -76,7 +76,7 @@ const Authorizer = {
         INNER JOIN Request ON Alert.request_id = Request.request_id
         INNER JOIN Request_status ON Request.request_status_id = Request_status.request_status_id
         WHERE User.department_id = ? AND Request_status.request_status_id = ?
-        ${n == 0 ? ';' : 'LIMIT ?;'}`;
+        ${n == 0 ? 'ORDER BY alert_date DESC;' : 'ORDER BY alert_date DESC LIMIT ?;'}`;
       try {
         conn = await pool.getConnection();
         const rows = await conn.query(query, [id, status_id, n]);
