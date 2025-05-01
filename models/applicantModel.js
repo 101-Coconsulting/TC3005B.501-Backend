@@ -298,8 +298,7 @@ export const Applicant = {
     let conn;
     const query = `
       UPDATE Request
-      SET request_status_id = 9,
-          active = FALSE
+      SET request_status_id = 9
       WHERE request_id = ?
     `;
     try {
