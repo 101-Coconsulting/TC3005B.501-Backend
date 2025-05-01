@@ -27,7 +27,7 @@ INSERT INTO `User` (role_id, department_id, user_name, password, workstation, em
 
 
 INSERT INTO Alert (user_id, alert_text) VALUES
-  (1, 'Your password will expire in 3 days.'),
+  (1, 'Your password will expire in 3 days.😀'),
   (2, 'XXXXXXXXXXXXXXXXXXX'),
   (3, 'XXXXXXXXXXXXXXXXXXXX'),
   (4, 'New login from an unknown device detected.'),
