@@ -40,7 +40,7 @@ INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_f
 
 
 INSERT INTO Alert (user_id, request_id, alert_text) VALUES
-  (1, 1, 'Your password will expire in 3 days 😀.'),
+  (1, 1, 'Your password will expire in 3 days.'),
   (2, 1, 'XXXXXXXXXXXXXXXXXXX'),
   (3, 2, 'XXXXXXXXXXXXXXXXXXXX'),
   (4, 3, 'New login from an unknown device detected.'),
