@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS CocoScheme;
-CREATE DATABASE CocoScheme;
+CREATE DATABASE CocoScheme CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE CocoScheme;
 
 
