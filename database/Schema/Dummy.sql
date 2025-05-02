@@ -163,7 +163,6 @@ INSERT INTO Route (id_origin_country, id_origin_city, id_destination_country, id
   (31, 38),
   (32, 39),
   (33, 40);
-  
 
 
 INSERT INTO Receipt (receipt_type_id, request_id, validation, validation_date) VALUES
@@ -176,4 +175,34 @@ INSERT INTO Receipt (receipt_type_id, request_id, validation, validation_date) V
   (6, 7, 'Pendiente', '2003-04-19 10:06:43'),
   (2, 8, 'Aprobado', '2025-02-23 16:00:00'),
   (5, 9, 'Rechazado', '2025-04-23 18:30:00'),
-  (1, 10, 'Pendiente', '2025-06-19 20:17:24');
+  (1, 10, 'Pendiente', '2025-06-19 20:17:24'),
+  (12, 33, 'Aprobado', NULL),
+  (9, 27, 'Pendiente', '2003-07-31 06:35:24'),
+  (17, 14, 'Rechazado', '2006-02-08 15:59:45'),
+  (23, 36, 'Aprobado', '2070-07-17 16:50:33'),
+  (35, 5, 'Pendiente', '2071-08-31 23:59:59'),
+  (19, 40, 'Rechazado', NULL),
+  (6, 11, 'Pendiente', '2025-05-02 14:15:48'),
+  (13, 26, 'Rechazado', '2020-03-18 16:15:24'),
+  (3, 39, 'Pendiente', NULL),
+  (31, 19, 'Aprobado', '2024-09-15 11:42:31'),
+  (8, 21, 'Pendiente', '2023-07-02 09:30:05'),
+  (26, 7, 'Aprobado', '2019-12-12 13:59:44'),
+  (37, 1, 'Pendiente', '2017-01-20 22:48:12'),
+  (14, 38, 'Rechazado', '2022-05-30 06:23:59'),
+  (29, 22, 'Pendiente', NULL),
+  (32, 13, 'Rechazado', NULL),
+  (10, 30, 'Aprobado', NULL),
+  (4, 8, 'Rechazado', '2023-11-03 19:07:14'),
+  (16, 18, 'Pendiente', '2021-08-14 10:10:10'),
+  (25, 12, 'Aprobado', '2020-10-01 08:03:18'),
+  (5, 28, 'Rechazado', '2025-01-05 12:22:11'),
+  (7, 32, 'Pendiente', NULL),
+  (20, 15, 'Aprobado', '2026-02-17 17:55:43'),
+  (36, 3, 'Rechazado', '2028-06-08 04:04:04'),
+  (1, 24, 'Pendiente', '2010-03-25 07:07:07'),
+  (34, 6, 'Aprobado', '2027-07-13 15:15:15'),
+  (11, 20, 'Pendiente', '2015-09-09 09:09:09'),
+  (22, 10, 'Pendiente', NULL),
+  (15, 37, 'Rechazado', '2029-04-04 20:20:20'),
+  (18, 16, 'Aprobado', '2008-01-01 01:01:01');
