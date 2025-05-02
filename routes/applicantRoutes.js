@@ -19,5 +19,7 @@ router
   .route("/create-travel-request/:id")
   .post(applicantController.createTravelRequest);
 
-export default router;
+router.route("/cancel-travel-request/:request_id")
+    .put(applicantController.cancelTravelRequest);
 
+export default router;

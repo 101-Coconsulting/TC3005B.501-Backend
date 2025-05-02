@@ -1,7 +1,8 @@
 /*
 Applicant Controller
 */
-import { Applicant } from "../models/applicantModel.js";
+import Applicant from "../models/applicantModel.js";
+import { cancelTravelRequestValidation } from '../services/applicantService.js';
 
 const getApplicantById = async (req, res) => {
   const id = req.params.id;
@@ -52,10 +53,25 @@ const createTravelRequest = async (req, res) => {
   }
 };
 
+export const cancelTravelRequest = async (req, res) => {
+  const { request_id } = req.params;
+
+  try {
+    const result = await cancelTravelRequestValidation(Number(request_id));
+    return res.status(200).json(result);
+  } catch (err) {
+    if (err.status) {
+      return res.status(err.status).json({ error: err.message });
+    }
+    console.error("Unexpected error in cancelTravelRequest controller:", err);
+    return res.status(500).json({ error: "Unexpected error while cancelling request" });
+  }
+};
+
 export default {
   getApplicantById,
   getCostCenterByUserId,
   createTravelRequest,
-  // other functions go here
-};
+  cancelTravelRequest,
 
+};
