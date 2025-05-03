@@ -40,16 +40,16 @@ INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_f
 
 
 INSERT INTO Alert (user_id, request_id, alert_text) VALUES
-  (1, 1, 'Your password will expire in 3 days.'),
-  (2, 1, 'XXXXXXXXXXXXXXXXXXX'),
-  (3, 2, 'XXXXXXXXXXXXXXXXXXXX'),
-  (4, 3, 'New login from an unknown device detected.'),
-  (5, 4, ''),
-  (5, 5, 'Lorem ipsumjjj.'),
-  (7, 6, 'A very long alert message.  11?'),
-  (1, 7, 'System maintenance scheduled at midnight. ffff'),
-  (9, 8, 'Error processing your last request, please try again.'),
-  (10, 9, 'Backup completed successfully.');
+  (1, 'Your password will expire in 3 days.'),
+  (1, 'XXXXXXXXXXXXXXXXXXX'),
+  (2, 'XXXXXXXXXXXXXXXXXXXX'),
+  (3, 'New login from an unknown device detected.'),
+  (4, ''),
+  (5, 'Lorem ipsumjjj.'),
+  (6, 'A very long alert message.  11?'),
+  (7, 'System maintenance scheduled at midnight. ffff'),
+  (8, 'Error processing your last request, please try again.'),
+  (9, 'Backup completed successfully.');
 
 
 INSERT INTO Country (country_name) VALUES
