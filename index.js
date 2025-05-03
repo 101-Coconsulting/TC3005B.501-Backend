@@ -4,6 +4,7 @@ dotenv.config();
 
 import applicantRoutes from './routes/applicantRoutes.js';
 import authorizerRoutes from './routes/authorizerRoutes.js'
+import userRoutes from './routes/userRoutes.js';
 import travelAgentRoutes from './routes/travelAgentRoutes.js';
 
 // Import required modules
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use("/api/applicants", applicantRoutes);
 app.use("/api/authorizer", authorizerRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/travel-agent", travelAgentRoutes);
 
 // Basic route
@@ -25,8 +27,6 @@ app.get('/', (req, res) => {
   res.json({ message: "This is my backend endpoint for the travel management system" });
 });
 
-// Routes will be imported and used here
-// Example: app.use('/api/users', require('./routes/users'));
 
 // Certificates credentials for usage of HTTPS
 const privateKey = fs.readFileSync('./certs/server.key', 'utf8');
