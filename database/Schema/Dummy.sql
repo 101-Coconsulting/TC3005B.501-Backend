@@ -49,7 +49,8 @@ INSERT INTO Alert (user_id, request_id, alert_text) VALUES
   (6, 'A very long alert message.  11?'),
   (7, 'System maintenance scheduled at midnight. ffff'),
   (8, 'Error processing your last request, please try again.'),
-  (9, 'Backup completed successfully.');
+  (9, 'Backup completed successfully.'),
+  (10, 'Test case for Request 10');
 
 
 INSERT INTO Country (country_name) VALUES
