@@ -53,6 +53,7 @@ INSERT INTO Alert (user_id, request_id, alert_text) VALUES
   (10, 'Test case for Request 10');
 
 
+
 INSERT INTO Country (country_name) VALUES
   ('España'),
   ('México'),
