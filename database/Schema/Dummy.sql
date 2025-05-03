@@ -1,5 +1,4 @@
 USE CocoScheme;
-
 INSERT INTO Department (department_name, costs_center, active) VALUES
   ('Finanzas', 'CC001', TRUE),
   ('Recursos Humanos', 'CC002', TRUE),
@@ -7,10 +6,41 @@ INSERT INTO Department (department_name, costs_center, active) VALUES
   ('Marketing', 'CC004', FALSE),
   ('Operaciones', 'CC005', TRUE),
   ('Servicios Generales', 'CC006', TRUE),
-  ('Administración ', 'CC007', TRUE),
-  ('Sistemas Avanzadosna', 'CC008', FALSE), 
-  ('Desarrollo y Calidad', 'CC009', TRUE),  
-  ('Recursos No Humanos', 'CC010', TRUE);
+  ('Administración', 'CC007', TRUE),
+  ('Sistemas Avanzados', 'CC008', FALSE), 
+  ('Desarrollo', 'CC009', TRUE),  
+  ('Recursos No Hum', 'CC010', TRUE),
+  ('Legal', 'CC011', TRUE),
+  ('Soporte', 'CC012', TRUE),
+  ('Producto', 'CC013', TRUE),
+  ('Ventas', 'CC014', TRUE),
+  ('Investigación', 'CC015', TRUE),
+  ('Relaciones', 'CC016', TRUE),
+  ('Calidad', 'CC017', TRUE),
+  ('Inteligencia', 'CC018', TRUE),
+  ('Cumplimiento', 'CC019', TRUE),
+  ('Logística', 'CC020', FALSE),
+  ('Compras', 'CC021', TRUE),
+  ('Contabilidad', 'CC022', TRUE),
+  ('Estrategia', 'CC023', TRUE),
+  ('Seguridad', 'CC024', TRUE),
+  ('Eventos', 'CC025', TRUE),
+  ('Capacitación', 'CC026', TRUE),
+  ('Global', 'CC027', TRUE),
+  ('Instalaciones', 'CC028', TRUE),
+  ('Diseño', 'CC029', TRUE),
+  ('Desarrollo', 'CC030', TRUE),
+  ('Datos', 'CC031', TRUE),
+  ('Ingeniería', 'CC032', TRUE),
+  ('IA', 'CC033', TRUE),
+  ('Innovación', 'CC034', TRUE),
+  ('Nube', 'CC035', TRUE),
+  ('Blockchain', 'CC036', TRUE),
+  ('Comunicaciones', 'CC037', TRUE),
+  ('Auditoría', 'CC038', TRUE),
+  ('M&A', 'CC039', TRUE),
+  ('Inversores', 'CC040', TRUE);
+
 
 
 INSERT INTO `User` (role_id, department_id, user_name, password, workstation, email, phone_number, active) VALUES
