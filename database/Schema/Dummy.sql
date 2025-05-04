@@ -39,7 +39,7 @@ INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_f
   (1, 2, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, FALSE);
 
 
-INSERT INTO Alert (user_id, request_id, alert_text) VALUES
+INSERT INTO Alert (request_id, alert_text) VALUES
   (1, 'Your password will expire in 3 days.'),
   (1, 'XXXXXXXXXXXXXXXXXXX'),
   (2, 'XXXXXXXXXXXXXXXXXXXX'),
