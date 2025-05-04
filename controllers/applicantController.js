@@ -53,6 +53,21 @@ const createTravelRequest = async (req, res) => {
   }
 };
 
+const editTravelRequest = async (req, res) => {
+  const travelRequestId = Number(req.params.id);
+  const travelDetails = req.body;
+  try {
+    const updatedTravelRequest = await Applicant.editTravelRequest(
+      travelRequestId,
+      travelDetails,
+    );
+    res.status(200).json(updatedTravelRequest);
+  } catch (err) {
+    console.error("Controller error:", err);
+    res.status(500).json({ error: "Controller: Internal Server Error" });
+  }
+};
+
 export const cancelTravelRequest = async (req, res) => {
   const { request_id } = req.params;
 
@@ -118,6 +133,7 @@ export default {
   getApplicantById,
   getCostCenterByUserId,
   createTravelRequest,
+  editTravelRequest,
   cancelTravelRequest,
   getCompletedRequests,
   createExpenseValidationHandler
