@@ -39,6 +39,7 @@ INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_f
   (1, 2, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, FALSE);
 
 
+/*
 INSERT INTO Alert (request_id, message_id) VALUES
   (1, 1),
   (1, 1),
@@ -51,6 +52,7 @@ INSERT INTO Alert (request_id, message_id) VALUES
   (8, 3),
   (9, 1),
   (10, 2);
+*/
 
 
 INSERT INTO Country (country_name) VALUES
