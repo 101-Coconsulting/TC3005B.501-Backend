@@ -26,19 +26,6 @@ INSERT INTO `User` (role_id, department_id, user_name, password, workstation, em
   (1, 5, 'miguel.de.cervantes', 'donquixote2023', 'DON-QUI', 'miguel@delamancha.com', '555-0000', FALSE);
 
 
-INSERT INTO Alert (user_id, alert_text) VALUES
-  (1, 'Your password will expire in 3 days.'),
-  (2, 'XXXXXXXXXXXXXXXXXXX'),
-  (3, 'XXXXXXXXXXXXXXXXXXXX'),
-  (4, 'New login from an unknown device detected.'),
-  (5, ''),
-  (5, 'Lorem ipsumjjj.'),
-  (7, 'A very long alert message.  11?'),
-  (1, 'System maintenance scheduled at midnight. ffff'),
-  (9, 'Error processing your last request, please try again.'),
-  (10, 'Backup completed successfully.');
-
-
 INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_fee, request_days, active) VALUES
   (1, 1, 'Solicito viáticos para viaje a conferencia en Barcelona.', 1500.00, 1200.00, 3.0, FALSE),
   (2, 2, 'Reembolso por gastos médicos durante viaje.', 800.00, 750.00, 1.0, TRUE),
@@ -50,6 +37,20 @@ INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_f
   (2, 3, 'Viaje urgente por representación institucional.', 1750.00, 1500.00, 3.5, TRUE),
   (3, 1, 'Solicito anticipo para misión técnica en el extranjero.', 2200.00, 2000.00, 5.0, TRUE),
   (1, 2, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, FALSE);
+
+
+INSERT INTO Alert (request_id, message_id) VALUES
+  (1, 1),
+  (1, 1),
+  (2, 2),
+  (3, 1),
+  (4, 3),
+  (5, 1),
+  (6, 2),
+  (7, 2),
+  (8, 3),
+  (9, 1),
+  (10, 2);
 
 
 INSERT INTO Country (country_name) VALUES
