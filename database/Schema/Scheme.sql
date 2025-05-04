@@ -15,6 +15,12 @@ CREATE TABLE IF NOT EXISTS Department (
     active BOOL NOT NULL DEFAULT TRUE
 );
 
+CREATE TABLE IF NOT EXISTS AlertMessage (
+    message_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    message_text VARCHAR(60) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS `User`(
     user_id INT PRIMARY KEY AUTO_INCREMENT,
     role_id INT,
