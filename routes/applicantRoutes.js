@@ -22,4 +22,10 @@ router
 router.route("/cancel-travel-request/:request_id")
     .put(applicantController.cancelTravelRequest);
 
+router.route("/create-expense-validation")
+    .post(applicantController.createExpenseValidationHandler);
+
+router.route("/get-completed-requests/:id")
+    .get(applicantController.getCompletedRequests);
+
 export default router;

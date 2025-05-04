@@ -58,30 +58,41 @@ export const getRequestDays = (routes) => {
   return dayDiff;
 };
 
-  export const cancelTravelRequestValidation = async (request_id) => {
-    try {
-      const status_id = await Applicant.getRequestStatus(request_id);
-      if (status_id === null) {
-        throw { status: 404, message: "Travel request not found" };
-      }
-
-      if (![1, 2, 3, 4, 5].includes(status_id)) {
-        throw {
-          status: 400,
-          message: "Request cannot be cancelled after reaching 'Atención Agencia de Viajes'"
-        };
-      }
-
-      await Applicant.cancelTravelRequest(request_id);
-
-      return {
-        message: "Travel request cancelled successfully",
-        request_id,
-        request_status_id: 9,
-        active: false
-      };
-    } catch (err) {
-      console.error("Error in cancelTravelRequest service:", err);
-      throw err;
+export const cancelTravelRequestValidation = async (request_id) => {
+  try {
+    const status_id = await Applicant.getRequestStatus(request_id);
+    if (status_id === null) {
+      throw { status: 404, message: "Travel request not found" };
     }
-  };
+
+    if (![1, 2, 3, 4, 5].includes(status_id)) {
+      throw {
+        status: 400,
+        message: "Request cannot be cancelled after reaching 'Atención Agencia de Viajes'"
+      };
+    }
+
+    await Applicant.cancelTravelRequest(request_id);
+
+    return {
+      message: "Travel request cancelled successfully",
+      request_id,
+      request_status_id: 9,
+      active: false
+    };
+  } catch (err) {
+    console.error("Error in cancelTravelRequest service:", err);
+    throw err;
+  }
+};
+
+export async function createExpenseValidationBatch(receipts) {
+  if (!Array.isArray(receipts) || receipts.length === 0) {
+    const err = new Error('The "receipts" field must be a non-empty array');
+    err.code = 'BAD_REQUEST';
+    throw err;
+  }
+
+  const insertedCount = await Applicant.createExpenseBatch(receipts);
+  return insertedCount;
+}
