@@ -100,7 +100,7 @@ export async function createExpenseValidationBatch(receipts) {
 // Check if the country exists in the database If not, insert it
 export const getCountryId = async (conn, countryName) => {
   console.log("Checking country:", countryName);
-  const countryQuery = `SELECT country_id FROM country WHERE country_name = ?`;
+  const countryQuery = `SELECT country_id FROM Country WHERE country_name = ?`;
   const [CountryRows] = await conn.query(countryQuery, [countryName]);
   //If country does not exist, insert it
   if (CountryRows === undefined) {
