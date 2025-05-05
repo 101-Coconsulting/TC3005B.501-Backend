@@ -111,7 +111,7 @@ export const Applicant = {
 
       // Get Status from role
       const role = await conn.query(
-        `SELECT role_id FROM user WHERE user_id = ?`,
+        `SELECT role_id FROM User WHERE user_id = ?`,
         [user_id],
       );
 
