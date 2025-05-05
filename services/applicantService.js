@@ -120,7 +120,7 @@ export const getCityId = async (conn, cityName) => {
   const [CityRows] = await conn.query(cityQuery, [cityName]);
   //If city does not exist, insert it
   if (CityRows === undefined) {
-    const insertCityQuery = `INSERT INTO city (city_name) VALUES (?)`;
+    const insertCityQuery = `INSERT INTO City (city_name) VALUES (?)`;
     const insertedCity = await conn.execute(insertCityQuery, [cityName]);
     return insertedCity.insertId;
   } else {
