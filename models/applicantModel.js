@@ -325,7 +325,7 @@ export const Applicant = {
 
       // Delete old route request table data related to the request
       const deleteRouteRequest = `
-        DELETE FROM route_request WHERE request_id = ?
+        DELETE FROM Route_Request WHERE request_id = ?
       `;
       await conn.execute(deleteRouteRequest, [requestId]);
 
