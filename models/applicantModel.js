@@ -395,7 +395,7 @@ export const Applicant = {
           // ======================================
 
           const insertIntoRouteRequestTable = `
-          INSERT INTO route_request (request_id, route_id) VALUES (?, ?)
+          INSERT INTO Route_Request (request_id, route_id) VALUES (?, ?)
         `;
           await conn.query(insertIntoRouteRequestTable, [requestId, routeId]);
         } catch (error) {
