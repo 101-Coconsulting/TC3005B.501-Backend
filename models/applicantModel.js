@@ -10,7 +10,7 @@ const Applicant = {
         try {
             conn = await pool.getConnection();
             const rows = await conn.query(
-                "SELECT * FROM user WHERE user_id = ?",
+                "SELECT * FROM User WHERE user_id = ?",
                 [id],
             );
             console.log(rows[0]);
