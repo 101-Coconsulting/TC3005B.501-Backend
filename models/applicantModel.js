@@ -119,15 +119,15 @@ export const Applicant = {
       let request_status;
       if (role[0].role_id == 1) {
         console.log("Role ID:", role[0].role_id);
-        request_status = 1; // 1 = Open
+        request_status = 2; // 2 = First Revision
       }
       else if (role[0].role_id == 4) {
         console.log("Role ID:", role[0].role_id);
-        request_status = 2; // 2 = First Review
+        request_status = 3; // 3 = Second Revision
       }
       else if (role[0].role_id == 5) {
         console.log("Role ID:", role[0].role_id);
-        request_status = 3; // 3 = Second Review
+        request_status = 4; // 4 = Trip Quote
       }
       else {
         throw new Error("User role in not allowed to create a travel request");
