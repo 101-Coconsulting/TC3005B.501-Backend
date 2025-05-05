@@ -105,7 +105,7 @@ export const getCountryId = async (conn, countryName) => {
   //If country does not exist, insert it
   if (CountryRows === undefined) {
     console.log("Country not found, inserting:", countryName);
-    const insertCountryQuery = `INSERT INTO country (country_name) VALUES (?)`;
+    const insertCountryQuery = `INSERT INTO Country (country_name) VALUES (?)`;
     const insertedCountry = await conn.execute(insertCountryQuery, [countryName]);
     return insertedCountry.insertId;
   } else {
