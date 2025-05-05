@@ -365,7 +365,7 @@ export const Applicant = {
           // Insert into Route table
 
           const insertRouteTable = `
-          INSERT INTO route (
+          INSERT INTO Route (
             id_origin_country, id_origin_city,
             id_destination_country, id_destination_city,
             router_index, plane_needed, hotel_needed,
