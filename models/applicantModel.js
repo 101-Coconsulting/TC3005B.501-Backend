@@ -309,7 +309,7 @@ export const Applicant = {
 
       // Log new data
       const [newData] = await conn.query(
-        `SELECT * FROM request WHERE request_id = ?`,
+        `SELECT * FROM Request WHERE request_id = ?`,
         [requestId]
       );
       console.log("New data:", newData);
