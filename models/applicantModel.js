@@ -284,7 +284,7 @@ export const Applicant = {
 
       // Log old data
       const [oldData] = await conn.query(
-        `SELECT * FROM request WHERE request_id = ?`,
+        `SELECT * FROM Request WHERE request_id = ?`,
         [requestId]
       );
       console.log("Old data:", oldData);
