@@ -90,7 +90,6 @@ const Authorizer = {
         }
       }
     },
-
     
     async getUserRole(user_id) {
       let conn;
@@ -133,6 +132,7 @@ const Authorizer = {
           } 
         }
       },
+
       async declineTravelRequest(id) {
         let conn;
         const query = `
@@ -152,7 +152,7 @@ const Authorizer = {
             conn.release();
             } 
         }
-        },
+      },
 };
 
 export default Authorizer;
