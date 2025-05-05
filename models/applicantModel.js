@@ -23,6 +23,33 @@ const Applicant = {
       } 
     }
   },
+  async getCompletedRequests(id) {
+    let conn;
+    const query = `
+      SELECT request_id,
+        destination_countries,
+        destination_cities,
+        beginning_dates,
+        ending_dates,
+        creation_date,
+        status
+      FROM RequestWithRouteDetails
+      WHERE user_id = ?
+        AND status = 'Finalizado'
+    `;
+    try {
+      conn = await pool.getConnection();
+      const rows = await conn.query(query, [id]);
+      return rows;
+    } catch (error) {
+      console.error('Error getting completed requests:', error);
+      throw error;
+    } finally {
+      if (conn){
+        conn.release();
+      } 
+    }
+  },
 
   /**
    * Inserts multiple receipts in a single query. Returns the number of rows inserted.
