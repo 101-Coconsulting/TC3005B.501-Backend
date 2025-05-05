@@ -332,7 +332,7 @@ export const Applicant = {
       // Delete old routes from Route_Request table
       for (const route_id of oldRoutesIds) {
         const deleteRoute = `
-          DELETE FROM route WHERE route_id = ?
+          DELETE FROM Route WHERE route_id = ?
         `;
         await conn.execute(deleteRoute, [route_id.route_id]);
       }
