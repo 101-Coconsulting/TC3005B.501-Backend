@@ -319,7 +319,7 @@ export const Applicant = {
       // =======================================
 
       const oldRoutesIds = await conn.query(
-        `SELECT route_id FROM route_request WHERE request_id = ?`,
+        `SELECT route_id FROM Route_Request WHERE request_id = ?`,
         [requestId]
       );
 
