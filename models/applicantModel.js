@@ -290,7 +290,7 @@ export const Applicant = {
       console.log("Old data:", oldData);
 
       const updateRequestTable = `
-        UPDATE request SET
+        UPDATE Request SET
           notes = ?,
           requested_fee = ?,
           imposed_fee = ?,
