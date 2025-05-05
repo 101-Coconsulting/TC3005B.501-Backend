@@ -45,7 +45,7 @@ const createTravelRequest = async (req, res) => {
     const travelRequest = await Applicant.createTravelRequest(
       applicantId,
       travelDetails,
-    ); // <-- usa Applicant
+    ); // <-- use Applicant
     res.status(201).json(travelRequest);
   } catch (err) {
     console.error("Controller error:", err);
