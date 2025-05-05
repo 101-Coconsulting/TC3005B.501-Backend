@@ -116,7 +116,7 @@ export const getCountryId = async (conn, countryName) => {
 
 export const getCityId = async (conn, cityName) => {
   console.log("Checking city:", cityName);
-  const cityQuery = `SELECT city_id FROM city WHERE city_name = ?`;
+  const cityQuery = `SELECT city_id FROM City WHERE city_name = ?`;
   const [CityRows] = await conn.query(cityQuery, [cityName]);
   //If city does not exist, insert it
   if (CityRows === undefined) {
