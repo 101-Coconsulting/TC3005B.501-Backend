@@ -3,27 +3,36 @@ Applicant Routes
 */
 import express from "express";
 const router = express.Router();
-
-import {
-    getApplicantById,
-    createExpenseValidationHandler,
-    getApplicantRequest,
-} from "../controllers/applicantController.js";
 import applicantController from "../controllers/applicantController.js";
 
 router.use((req, res, next) => {
     next();
 });
 
-router.route("/:id").get(getApplicantById);
+router.route("/:id").get(applicantController.getApplicantById);
 
-router.route("/create-expense-validation").post(createExpenseValidationHandler);
+// Route to get cost center by user ID
+router.route("/get-cc/:user_id").get(applicantController.getCostCenterByUserId);
 
-router.route("/get-user-request/:id").get(getApplicantRequest);
+router.route("/create-travel-request/:id")
+    .post(applicantController.createTravelRequest);
 
-router
-    .route("/get-user-requests/:id")
+router.route("/edit-travel-request/:id")
+    .put(applicantController.editTravelRequest);
+
+router.route("/cancel-travel-request/:request_id")
+    .put(applicantController.cancelTravelRequest);
+
+router.route("/create-expense-validation")
+    .post(applicantController.createExpenseValidationHandler);
+
+router.route("/get-completed-requests/:id")
+    .get(applicantController.getCompletedRequests);
+
+router.route("/get-user-request/:id")
+    .get(applicantController.getApplicantRequest);
+
+router.route("/get-user-requests/:id")
     .get(applicantController.getApplicantRequests);
 
 export default router;
-
