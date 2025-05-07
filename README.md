@@ -70,3 +70,21 @@ Now you should have 6 new files in the [`/certs`](/certs) directory and should b
 
 > [!Caution]
 > After creating the certificates, when making a commit be sure not to be uploading the certificates to the repository.
+
+### Running
+
+To run the Backend, utilize whichever package manager you used for dependencies to run the project.
+
+#### Using `pnpm`
+
+```sh
+pnpm run dev
+```
+
+#### Using `npm`
+
+```sh
+npm run dev
+```
+
+And you're good to go! `nodemon` should start and you should be able to start sending requests to your specified `PORT` on `localhost`!
