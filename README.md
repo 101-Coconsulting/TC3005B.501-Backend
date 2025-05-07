@@ -71,9 +71,46 @@ Now you should have 6 new files in the [`/certs`](/certs) directory and should b
 > [!Caution]
 > After creating the certificates, when making a commit be sure not to be uploading the certificates to the repository.
 
+### Configuring the Database
+
+For the database to be operational, some initial configuration is required.
+
+#### Setup MariaDB
+
+In order to properly setup MariaDB, the following steps are required:
+
+1. [Download `mariadb`](https://mariadb.com/kb/en/where-to-download-mariadb/).
+2. It is recommended that you [secure your MariaDB installation](https://mariadb.com/kb/en/mysql_secure_installation/).
+3. [Start the `mariadb` server](https://mariadb.com/kb/en/starting-and-stopping-mariadb-automatically/).
+4. Go to the [/database/Scheme](/database/Scheme) directory.
+    ```sh
+    cd database/Scheme
+    ```
+5. [Run the `mariadb` client in batch mode](https://mariadb.com/kb/en/mariadb-command-line-client/).
+    1. Load database scheme [/database/Scheme/Scheme.sql](/database/Scheme/Scheme.sql).
+        ```sh
+        mariadb < Scheme.sql
+        ```
+    2. Load database initial prepopulation [/database/Scheme/Prepopulate.sql](/database/Scheme/Prepopulate.sql).
+        ```sh
+        mariadb < Prepopulate.sql
+        ```
+    3. Load database dummy data [/database/Scheme/Dummy.sql](/database/Scheme/Dummy.sql).
+        ```sh
+        mariadb < Dummy.sql
+        ```
+    4. Load database views [/database/Scheme/Views.sql](/database/Scheme/Views.sql).
+        ```sh
+        mariadb < Views.sql
+        ```
+    5. Load database triggers [/database/Scheme/Triggers.sql](/database/Scheme/Triggers.sql).
+        ```sh
+        mariadb < Triggers.sql
+        ```
+
 ### Running
 
-To run the Backend, utilize whichever package manager you used for dependencies to run the project.
+To run the Backend, ensure the `mariadb` server is running, and utilize whichever package manager you used for dependencies to run the project.
 
 #### Using `pnpm`
 
