@@ -3,7 +3,6 @@ Applicant Routes
 */
 import express from "express";
 const router = express.Router();
-
 import applicantController from "../controllers/applicantController.js";
 
 router.use((req, res, next) => {
@@ -29,5 +28,11 @@ router.route("/create-expense-validation")
 
 router.route("/get-completed-requests/:id")
     .get(applicantController.getCompletedRequests);
+
+router.route("/get-user-request/:id")
+    .get(applicantController.getApplicantRequest);
+
+router.route("/get-user-requests/:id")
+    .get(applicantController.getApplicantRequests);
 
 export default router;
