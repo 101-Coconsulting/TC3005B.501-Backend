@@ -41,23 +41,32 @@ npm install
 
 To succesfully create the certificates to use the server with HTTPS you will need to follow the next steps:
 
+#### Configuring OpenSSL
+
 > [!Important]
-> You have to download the .cnf file provided in OneDrive and place it in the `TC3005B.501-Backend/certs` directory.
+> You have to download the `.cnf` file provided in SharePoint and place it in the [`/certs`](/certs) directory.
 
-- Access the directory `TC3005B.501-Backend/certs`
-- Run the next line of code in the terminal to make the file and executable:
+#### Generating keys and certificates
 
-  ```gitbash
-  chmod +x create_certs.sh
-  ```
-  
-- Run this line of code to create the certificates:
+1. Access the [`/certs`](/certs) directory.
 
-    ```gitbash
-  ./create_certs.sh
-  ```
+    ```sh
+    cd certs
+    ```
 
-Now you should have 6 new files in the `TC3005B.501-Backend/certs` directory and should be able to run the server using HTTPS.
+2. Run the next line of code in the terminal to ensure the [`/certs/create_certs.sh`](/certs/create_certs.sh) file is executable:
+
+    ```sh
+    chmod +x create_certs.sh
+    ```
+
+3. Run this line of code to create the certificates:
+
+    ```sh
+    ./create_certs.sh
+    ```
+
+Now you should have 6 new files in the [`/certs`](/certs) directory and should be able to run the server using HTTPS.
 
 > [!Caution]
 > After creating the certificates, when making a commit be sure not to be uploading the certificates to the repository.
