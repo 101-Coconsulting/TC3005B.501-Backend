@@ -5,6 +5,22 @@ API y Base de Datos para la conexión y el funcionamiento del portal del sistema
 
 In order to run this Backend, the following steps are required:
 
+### Installing
+
+The only option currently is to clone the repository locally from GitHub.
+
+#### Using `git`
+
+```sh
+git clone https://github.com/101-Coconsulting/TC3005B.501-Backend
+```
+
+#### Using `gh` (GitHub CLI)
+
+```sh
+gh repo clone 101-Coconsulting/TC3005B.501-Backend
+```
+
 ### Create HTTPS certificates
 
 To succesfully create the certificates to use the server with HTTPS you will need to follow the next steps:
