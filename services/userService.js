@@ -21,10 +21,7 @@ function isValidEmail(email) {
   return emailRegex.test(email);
 }
 
-/**
- * Preprocesses user data before creation
- * Handles validation and password hashing
- */
+
 export async function preprocessUserData(userData) {
   // Validate required fields
   const requiredFields = ['role_id', 'department_id', 'user_name', 'password', 'workstation', 'email'];
@@ -69,10 +66,10 @@ export async function preprocessUserData(userData) {
 
 export async function createUser(userData) {
   try {
-    // First preprocess the data (validate and hash password)
+   
     const processedUserData = await preprocessUserData(userData);
     
-    // Then call the model to create the user
+    // call the model to create the user
     return await userModel.createUser(processedUserData);
     
   } catch (error) {

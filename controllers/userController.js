@@ -28,17 +28,13 @@ export async function getUserData(req, res) {
   }
 }
 
-/**
- * Middleware to check if user is admin
- */
+
 export function isAdmin(req, res, next) {
-  // TODO: Implement actual admin check
+
   next();
 }
 
-/**
- * Create a new user
- */
+
 export async function createUser(req, res) {
   try {
     console.log('Create user request received');
