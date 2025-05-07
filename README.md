@@ -21,6 +21,22 @@ git clone https://github.com/101-Coconsulting/TC3005B.501-Backend
 gh repo clone 101-Coconsulting/TC3005B.501-Backend
 ```
 
+### Dependencies
+
+The dependencies for this project are managed using [the pnpm package manager](https://pnpm.io/), so it is recommended to use this. However, [npm](https://www.npmjs.com/) can also be used. The dependencies are automatically managed by `pnpm` in the `package.json` file, so they are installed automatically when issuing the install command.
+
+#### Using `pnpm`
+
+```sh
+pnpm install
+```
+
+#### Using `npm`
+
+```sh
+npm install
+```
+
 ### Create HTTPS certificates
 
 To succesfully create the certificates to use the server with HTTPS you will need to follow the next steps:
