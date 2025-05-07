@@ -1,7 +1,11 @@
 # TC3005B.501-Backend
 API y Base de Datos para la conexión y el funcionamiento del portal del sistema gestor de viajes desarrollado en la clase TC3005B por el grupo 501. 
 
-## Create HTTPS certificates
+## Getting Started
+
+In order to run this Backend, the following steps are required:
+
+### Create HTTPS certificates
 
 To succesfully create the certificates to use the server with HTTPS you will need to follow the next steps:
 
