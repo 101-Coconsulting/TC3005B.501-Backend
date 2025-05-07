@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import * as userController from '../controllers/userController.js';
+import userController from '../controllers/userController.js';
 
 // Get user data by ID
 router.get('/get-user-data/:user_id', userController.getUserData);

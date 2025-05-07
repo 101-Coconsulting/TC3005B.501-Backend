@@ -21,51 +21,68 @@ function isValidEmail(email) {
   return emailRegex.test(email);
 }
 
+/**
+ * Preprocesses user data before creation
+ * Handles validation and password hashing
+ */
+export async function preprocessUserData(userData) {
+  // Validate required fields
+  const requiredFields = ['role_id', 'department_id', 'user_name', 'password', 'workstation', 'email'];
+  const missingFields = requiredFields.filter(field => !userData[field]);
+  
+  if (missingFields.length > 0) {
+    throw {
+      status: 400,
+      message: `Missing required fields: ${missingFields.join(', ')}`
+    };
+  }
+  
+  if (!Number.isInteger(userData.role_id)) {
+    throw {
+      status: 400,
+      message: 'Role ID must be an integer'
+    };
+  }
+  
+  if (!Number.isInteger(userData.department_id)) {
+    throw {
+      status: 400,
+      message: 'Department ID must be an integer'
+    };
+  }
+  
+  if (!isValidEmail(userData.email)) {
+    throw {
+      status: 400,
+      message: 'Invalid email format'
+    };
+  }
+  
+  // Hash password before storing
+  const hashedPassword = hashPassword(userData.password);
+  
+  return {
+    ...userData,
+    password: hashedPassword
+  };
+}
+
 export async function createUser(userData) {
   try {
-    // Validate required fields
-    const requiredFields = ['role_id', 'department_id', 'user_name', 'password', 'workstation', 'email'];
-    const missingFields = requiredFields.filter(field => !userData[field]);
+    // First preprocess the data (validate and hash password)
+    const processedUserData = await preprocessUserData(userData);
     
-    if (missingFields.length > 0) {
-      throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
-    }
-    
-    if (!Number.isInteger(userData.role_id)) {
-      throw new Error('Role ID must be an integer');
-    }
-    
-    if (!Number.isInteger(userData.department_id)) {
-      throw new Error('Department ID must be an integer');
-    }
-    
-    if (!isValidEmail(userData.email)) {
-      throw new Error('Invalid email format');
-    }
-    
-    // Hash password before storing
-    const hashedPassword = hashPassword(userData.password);
-    
-    const processedUserData = {
-      ...userData,
-      password: hashedPassword
-    };
-    
-
+    // Then call the model to create the user
     return await userModel.createUser(processedUserData);
     
   } catch (error) {
     // Handle specific error types
-    if (error.message.includes('already exists')) {
+    if (error.status) {
+      // If error already has status, just rethrow it
+      throw error;
+    } else if (error.message && error.message.includes('already exists')) {
       throw {
         status: 409,
-        message: error.message
-      };
-    } else if (error.message.includes('Missing required fields') || 
-               error.message.includes('must be an integer') ||
-               error.message.includes('Invalid email')) {
-      throw {
-        status: 400,
         message: error.message
       };
     } else {
@@ -76,3 +93,10 @@ export async function createUser(userData) {
     }
   }
 }
+
+// Export default object with all service functions
+export default {
+  getUserById,
+  createUser,
+  preprocessUserData
+};

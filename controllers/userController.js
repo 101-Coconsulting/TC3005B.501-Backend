@@ -1,6 +1,8 @@
 import * as userService from '../services/userService.js';
 
-
+/**
+ * Get user data by ID
+ */
 export async function getUserData(req, res) {
   try {
     console.log('Request received for user ID:', req.params.user_id);
@@ -26,16 +28,20 @@ export async function getUserData(req, res) {
   }
 }
 
-
+/**
+ * Middleware to check if user is admin
+ */
 export function isAdmin(req, res, next) {
-
+  // TODO: Implement actual admin check
   next();
 }
 
+/**
+ * Create a new user
+ */
 export async function createUser(req, res) {
   try {
     console.log('Create user request received');
-
 
     const userData = {
       role_id: parseInt(req.body.role_id),
@@ -58,12 +64,17 @@ export async function createUser(req, res) {
   } catch (error) {
     console.error('Error creating user:', error);
     
-    
     if (error.status) {
       return res.status(error.status).json({ error: error.message });
     }
     
-
     return res.status(500).json({ error: 'Internal server error during user creation' });
   }
 }
+
+// Export default object with all controller functions for named imports
+export default {
+  getUserData,
+  isAdmin,
+  createUser
+};
