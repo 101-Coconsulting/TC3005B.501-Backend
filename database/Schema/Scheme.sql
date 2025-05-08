@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS CocoScheme;
-CREATE DATABASE CocoScheme;
+CREATE DATABASE CocoScheme CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE CocoScheme;
 
 CREATE TABLE IF NOT EXISTS `Role` (
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `Request` (
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     active BOOL NOT NULL DEFAULT TRUE,
-  
+
     FOREIGN KEY (user_id) REFERENCES `User`(user_id),
     FOREIGN KEY (request_status_id) REFERENCES Request_status(request_status_id)
 );
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `Route` (
     beginning_time TIME,
     ending_date DATE,
     ending_time TIME,
-    
+
     FOREIGN KEY (id_origin_country) REFERENCES Country(country_id),
     FOREIGN KEY (id_origin_city) REFERENCES City(city_id),
     FOREIGN KEY (id_destination_country) REFERENCES Country(country_id),
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS Route_Request (
     route_request_id INT PRIMARY KEY AUTO_INCREMENT,
     request_id INT,
     route_id INT,
-  
+
     FOREIGN KEY (request_id) REFERENCES Request(request_id),
     FOREIGN KEY (route_id) REFERENCES `Route`(route_id)
 );
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS Receipt (
 
     submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     validation_date TIMESTAMP,
-  
+
     FOREIGN KEY (receipt_type_id) REFERENCES Receipt_Type(receipt_type_id),
     FOREIGN KEY (request_id) REFERENCES Request(request_id)
 );
