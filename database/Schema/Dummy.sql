@@ -147,6 +147,7 @@ INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_f
 
 
 INSERT INTO Country (country_name) VALUES
+  ('MauriLand'),
   ('España'),
   ('México'),
   ('Estados Unidos'),
@@ -154,9 +155,38 @@ INSERT INTO Country (country_name) VALUES
   ('Italia'),
   ('Francia'),
   ('Madagascar'),
-  ('El reino de nunca jamás de la estrella más alta a la derecha'),
-  ('El país de las maravillas'),
-  ('Skibidi Island Tralalero Tralala');
+  ('Polonia'),
+  ('Malasia'),
+  ('Kazajistán'),
+  ('Japón'),
+  ('Canadá'),
+  ('Brasil'),
+  ('Argentina'),
+  ('Australia'),
+  ('China'),
+  ('Sudáfrica'),
+  ('Egipto'),
+  ('Rusia'),
+  ('Noruega'),
+  ('Suecia'),
+  ('Finlandia'),
+  ('Islandia'),
+  ('Grecia'),
+  ('Portugal'),
+  ('Turquía'),
+  ('Nueva Zelanda'),
+  ('Corea del Sur'),
+  ('Vietnam'),
+  ('Tailandia'),
+  ('Indonesia'),
+  ('Filipinas'),
+  ('Arabia Saudita'),
+  ('Irlanda'),
+  ('Colombia'),
+  ('Chile'),
+  ('Perú'),
+  ('Ucrania'),
+  ('Nigeria');
 
 
 INSERT INTO City (city_name) VALUES
