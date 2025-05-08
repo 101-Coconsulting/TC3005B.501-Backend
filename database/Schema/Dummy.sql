@@ -42,6 +42,7 @@ INSERT INTO Department (department_name, costs_center, active) VALUES
   ('M&A', 'CC039', TRUE),
   ('Inversores', 'CC040', TRUE);
 
+
 INSERT INTO `User` (role_id, department_id, user_name, password, workstation, email, phone_number, active) VALUES
   (1, 1, 'andres.gomez', 'andres123', 'WS101', 'andres.gomez@empresa.com', '555-1001', FALSE),
   (2, 2, 'paula.martinez', 'paula456', 'WS102', 'paula.martinez@empresa.com', '555-1002', TRUE),
@@ -87,6 +88,7 @@ INSERT INTO `User` (role_id, department_id, user_name, password, workstation, em
   (4, 4, 'ignacio.lopez', 'ignacio_m1cor4zon', 'SOFIA-PC7', 'ignacio.lopez@empresa.com', '555-1035', TRUE),
   (1, 5, 'javier.cordero', 'javierDonquixote2023', 'DON-QUI4', 'javier.cordero@empresa.com', '555-1036', FALSE);
 
+
 INSERT INTO Alert (user_id, alert_text) VALUES
   (1, 'Your password will expire in 3 days.'),
   (2, 'XXXXXXXXXXXXXXXXXXX'),
@@ -98,6 +100,7 @@ INSERT INTO Alert (user_id, alert_text) VALUES
   (1, 'System maintenance scheduled at midnight. ffff'),
   (9, 'Error processing your last request, please try again.'),
   (10, 'Backup completed successfully.');
+
 
 INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_fee, request_days, active) VALUES
   (1, 1, 'Solicito viáticos para viaje a conferencia en Barcelona.', 1500.00, 1200.00, 3.0, TRUE),
@@ -141,6 +144,7 @@ INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_f
   (9, 9, 'Solicitud de ejemplo 9', 75.00, 70.00, 4, FALSE),
   (10, 10, 'Solicitud de ejemplo 10', 400.00, 380.00, 20, FALSE);
 
+
 INSERT INTO Country (country_name) VALUES
   ('MauriLand'),
   ('España'),
@@ -182,6 +186,7 @@ INSERT INTO Country (country_name) VALUES
   ('Perú'),
   ('Ucrania'),
   ('Nigeria');
+
 
 INSERT INTO City (city_name) VALUES
   ('Gotham'),
@@ -269,7 +274,7 @@ INSERT INTO `Route` (id_origin_country, id_origin_city, id_destination_country, 
   (39, 37, 3, 1, 3, TRUE, TRUE, '2025-06-08', '12:00:00', '2025-06-08', '16:00:00'),
   (40, 39, 4, 3, 1, FALSE, FALSE, '2025-06-09', '08:00:00', '2025-06-09', '10:30:00');
 
- 
+
  INSERT INTO Route_Request (request_id, route_id) VALUES
   (1, 1),
   (1, 2),
