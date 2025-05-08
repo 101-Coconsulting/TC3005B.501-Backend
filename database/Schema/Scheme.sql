@@ -47,8 +47,6 @@ CREATE TABLE IF NOT EXISTS Request_status (
     status VARCHAR(30) UNIQUE NOT NULL
 );
 
-
-
 CREATE TABLE IF NOT EXISTS Request (
     request_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
