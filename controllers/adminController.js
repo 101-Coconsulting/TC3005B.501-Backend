@@ -3,12 +3,7 @@ Admin Controller
 */
 import * as adminService from "../services/adminService.js";
 
-/**
- * Error handler function to standardize error responses
- * @param {Object} res - Express response object
- * @param {Object} error - Error object
- * @param {string} defaultMessage - Default error message
- */
+
 function handleError(res, error, defaultMessage) {
   console.error(defaultMessage, error);
 
@@ -19,12 +14,7 @@ function handleError(res, error, defaultMessage) {
   return res.status(500).json({ error: defaultMessage });
 }
 
-/**
- * Get list of all users
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns {Object} JSON response with user list
- */
+
 export const getUserList = async (req, res) => {
     try {
         const users = await adminService.getUserList();
@@ -44,12 +34,7 @@ export const getUserList = async (req, res) => {
     }
 }
 
-/**
- * Create a new user (admin functionality)
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns {Object} JSON response with created user data
- */
+
 const createUser = async (req, res) => {
     try {
         console.log('Create user request received in admin controller');

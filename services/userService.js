@@ -1,10 +1,6 @@
 import * as userModel from '../models/userModel.js';
 
-/**
- * Get user by ID
- * @param {number} userId - User ID
- * @returns {Promise<Object>} User data
- */
+
 export async function getUserById(userId) {
   try {
     return await userModel.getUserData(userId);
@@ -105,8 +101,6 @@ export async function preprocessUserData(userData) {
       message: 'Invalid phone number format'
     };
   }
-
-  // Not hashing password as per requirements
   return userData;
 }
 
@@ -120,7 +114,7 @@ export async function createUser(userData) {
   } catch (error) {
     // Handle specific error types
     if (error.status) {
-      // If error already has status, just rethrow it
+
       throw error;
     } else if (error.message && error.message.includes('already exists')) {
       throw {

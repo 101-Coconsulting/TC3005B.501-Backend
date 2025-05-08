@@ -1,11 +1,6 @@
 import * as userService from '../services/userService.js';
 
-/**
- * Error handler function to standardize error responses
- * @param {Object} res - Express response object
- * @param {Object} error - Error object
- * @param {string} defaultMessage - Default error message
- */
+
 function handleError(res, error, defaultMessage) {
   console.error(defaultMessage, error);
 
@@ -16,12 +11,7 @@ function handleError(res, error, defaultMessage) {
   return res.status(500).json({ error: defaultMessage });
 }
 
-/**
- * Get user data by ID
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns {Object} JSON response with user data
- */
+
 export async function getUserData(req, res) {
   try {
     console.log('Request received for user ID:', req.params.user_id);
@@ -46,36 +36,15 @@ export async function getUserData(req, res) {
   }
 }
 
-/**
- * Middleware to check if user is an admin
- * This function will be further implemented with actual authentication logic
- * Currently acts as a placeholder for future authentication
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @param {Function} next - Express next middleware function
- */
+
 export function isAdmin(req, res, next) {
-  // For demonstration purposes, we'll add a placeholder
-  // In a real implementation, this would check session/token data
-  // and verify the user's role against the database
-  
-  // TODO: Replace with actual implementation that:
-  // 1. Verifies user is authenticated (token/session)
-  // 2. Checks if the user has admin privileges (role_id)
-  
+
   console.log('Checking admin permissions');
   
-  // For now, allow the request to proceed
-  // This would be replaced with actual auth logic later
   next();
 }
 
-/**
- * Create a new user
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns {Object} JSON response with created user data
- */
+
 export async function createUser(req, res) {
   try {
     console.log('Create user request received');
