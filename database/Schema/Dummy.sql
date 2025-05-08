@@ -1,4 +1,6 @@
 USE CocoScheme;
+
+
 INSERT INTO Department (department_name, costs_center, active) VALUES
   ('Finanzas', 'CC001', TRUE),
   ('Recursos Humanos', 'CC002', TRUE),
@@ -40,7 +42,6 @@ INSERT INTO Department (department_name, costs_center, active) VALUES
   ('Auditoría', 'CC038', TRUE),
   ('M&A', 'CC039', TRUE),
   ('Inversores', 'CC040', TRUE);
-
 
 
 INSERT INTO `User` (role_id, department_id, user_name, password, workstation, email, phone_number, active) VALUES
@@ -87,7 +88,6 @@ INSERT INTO `User` (role_id, department_id, user_name, password, workstation, em
   (3, 3, 'marta.perez', 'martaP4ssw0rd', 'SOFIA-PC6', 'marta.perez@empresa.com', '555-1034', TRUE),
   (4, 4, 'ignacio.lopez', 'ignacio_m1cor4zon', 'SOFIA-PC7', 'ignacio.lopez@empresa.com', '555-1035', TRUE),
   (1, 5, 'javier.cordero', 'javierDonquixote2023', 'DON-QUI4', 'javier.cordero@empresa.com', '555-1036', FALSE);
-
 
 
 INSERT INTO Alert (user_id, alert_text) VALUES
@@ -190,16 +190,46 @@ INSERT INTO Country (country_name) VALUES
 
 
 INSERT INTO City (city_name) VALUES
+  ('Gotham'),
+  ('Springfield'),
   ('CDMX'),
   ('Guadalajara'),
   ('Madrid'),
   ('Barceloa'),
   ('Tokyo'),
   ('Kyoto'),
-  ('Nuke Town'),
-  ('Reino de Simba'),
-  ('Pisos Picados'),
-  ('Bombardino Cocodrilo');
+  ('Brisbane'),
+  ('Zúrich'),
+  ('Melbourne'),
+  ('Montreal'),
+  ('Cracovia'),
+  ('Ciudad del Cabo'),
+  ('París'),
+  ('Roma'),
+  ('Berlín'),
+  ('Londres'),
+  ('Nueva York'),
+  ('Los Ángeles'),
+  ('Toronto'),
+  ('Vancouver'),
+  ('Buenos Aires'),
+  ('Sao Paulo'),
+  ('Lima'),
+  ('Bogotá'),
+  ('Nueva Delhi'),
+  ('Pekín'),
+  ('Seúl'),
+  ('Estocolmo'),
+  ('Oslo'),
+  ('Helsinki'),
+  ('Atenas'),
+  ('Lisboa'),
+  ('Estambul'),
+  ('Auckland'),
+  ('Dublín'),
+  ('Manila'),
+  ('Bangkok'),
+  ('Yakarta');
 
 
 INSERT INTO Route (id_origin_country, id_origin_city, id_destination_country, id_destination_city, router_index,
