@@ -1,6 +1,6 @@
 DROP DATABASE IF EXISTS CocoScheme;
 CREATE DATABASE CocoScheme;
-USE CocoScheme;
+CREATE DATABASE CocoScheme CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `Role` (
     role_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS Request_status (
 
 
 
-CREATE TABLE IF NOT EXISTS `Request` (
+CREATE TABLE IF NOT EXISTS Request (
     request_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     request_status_id INT DEFAULT 1,
