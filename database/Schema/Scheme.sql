@@ -120,6 +120,11 @@ CREATE TABLE IF NOT EXISTS `Receipt` (
     validation ENUM('Pendiente', 'Aprobado', 'Rechazado') DEFAULT 'Pendiente',
     submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     validation_date TIMESTAMP,
+    
+    pdf_file_id VARCHAR(24) NULL,
+    pdf_file_name VARCHAR(255) NULL,
+    xml_file_id VARCHAR(24) NULL,
+    xml_file_name VARCHAR(255) NULL,
 
     FOREIGN KEY (receipt_type_id) REFERENCES Receipt_Type(receipt_type_id),
     FOREIGN KEY (request_id) REFERENCES Request(request_id)
