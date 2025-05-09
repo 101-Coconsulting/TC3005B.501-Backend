@@ -33,3 +33,29 @@ export async function getUserData(userId) {
     connection.release();
   }
 }
+
+/**
+ * Get user by username
+ * @param {string} username - Username
+ * @returns {Promise<Object>} - User data
+ */
+export async function getUserUsername(username) {
+  const connection = await db.getConnection();
+  try {
+    const rows = await connection.query(
+      `SELECT 
+        u.user_name, 
+        u.password, 
+        r.role_name 
+      FROM User u
+      JOIN Role r ON u.role_id = r.role_id
+      WHERE u.user_name = ?`,
+      [username]
+    );
+
+    return rows[0];
+
+  } finally {
+    connection.release();
+  }
+}
