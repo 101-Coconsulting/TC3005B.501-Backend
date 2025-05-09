@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const authenticateToken = (req, res, next) => {
+export const authenticateToken = (req, res, next) => {
     const token = req.headers.authorization;
     if (token) {
         jwt.verify(token.split(' ')[1], process.env.JWT_SECRET, (err, decoded) => {
@@ -15,5 +15,3 @@ const authenticateToken = (req, res, next) => {
         res.status(401).json({ error: 'Token was not provided' });
     }
 };
-
-module.exports = authenticateToken;
