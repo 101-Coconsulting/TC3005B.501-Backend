@@ -1,4 +1,3 @@
-import { email } from 'react-admin';
 import * as userModel from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
 
