@@ -23,9 +23,13 @@ export async function getUserById(userId) {
 export async function authenticateUser(username, password) {
   try {
     const user = await userModel.getUserUsername(username);
-    const isMatch = user.password === password;
+    
+    if (!user || user.length === 0) {
+      throw new Error("Invalid username or password");
+    }
 
-    if (!user || !isMatch) {
+    const isMatch = user.password === password;
+    if (!isMatch) {
       throw new Error("Invalid username or password");
     }
 
@@ -38,7 +42,7 @@ export async function authenticateUser(username, password) {
     return {
       token,
       role: user.role_name,
-      name: user.user_name
+      username: user.user_name
     };
   } catch (error) {
     throw new Error(`Authentication failed: ${error.message}`);
