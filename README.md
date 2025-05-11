@@ -1,5 +1,6 @@
 # TC3005B.501-Backend
-API y Base de Datos para la conexión y el funcionamiento del portal del sistema gestor de viajes desarrollado en la clase TC3005B por el grupo 501.
+
+API and Database for the conection and the functioning of the trip management system portal developed in course TC3005B by group 501.
 
 ## Getting Started
 
