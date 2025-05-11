@@ -1,17 +1,5 @@
 import * as userService from '../services/userService.js';
 
-
-function handleError(res, error, defaultMessage) {
-  console.error(defaultMessage, error);
-
-  if (error.status) {
-    return res.status(error.status).json({ error: error.message });
-  }
-
-  return res.status(500).json({ error: defaultMessage });
-}
-
-
 export async function getUserData(req, res) {
   try {
     console.log('Request received for user ID:', req.params.user_id);
@@ -32,7 +20,8 @@ export async function getUserData(req, res) {
 
     return res.status(200).json(userData);
   } catch (error) {
-    return handleError(res, error, 'Internal server error retrieving user data');
+    console.error('Error retrieving user data', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
@@ -70,7 +59,8 @@ export async function createUser(req, res) {
       user_id: result.user_id
     });
   } catch (error) {
-    return handleError(res, error, 'Internal server error during user creation');
+    console.error('Error creating user', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
