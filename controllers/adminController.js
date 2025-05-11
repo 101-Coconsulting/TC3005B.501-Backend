@@ -37,30 +37,12 @@ export const getUserList = async (req, res) => {
  */
 const createUser = async (req, res) => {
     try {
-        console.log('Create user request received in admin controller');
-
-        const userData = {
-            role_id: parseInt(req.body.role_id),
-            department_id: parseInt(req.body.department_id),
-            user_name: req.body.user_name,
-            password: req.body.password,
-            workstation: req.body.workstation,
-            email: req.body.email,
-            phone_number: req.body.phone_number
-        };
-
-        console.log('Processing user creation for:', userData.user_name);
-
-        // Use adminService which uses userService for validation and creation
-        const result = await adminService.createUser(userData);
-
-        console.log('User created successfully:', result.user_id);
-        return res.status(201).json({
-            message: 'User created successfully',
-            user_id: result.user_id
-        });
+      const userData = req.body;
+      const newUser = await adminService.createUser(userData);
+      return res.status(201).json({ message: 'User created succesfully', user: newUser });
     } catch (error) {
-        return handleError(res, error, 'Internal server error during user creation');
+      console.error('Error creating user:', error.message);
+      return res.status(500).json({ error: 'Internal server error' });
     }
 }
 
