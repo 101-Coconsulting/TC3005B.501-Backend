@@ -6,7 +6,7 @@ Queries to the DB related to travel agent actions
 import pool from "../database/config/db.js";
 
 const TravelAgent = {
-    // Update request status to 4 (Atencion agencia de viaje, might be changed to 5)
+    // Update request status to 6 
     async attendTravelRequest(requestId) {
         let conn;
         try {

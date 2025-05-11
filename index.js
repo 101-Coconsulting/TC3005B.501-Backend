@@ -6,7 +6,8 @@ import applicantRoutes from "./routes/applicantRoutes.js";
 import authorizerRoutes from './routes/authorizerRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import travelAgentRoutes from "./routes/travelAgentRoutes.js";
-import adminRoutes from './routes/adminRoutes.js'
+import adminRoutes from './routes/adminRoutes.js';
+import accountsPayableRoutes from './routes/accountsPayableRoutes.js';
 
 // Import required modules
 import fs from "fs";
@@ -23,6 +24,7 @@ app.use("/api/authorizer", authorizerRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/travel-agent", travelAgentRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/accounts-payable", accountsPayableRoutes);
 
 // Basic route
 app.get("/", (req, res) => {
