@@ -26,14 +26,6 @@ export async function getUserData(req, res) {
 }
 
 
-export function isAdmin(req, res, next) {
-
-  console.log('Checking admin permissions');
-  
-  next();
-}
-
-
 export async function createUser(req, res) {
   try {
     console.log('Create user request received');
@@ -67,6 +59,5 @@ export async function createUser(req, res) {
 // Export default object with all controller functions for named imports
 export default {
   getUserData,
-  isAdmin,
   createUser
 };
