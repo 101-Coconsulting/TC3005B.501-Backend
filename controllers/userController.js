@@ -31,44 +31,7 @@ export async function getUserData(req, res) {
   }
 }
 
-/**
- * Create a new user
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns {Object} JSON response with created user data
- */
-export async function createUser(req, res) {
-  try {
-    console.log('Create user request received');
-
-    const userData = {
-      role_id: parseInt(req.body.role_id),
-      department_id: parseInt(req.body.department_id),
-      user_name: req.body.user_name,
-      password: req.body.password,
-      workstation: req.body.workstation,
-      email: req.body.email,
-      phone_number: req.body.phone_number
-    };
-
-    console.log('Processing user creation for:', userData.user_name);
-
-    // Call service to create user
-    const result = await userService.createUser(userData);
-
-    console.log('User created successfully:', result.user_id);
-    return res.status(201).json({
-      message: 'User created successfully',
-      user_id: result.user_id
-    });
-  } catch (error) {
-    console.error('Error creating user', error);
-    return res.status(500).json({ error: 'Internal server error' });
-  }
-}
-
 // Export default object with all controller functions for named imports
 export default {
-  getUserData,
-  createUser
+  getUserData
 };
