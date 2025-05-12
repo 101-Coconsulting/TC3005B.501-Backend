@@ -4,9 +4,11 @@ Admin services
 
 import { parse } from 'csv-parse';
 import fs, { unlink } from 'fs';
+import bcrypt from 'bcrypt';
 import Admin from "../models/adminModel.js";
 
 const requiredColumns = ['role_name', 'department_name', 'user_name', 'password', 'workstation', 'email'];
+const saltRounds = 10;
 
 const validateUserRow = async (rowData, rowNumber) => {
     const rowErrors = [];
@@ -47,6 +49,9 @@ const getForeignKeyValues = async (rowData, rowNumber) => {
         } else {
             userData.department_id = departmentId;
         }
+
+        const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
+        userData.password = hashedPassword;
 
     } catch (error) {
         rowErrors.push(`Error processing row ${rowNumber}`);
