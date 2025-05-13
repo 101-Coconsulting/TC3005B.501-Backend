@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS Alert (
 
     alert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (request_id) REFERENCES `Request`(request_id),
+    FOREIGN KEY (request_id) REFERENCES Request(request_id),
     FOREIGN KEY (message_id) REFERENCES AlertMessage(message_id)
 );
 
