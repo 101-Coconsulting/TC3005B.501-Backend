@@ -2,6 +2,7 @@
 Admin Controller
 */
 import * as adminService from "../services/adminService.js";
+import Admin from "../models/adminModel.js"
 
 export const getUserList = async (req, res) => {
     try {
@@ -35,7 +36,12 @@ export const createUser = async (req, res) => {
     }
 }
 
+const createMultipleUsers = async(req, res) => {
+
+}
+
 export default {
     getUserList,
-    createUser
+    createUser,
+    createMultipleUsers
 };

@@ -1,3 +1,7 @@
+/*
+Admin services
+ */
+
 import Admin from "../models/adminModel.js";
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
@@ -47,8 +51,12 @@ export async function getUserList() {
   }
 }
 
+const readCSV = async (file) => {
+
+}
 
 export default {
   createUser,
-  getUserList
+  getUserList,
+  readCSV
 };

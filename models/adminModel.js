@@ -2,6 +2,7 @@
 Admin Model
 */
 import db from '../database/config/db.js';
+import pool from '../database/config/db.js';
 
 const Admin = {
   async createUser(userData) {
