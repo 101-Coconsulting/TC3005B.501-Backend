@@ -40,11 +40,6 @@ const Admin = {
           userData.phone_number
         ]
       );
-
-      return {
-        user_id: result.insertId,
-        message: 'User created succesfully'
-      };
     } finally {
       connection.release();
     }
