@@ -5,7 +5,7 @@ const AES_SECRET_KEY = process.env.AES_SECRET_KEY;
 const AES_IV = process.env.AES_IV;
 
 function encrypt(data) {
-    const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(AES_SECRET_KEY), Buffer.from(AES_IV));
+  const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(AES_SECRET_KEY), Buffer.from(AES_IV));
   let encrypted = cipher.update(data, 'utf8', 'base64');
   encrypted += cipher.final('base64');
   return encrypted;
@@ -22,12 +22,16 @@ export async function createUser(userData) {
     const encryptedPhone = encrypt(userData.phone_number);
 
     const newUser = {
-      ...userData,
+      role_id: userData.role_id,
+      department_id: userData.department_id,
+      user_name: userData.user_name,
       password: hashedPassword,
+      workstation: userData.workstation,
       email: encryptedEmail,
       phone_number: encryptedPhone
     };
-
+    console.log(newUser);
+    
     return await Admin.createUser(newUser);
   } catch (error) {
     throw new Error(`Error creating user: ${error.message}`);
