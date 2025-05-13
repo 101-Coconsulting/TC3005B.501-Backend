@@ -70,11 +70,12 @@ const Authorizer = {
     async getAlerts(id, status_id, n) {
       let conn;
       const query =  `
-        SELECT Alert.alert_id, User.user_name, Alert.request_id, Alert.alert_text, DATE(Alert.alert_date) AS alert_date, TIME(Alert.alert_date) AS alert_time
+        SELECT Alert.alert_id, User.user_name, Alert.request_id, AlertMessage.message_text, DATE(Alert.alert_date) AS alert_date, TIME(Alert.alert_date) AS alert_time
         FROM Alert
         INNER JOIN Request ON Alert.request_id = Request.request_id
         INNER JOIN User ON Request.user_id = User.user_id
-        INNER JOIN Request_status ON Request.request_status_id = Request_status.request_status_id
+        INNER JOIN Request_status ON Request.request_status_id = Request_status.request_status_id,
+        INNER JOIN AlertMessage ON Alert.message_id = AlertMessage.message_id
         WHERE User.department_id = ? AND Request_status.request_status_id = ?
         ${n == 0 ? 'ORDER BY alert_date DESC;' : 'ORDER BY alert_date DESC LIMIT ?;'}`;
       try {
