@@ -11,8 +11,15 @@ BEGIN
     END IF;
 END$$
 
+CREATE OR REPLACE TRIGGER CreateAlert
+AFTER INSERT ON Request
+FOR EACH ROW
+BEGIN
+    INSERT INTO Alert (request_id, message_id) VALUES
+        (NEW.request_id, NEW.request_status_id);
+END$$
 
-CREATE OR REPLACE TRIGGER DeleteAlert
+CREATE OR REPLACE TRIGGER ManageAlertAfterRequestUpdate
 AFTER UPDATE ON Request
 FOR EACH ROW
 BEGIN
