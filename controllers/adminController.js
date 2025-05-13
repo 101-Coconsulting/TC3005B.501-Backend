@@ -24,11 +24,11 @@ export const getUserList = async (req, res) => {
 }
 
 
-const createUser = async (req, res) => {
+export const createUser = async (req, res) => {
     try {
       const userData = req.body;
       const newUser = await adminService.createUser(userData);
-      return res.status(201).json({ message: 'User created succesfully', user: newUser });
+      return res.status(201).json({ message: 'User created succesfully'});
     } catch (error) {
       console.error('Error creating user:', error.message);
       return res.status(500).json({ error: 'Internal server error' });
