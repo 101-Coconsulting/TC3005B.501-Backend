@@ -62,6 +62,7 @@ const AccountsPayable = {
             r.receipt_id,
             r.request_id,
             r.validation,
+            r.amount,
             rt.receipt_type_name
         FROM
             Receipt r
@@ -79,6 +80,7 @@ const AccountsPayable = {
             r.receipt_id,
             r.request_id,
             r.validation,
+            r.amount,
             rt.receipt_type_name
         FROM
             Receipt r
