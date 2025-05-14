@@ -4,22 +4,6 @@ Admin Controller
 import * as adminService from "../services/adminService.js";
 
 /**
- * Error handler function to standardize error responses
- * @param {Object} res - Express response object
- * @param {Object} error - Error object
- * @param {string} defaultMessage - Default error message
- */
-function handleError(res, error, defaultMessage) {
-  console.error(defaultMessage, error);
-
-  if (error.status) {
-    return res.status(error.status).json({ error: error.message });
-  }
-
-  return res.status(500).json({ error: defaultMessage });
-}
-
-/**
  * Get list of all users
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
@@ -39,8 +23,9 @@ export const getUserList = async (req, res) => {
             department_name: user.department_name
         }));
         res.status(200).json(formattedUsers);
-    } catch(err) {
-        return handleError(res, err, "Internal server error retrieving user list");
+    } catch(error) {
+        console.error('Error getting user list:', error.message);
+        return res.status(500).json({ error: 'Internal server error'});
     }
 }
 
