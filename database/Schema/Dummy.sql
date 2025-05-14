@@ -132,22 +132,6 @@ INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_f
   (10, 10, 'Solicitud de ejemplo 10', 400.00, 380.00, 20, FALSE);
 
 
-/*
-INSERT INTO Alert (request_id, message_id) VALUES
-  (1, 1),
-  (1, 1),
-  (2, 2),
-  (3, 1),
-  (4, 3),
-  (5, 1),
-  (6, 2),
-  (7, 2),
-  (8, 3),
-  (9, 1),
-  (10, 2);
-*/
-
-
 INSERT INTO Country (country_name) VALUES
   ('MauriLand'),
   ('España'),
