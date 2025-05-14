@@ -37,8 +37,8 @@ const Applicant = {
             conn = await pool.getConnection();
             const rows = await conn.query(
                 `
-                SELECT d.department_name, d.costs_center FROM user u
-                JOIN department d
+                SELECT d.department_name, d.costs_center FROM User u
+                JOIN Department d
                 ON u.department_id = d.department_id
                 WHERE u.user_id = ?;
             `,
