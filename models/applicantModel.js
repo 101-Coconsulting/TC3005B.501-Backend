@@ -568,31 +568,53 @@ const Applicant = {
     },
 
     /**
-     * Inserts multiple receipts in a single query. Returns the number of rows inserted.
-     * @param {Array<{receipt_type_id: number, request_id: number}>} receipts
-     * @returns {number} How many rows were inserted
+     * Inserts multiple receipts using receipt_type_name and amount.
+     * @param {Array<{receipt_type_name: string, request_id: number, amount: number}>} receipts
+     * @returns {number} number of inserted rows
      */
     async createExpenseBatch(receipts) {
-        const conn = await pool.getConnection();
-        try {
-            const placeholders = receipts.map(() => "(?, ?)").join(", ");
-            const params = receipts.flatMap((r) => [
-                r.receipt_type_id,
-                r.request_id,
-            ]);
+    const conn = await pool.getConnection();
+    try {
+        await conn.beginTransaction();
 
-            const result = await conn.query(
-                `INSERT INTO Receipt (receipt_type_id, request_id)
-         VALUES ${placeholders}`,
-                params,
-            );
+        const insertedRows = [];
 
-            // result.affectedRows is the number of rows actually inserted
-            return result.affectedRows;
-        } finally {
-            conn.release();
+        for (const r of receipts) {
+        // Get receipt_type_id from receipt_type_name
+        const [typeResult] = await conn.query(
+            `SELECT receipt_type_id FROM Receipt_Type WHERE receipt_type_name = ?`,
+            [r.receipt_type_name]
+        );
+
+        if (!typeResult || !typeResult.receipt_type_id) {
+            throw {
+            code: "NOT_FOUND",
+            message: `Receipt type '${r.receipt_type_name}' not found`,
+            };
         }
-    },
+
+        const receipt_type_id = typeResult.receipt_type_id;
+
+        const result = await conn.query(
+            `INSERT INTO Receipt (receipt_type_id, request_id, amount)
+            VALUES (?, ?, ?)`,
+            [receipt_type_id, r.request_id, r.amount]
+        );
+
+        insertedRows.push(result);
+        }
+
+        await conn.commit();
+        return insertedRows.length;
+    } catch (err) {
+        await conn.rollback();
+        throw err;
+    } finally {
+        conn.release();
+    }
+},
+
+
 };
 
 export default Applicant;

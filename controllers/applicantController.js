@@ -152,19 +152,19 @@ export const cancelTravelRequest = async (req, res) => {
 };
 
 export async function createExpenseValidationHandler(req, res) {
-    try {
-        const count = await createExpenseValidationBatch(req.body.receipts);
-        return res.status(201).json({
-            count,
-            message: "Expense receipts created successfully",
-        });
-    } catch (err) {
-        if (err.code === "BAD_REQUEST") {
-            return res.status(400).json({ error: err.message });
-        }
-        console.error("Error in createExpenseValidationHandler:", err);
-        return res.status(500).json({ error: "Internal server error" });
+  try {
+    const count = await createExpenseValidationBatch(req.body.receipts);
+    return res.status(201).json({
+      count,
+      message: "Expense receipts created successfully",
+    });
+  } catch (err) {
+    if (err.code === "BAD_REQUEST" || err.code === "NOT_FOUND") {
+      return res.status(400).json({ error: err.message });
     }
+    console.error("Error in createExpenseValidationHandler:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 }
 
 export const getCompletedRequests = async (req, res) => {
