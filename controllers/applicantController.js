@@ -159,7 +159,7 @@ export async function createExpenseValidationHandler(req, res) {
       message: "Expense receipts created successfully",
     });
   } catch (err) {
-    if (err.code === "BAD_REQUEST" || err.code === "NOT_FOUND") {
+    if (err.code === "BAD_REQUEST") {
       return res.status(400).json({ error: err.message });
     }
     console.error("Error in createExpenseValidationHandler:", err);

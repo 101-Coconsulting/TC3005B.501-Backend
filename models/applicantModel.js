@@ -568,52 +568,35 @@ const Applicant = {
     },
 
     /**
-     * Inserts multiple receipts using receipt_type_name and amount.
-     * @param {Array<{receipt_type_name: string, request_id: number, amount: number}>} receipts
+     * Inserts multiple receipts using receipt_type_id and amount.
+     * @param {Array<{receipt_type_id: number, request_id: number, amount: number}>} receipts
      * @returns {number} number of inserted rows
      */
     async createExpenseBatch(receipts) {
-    const conn = await pool.getConnection();
-    try {
-        await conn.beginTransaction();
+        const conn = await pool.getConnection();
+        try {
+            await conn.beginTransaction();
 
-        const insertedRows = [];
+            const insertedRows = [];
 
-        for (const r of receipts) {
-        // Get receipt_type_id from receipt_type_name
-        const [typeResult] = await conn.query(
-            `SELECT receipt_type_id FROM Receipt_Type WHERE receipt_type_name = ?`,
-            [r.receipt_type_name]
-        );
+            for (const r of receipts) {
+            const result = await conn.query(
+                `INSERT INTO Receipt (receipt_type_id, request_id, amount)
+                VALUES (?, ?, ?)`,
+                [r.receipt_type_id, r.request_id, r.amount]
+            );
+            insertedRows.push(result);
+            }
 
-        if (!typeResult || !typeResult.receipt_type_id) {
-            throw {
-            code: "NOT_FOUND",
-            message: `Receipt type '${r.receipt_type_name}' not found`,
-            };
+            await conn.commit();
+            return insertedRows.length;
+        } catch (err) {
+            await conn.rollback();
+            throw err;
+        } finally {
+            conn.release();
         }
-
-        const receipt_type_id = typeResult.receipt_type_id;
-
-        const result = await conn.query(
-            `INSERT INTO Receipt (receipt_type_id, request_id, amount)
-            VALUES (?, ?, ?)`,
-            [receipt_type_id, r.request_id, r.amount]
-        );
-
-        insertedRows.push(result);
-        }
-
-        await conn.commit();
-        return insertedRows.length;
-    } catch (err) {
-        await conn.rollback();
-        throw err;
-    } finally {
-        conn.release();
-    }
-},
-
+    },
 
 };
 
