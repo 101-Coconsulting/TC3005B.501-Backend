@@ -60,7 +60,7 @@ const AccountsPayable = {
                 r.receipt_id,
                 r.request_id,
                 r.validation,
-
+                r.amount,
                 rt.receipt_type_name
             FROM
                 Receipt r
@@ -97,7 +97,7 @@ const AccountsPayable = {
                 Expenses: rows.map(row => ({
                     receipt_id: row.receipt_id,
                     receipt_type_name: row.receipt_type_name,
-                    //amount: row.amount, // Now including the amount field
+                    amount: row.amount, // Now including the amount field
                     validation: row.validation // We use the validation as Expense_Status
                 }))
             };
