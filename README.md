@@ -109,6 +109,43 @@ In order to properly setup MariaDB, the following steps are required:
         mariadb < Triggers.sql
         ```
 
+### Environment Variables
+
+Finally, it is crucial that a local `.env` file is created. Based off of the [`.env.example`](/.env.example) file provided, which includes all necessary environment variables to be set in order for the server to be able to connect to the `mariadb` database, as well as the required JSON Web Token(JWT) information required for verifying authorized requests and encryption.
+
+1. Go to the [root directory](/) of your local repository.
+2. Create your `.env` file based off of the [`.env.example`](/.env.example) file.
+    ```sh
+    cp .env.example .env
+    ```
+3. Edit the newly created `.env` file, and edit the required variables based on your previous [`mariadb` configuration](#configuring-the-database):
+    ```sh
+    # Server Configuration
+    PORT=3000
+    NODE_ENV=development
+
+    # Database Configuration
+    DB_HOST=localhost
+    DB_PORT=27017
+    DB_NAME=travel_management  # Change this
+    DB_USER=username  # Change this
+    DB_PASSWORD=password  # Change this
+
+    # Root User
+    DB_ROOT_USER=root_username  # Change this
+    DB_ROOT_PASSWORD=root_password  # Change this
+
+    # JWT Configuration
+    JWT_SECRET=your_jwt_secret_key  # Change this
+    JWT_EXPIRES_IN=1d
+
+    # API Keys (if needed)
+    # API_KEY=your_api_key
+
+    # Other Configuration
+    # CORS_ORIGIN=http://localhost:3000
+    ```
+
 ### Running
 
 To run the Backend, ensure the `mariadb` server is running, and utilize whichever package manager you used for dependencies to run the project.
