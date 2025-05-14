@@ -35,7 +35,27 @@ const attendTravelRequest = async (req, res) => {
     }
 };
 
+const authorizeExpenseValidation = async (req, res) => {
+    const { id: request_id, status_id } = req.params;
+  
+    try {
+        console.log("Entro al try :D");
+        const { new_status } = await AccountsPayable.authorizeExpenseValidation(Number(request_id), Number(status_id));
+        return res.status(200).json({
+            message: "Request status updated successfully",
+            new_status
+        });
+    } catch (err) {
+      if (err.status) {
+        return res.status(err.status).json({ error: err.message });
+      }
+      console.error("Unexpected error in authorizeTravelRequest controller:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+}
+
 // exports for the router
 export default {
     attendTravelRequest,
+    authorizeExpenseValidation,
 };
