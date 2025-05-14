@@ -61,6 +61,7 @@ const Admin = {
         conn.release();
       }
     }
+  }
 };
 
 export default Admin;
