@@ -2,6 +2,7 @@
 Admin Controller
 */
 import * as adminService from "../services/adminService.js";
+import Admin from "../models/adminModel.js";
 
 /**
  * Get list of all users
@@ -47,8 +48,6 @@ export const createUser = async (req, res) => {
 }
 
 export default {
-    createUser,
-    createMultipleUsers,
     getUserList,
     createUser
 };
