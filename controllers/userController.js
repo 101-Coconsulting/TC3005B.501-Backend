@@ -32,30 +32,6 @@ export async function getUserData(req, res) {
 }
 
 /**
- * Middleware to check if user is an admin
- * This function will be further implemented with actual authentication logic
- * Currently acts as a placeholder for future authentication
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @param {Function} next - Express next middleware function
- */
-export function isAdmin(req, res, next) {
-  // For demonstration purposes, we'll add a placeholder
-  // In a real implementation, this would check session/token data
-  // and verify the user's role against the database
-
-  // TODO: Replace with actual implementation that:
-  // 1. Verifies user is authenticated (token/session)
-  // 2. Checks if the user has admin privileges (role_id)
-
-  console.log('Checking admin permissions');
-
-  // For now, allow the request to proceed
-  // This would be replaced with actual auth logic later
-  next();
-}
-
-/**
  * Create a new user
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
@@ -94,6 +70,5 @@ export async function createUser(req, res) {
 // Export default object with all controller functions for named imports
 export default {
   getUserData,
-  isAdmin,
   createUser
 };
