@@ -37,10 +37,8 @@ const attendTravelRequest = async (req, res) => {
 
 const getExpenseValidations = async (req, res) => {
     const request_id = Number(req.params.request_id);
-    const status = req.params.status;
 
     console.log("Request ID:", request_id);
-    console.log("Status:", status);
 
     try {
         // Check if request exists
@@ -51,8 +49,7 @@ const getExpenseValidations = async (req, res) => {
 
         // Get expense validations
         const validations = await AccountsPayable.getExpenseValidations(
-            request_id,
-            status
+            request_id
         );
 
         if (validations) {

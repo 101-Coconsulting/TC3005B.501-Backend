@@ -48,51 +48,31 @@ const AccountsPayable = {
         }
     },
 
-    async getExpenseValidations(requestId, status) {
+    async getExpenseValidations(requestId) {
         let conn;
         try {
             conn = await pool.getConnection();
 
             let query;
-            // Status will be done as a 'filter' for the query
-            // If status is 'Todos', we will not filter by validation
-            if (status === 'Todos') {
-                query = `
-        SELECT
-            r.receipt_id,
-            r.request_id,
-            r.validation,
-            r.amount,
-            rt.receipt_type_name
-        FROM
-            Receipt r
-        JOIN
-            Receipt_type rt ON r.receipt_type_id = rt.receipt_type_id
-        WHERE
-            r.request_id = ?
-    `;
-            }
-            // If status is not 'Todos', we will filter by validation
-            // to get only the receipts with the given status
-            else {
-                query = `
-        SELECT
-            r.receipt_id,
-            r.request_id,
-            r.validation,
-            r.amount,
-            rt.receipt_type_name
-        FROM
-            Receipt r
-        JOIN
-            Receipt_type rt ON r.receipt_type_id = rt.receipt_type_id
-        WHERE
-            r.request_id = ? AND r.validation = ?
-    `;
-            }
 
-            // Execute the query with the requestId and status
-            const rows = await conn.query(query, [requestId, status]);
+            query = `
+            SELECT
+                r.receipt_id,
+                r.request_id,
+                r.validation,
+
+                rt.receipt_type_name
+            FROM
+                Receipt r
+            JOIN
+                Receipt_type rt ON r.receipt_type_id = rt.receipt_type_id
+            WHERE
+                r.request_id = ?
+        `;
+
+            // Execute the query with the requestId
+            const rows = await conn.query(query, [requestId]);
+
             if (rows.length === 0) {
                 return {
                     request_id: requestId,
@@ -101,20 +81,24 @@ const AccountsPayable = {
             }
 
             // Check if any of the rows have validation 'Pendiente'
-            // If any of the rows have validation 'Pendiente', set expense_status to 'Pendiente'
             const hasPendingValidation = rows.some(row => row.validation === 'Pendiente');
-            const expense_status = hasPendingValidation ? 'Pendiente' : 'Aprobado';
+            const expense_status = hasPendingValidation ? 'Pendiente' : 'Sin Pendientes';
 
+            // Sort the rows based on the validation status
+            rows.sort((a, b) => {
+                // Define the order for sorting
+                const statusOrder = { "Pendiente": 1, "Rechazado": 2, "Aprobado": 3 };
+                return statusOrder[a.validation] - statusOrder[b.validation];
+            });
             // Format the response
-            // We will return the request_id, status and the list of expenses
             const formatted = {
                 request_id: requestId,
                 status: expense_status,
                 Expenses: rows.map(row => ({
                     receipt_id: row.receipt_id,
                     receipt_type_name: row.receipt_type_name,
-                    amount: row.amount,
-                    Expense_Status: row.validation
+                    //amount: row.amount, // Now including the amount field
+                    validation: row.validation // We use the validation as Expense_Status
                 }))
             };
 
