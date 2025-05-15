@@ -1,3 +1,4 @@
+import { application } from 'express';
 import { body, param, validationResult } from 'express-validator';
 
 /*
@@ -13,8 +14,12 @@ const validateUserId = [
  * (Sosa)
  */
 const validateTravelRequest = [
-
-];
+  body(['user_id', 'request_status_id'].isNumeric().notEmpty().withMessage('Id must be a valid number')),
+  body(['requested_fee', 'imposed_fee'].isFloat({min: 0}).notEmpty().withMessage('The minimum allowed fee is 0')),
+  body(['origin_country_name', 'origin_city_name', 'destination_country_name', 'destination_city_name'].isString().notEmpty().withMessage('City and Country must not be empty')),
+  body(['beginning_date', 'beginning_time', 'endind_date', 'ending_time'].isString().notEmpty().withMessage('Start and finish dates and times must not be empty')),
+  body(['plane_needed', 'hotal_needed'].isBoolean().notEmpty().withMessage('Please select of either hotel or plane are needed'))
+]
 
 /*
  * This will validate the receipts as they are created
@@ -40,5 +45,9 @@ export default {
   validateUserId,
   validateTravelRequest,
   validateExpenseReceipts,
+<<<<<<< HEAD
+=======
+  validateAuthorizer,
+>>>>>>> 0e0d34ba148d0db15433bf3859ea8a56313d23e6
   validateInputs
 };
