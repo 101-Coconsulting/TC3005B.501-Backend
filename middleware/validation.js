@@ -13,34 +13,13 @@ const validateUserId = [
  * This will validate the fields in the Travel Request
  * (Sosa)
  */
-const validateTravelRequest = validationRequest => {
-  return async (req, res, next) => {
-    for (const validation of validationRequest) {
-      const result = await validation.run(req);
-      if(!result.isEmpty()){
-        return res.status(400).json({errors: result.array()});
-      }
-    }
-
-    next();
-  };
-};
-
-app.post('/create-travel-request/:id', validateTravelRequest([
-  body('router_index').isInt(),
-  body('notes').isString(),
-  body('requested_fee').isString({min: 0}),
-  body('imposed_fee').isInt({min: 0}),
-  body('origin_country_name').isString(),
-  body('origin_city_name').isString(),
-  body('destination_country_name').isString(),
-  body('beginning_date').isString(),
-  body('beginning_time').isString(),
-  body('ending_date').isString(),
-  body('eding_time').isString(),
-  body('plane_needed').isBoolean(),
-  body('hotel_needed').isBoolean()
-]));
+const validateTravelRequest = [
+  body(['user_id', 'request_status_id'].isNumeric().notEmpty().withMessage('Id must be a valid number')),
+  body(['requested_fee', 'imposed_fee'].isFloat({min: 0}).notEmpty().withMessage('The minimum allowed fee is 0')),
+  body(['origin_country_name', 'origin_city_name', 'destination_country_name', 'destination_city_name'].isString().notEmpty().withMessage('City and Country must not be empty')),
+  body(['beginning_date', 'beginning_time', 'endind_date', 'ending_time'].isString().notEmpty().withMessage('Start and finish dates and times must not be empty')),
+  body(['plane_needed', 'hotal_needed'].isBoolean().notEmpty().withMessage('Please select of either hotel or plane are needed'))
+]
 
 /*
  * This will validate the receipts as they are created
@@ -54,9 +33,6 @@ const validateExpenseReceipts = [
  * This will validate the fields received in when declining or accepting a request
  * (Sosa)
  */
-const validateAuthorizer = [
-
-];
 
 /*
  * This reviews any errors received in previous validations
