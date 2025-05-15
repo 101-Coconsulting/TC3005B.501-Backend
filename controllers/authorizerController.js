@@ -23,7 +23,7 @@ const authorizeTravelRequest = async (req, res) => {
 };
 
 const declineTravelRequest = async (req, res) => {
-  const { id: request_id, user_id } = req.params;
+  const { request_id, user_id } = req.params;
 
   try {
     const result = await authorizerServices.declineRequest(Number(request_id), Number(user_id));

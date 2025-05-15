@@ -47,7 +47,8 @@ const Authorizer = {
       }
     }
   },
-  async declineTravelRequest(id) {
+
+  async declineTravelRequest(request_id) {
     let conn;
     const query = `
             UPDATE Request
@@ -56,7 +57,9 @@ const Authorizer = {
         `;
     try {
       conn = await pool.getConnection();
-      const rows = await conn.query(query, [id]);
+
+      const rows = await conn.query(query, [request_id]);
+
       return true;
     } catch (error) {
       console.error('Error getting completed requests:', error);
