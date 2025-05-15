@@ -460,8 +460,8 @@ const Applicant = {
         let conn;
         const query = `
         SELECT request_id,
+            origin_countries,
             destination_countries,
-            destination_cities,
             beginning_dates,
             ending_dates,
             creation_date,
