@@ -2,15 +2,14 @@ DROP DATABASE IF EXISTS CocoScheme;
 CREATE DATABASE CocoScheme CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE CocoScheme;
 
-
-CREATE TABLE IF NOT EXISTS Role (
+CREATE TABLE IF NOT EXISTS `Role` (
     role_id INT PRIMARY KEY AUTO_INCREMENT,
-    role_name VARCHAR(20) NOT NULL
+    role_name VARCHAR(20) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Department (
     department_id INT PRIMARY KEY AUTO_INCREMENT,
-    department_name VARCHAR(20) NOT NULL,
+    department_name VARCHAR(20) UNIQUE NOT NULL,
     costs_center VARCHAR(20),
     active BOOL NOT NULL DEFAULT TRUE
 );
@@ -30,21 +29,21 @@ CREATE TABLE IF NOT EXISTS `User`(
     password VARCHAR(60) NOT NULL,
     workstation VARCHAR(20) NOT NULL,
     email VARCHAR(254) UNIQUE NOT NULL,
-    phone_number VARCHAR(20),
+    phone_number VARCHAR(254),
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     active BOOL NOT NULL DEFAULT TRUE,
-
-    FOREIGN KEY (role_id) REFERENCES Role(role_id),
+  
+    FOREIGN KEY (role_id) REFERENCES `Role`(role_id),
     FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
 
 CREATE TABLE IF NOT EXISTS Request_status (
     request_status_id INT PRIMARY KEY AUTO_INCREMENT,
-    status VARCHAR(30) NOT NULL
+    status VARCHAR(30) UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `Request` (
+CREATE TABLE IF NOT EXISTS Request (
     request_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     request_status_id INT DEFAULT 1,
@@ -68,21 +67,21 @@ CREATE TABLE IF NOT EXISTS Alert (
 
     alert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (request_id) REFERENCES `Request`(request_id),
+    FOREIGN KEY (request_id) REFERENCES Request(request_id),
     FOREIGN KEY (message_id) REFERENCES AlertMessage(message_id)
 );
 
 CREATE TABLE IF NOT EXISTS Country (
     country_id INT PRIMARY KEY AUTO_INCREMENT,
-    country_name VARCHAR(60) NOT NULL
+    country_name VARCHAR(60) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS City (
     city_id INT PRIMARY KEY AUTO_INCREMENT,
-    city_name VARCHAR(200) NOT NULL
+    city_name VARCHAR(200) UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Route (
+CREATE TABLE IF NOT EXISTS `Route` (
     route_id INT PRIMARY KEY AUTO_INCREMENT,
     id_origin_country INT,
     id_origin_city INT,
@@ -109,22 +108,23 @@ CREATE TABLE IF NOT EXISTS Route_Request (
     route_id INT,
 
     FOREIGN KEY (request_id) REFERENCES Request(request_id),
-    FOREIGN KEY (route_id) REFERENCES Route(route_id)
+    FOREIGN KEY (route_id) REFERENCES `Route`(route_id)
 );
-
-
 
 CREATE TABLE IF NOT EXISTS Receipt_Type (
     receipt_type_id INT PRIMARY KEY AUTO_INCREMENT,
-    receipt_type_name VARCHAR(20) NOT NULL
+    receipt_type_name VARCHAR(20) UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `Receipt` (
+CREATE TABLE IF NOT EXISTS Receipt (
     receipt_id INT PRIMARY KEY AUTO_INCREMENT,
     receipt_type_id INT,
     request_id INT,
 
     validation ENUM('Pendiente', 'Aprobado', 'Rechazado') DEFAULT 'Pendiente',
+    amount FLOAT NOT NULL,
+    refund BOOL DEFAULT TRUE,
+
     submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     validation_date TIMESTAMP,
 

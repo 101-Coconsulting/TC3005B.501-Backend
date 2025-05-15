@@ -1,15 +1,6 @@
 USE CocoScheme;
 
-INSERT INTO Receipt_Type (receipt_type_name) VALUES
-    ('Hospedaje'),
-    ('Comida'),
-    ('Transporte'),
-    ('Caseta'),
-    ('Autobús'),
-    ('Vuelo'),
-    ('Otro');
-
-INSERT INTO Role (role_name) VALUES
+INSERT INTO `Role` (role_name) VALUES
     ('Solicitante'),
     ('Agencia de viajes'),
     ('Cuentas por pagar'),
@@ -37,3 +28,12 @@ INSERT INTO Request_status (status) VALUES
     ('Finalizado'),
     ('Cancelado'),
     ('Rechazado');
+
+INSERT INTO Receipt_Type (receipt_type_name) VALUES
+    ('Hospedaje'),
+    ('Comida'),
+    ('Transporte'),
+    ('Caseta'),
+    ('Autobús'),
+    ('Vuelo'),
+    ('Otro');

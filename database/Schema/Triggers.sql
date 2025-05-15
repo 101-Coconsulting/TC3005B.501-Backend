@@ -3,7 +3,7 @@ USE CocoScheme;
 DELIMITER $$
 
 CREATE OR REPLACE TRIGGER DeactivateRequest
-BEFORE UPDATE ON `Request`
+BEFORE UPDATE ON Request
 FOR EACH ROW
 BEGIN
     IF NEW.request_status_id IN (9, 10) THEN
@@ -12,7 +12,7 @@ BEGIN
 END$$
 
 CREATE OR REPLACE TRIGGER CreateAlert
-AFTER INSERT ON `Request`
+AFTER INSERT ON Request
 FOR EACH ROW
 BEGIN
     INSERT INTO Alert (request_id, message_id) VALUES
@@ -20,7 +20,7 @@ BEGIN
 END$$
 
 CREATE OR REPLACE TRIGGER ManageAlertAfterRequestUpdate
-AFTER UPDATE ON `Request`
+AFTER UPDATE ON Request
 FOR EACH ROW
 BEGIN
     IF NEW.request_status_id IN (8, 9, 10) THEN
