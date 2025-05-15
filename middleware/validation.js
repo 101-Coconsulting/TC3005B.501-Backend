@@ -6,7 +6,7 @@ import { body, param, validationResult } from 'express-validator';
  * (LuisDa)
  */
 const validateUserId = [
-
+  param(['id', 'user_id']).isNumeric().withMessage('The ID needs to be a valid number');
 ];
 
 /*
@@ -43,11 +43,6 @@ const validateExpenseReceipts = [
 ];
 
 /*
- * This will validate the fields received in when declining or accepting a request
- * (Sosa)
- */
-
-/*
  * This reviews any errors received in previous validations
  */
 const validateInputs = (req, res, next) => {
@@ -63,6 +58,5 @@ export default {
   validateUserId,
   validateTravelRequest,
   validateExpenseReceipts,
-  validateAuthorizer,
   validateInputs
 };
