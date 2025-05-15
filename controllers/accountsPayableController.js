@@ -6,7 +6,7 @@ Manages parameters and checks for CPP endpoints
 import AccountsPayable from "../models/accountsPayableModel.js";
 
 const attendTravelRequest = async (req, res) => {
-    const requestId = req.params.id;
+    const requestId = req.params.request_id;
 
     try {
         // Check if request exists
