@@ -45,9 +45,5 @@ export default {
   validateUserId,
   validateTravelRequest,
   validateExpenseReceipts,
-<<<<<<< HEAD
-=======
-  validateAuthorizer,
->>>>>>> 0e0d34ba148d0db15433bf3859ea8a56313d23e6
   validateInputs
 };
