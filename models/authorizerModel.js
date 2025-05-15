@@ -27,7 +27,7 @@ const Authorizer = {
     }
   },
 
-  async authorizeTravelRequest(id, status_id) {
+  async authorizeTravelRequest(request_id, status_id) {
     let conn;
     const query = `
             UPDATE Request
@@ -36,7 +36,7 @@ const Authorizer = {
         `;
     try {
       conn = await pool.getConnection();
-      const rows = await conn.query(query, [status_id, id]);
+      const rows = await conn.query(query, [status_id, request_id]);
       return rows;
     } catch (error) {
       console.error('Error getting completed requests:', error);
@@ -47,6 +47,7 @@ const Authorizer = {
       }
     }
   },
+
   async declineTravelRequest(request_id) {
     let conn;
     const query = `
@@ -56,7 +57,9 @@ const Authorizer = {
         `;
     try {
       conn = await pool.getConnection();
+
       const rows = await conn.query(query, [request_id]);
+
       return true;
     } catch (error) {
       console.error('Error getting completed requests:', error);
