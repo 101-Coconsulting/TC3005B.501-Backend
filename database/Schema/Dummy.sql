@@ -39,19 +39,20 @@ INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_f
   (1, 2, 'Solicitud de viáticos por gira de supervisión.', 1300.00, 1200.00, 2.5, FALSE);
 
 
-INSERT INTO Alert (request_id, alert_text) VALUES
-  (1, 'Your password will expire in 3 days.'),
-  (1, 'XXXXXXXXXXXXXXXXXXX'),
-  (2, 'XXXXXXXXXXXXXXXXXXXX'),
-  (3, 'New login from an unknown device detected.'),
-  (4, ''),
-  (5, 'Lorem ipsumjjj.'),
-  (6, 'A very long alert message.  11?'),
-  (7, 'System maintenance scheduled at midnight. ffff'),
-  (8, 'Error processing your last request, please try again.'),
-  (9, 'Backup completed successfully.'),
-  (10, 'Test case for Request 10');
-
+/*
+INSERT INTO Alert (request_id, message_id) VALUES
+  (1, 1),
+  (1, 1),
+  (2, 2),
+  (3, 1),
+  (4, 3),
+  (5, 1),
+  (6, 2),
+  (7, 2),
+  (8, 3),
+  (9, 1),
+  (10, 2);
+*/
 
 
 INSERT INTO Country (country_name) VALUES

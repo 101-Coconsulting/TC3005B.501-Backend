@@ -22,7 +22,7 @@ const attendTravelRequest = async (req, res) => {
             return res.status(200).json({
                 message: "Travel request status updated successfully",
                 requestId: requestId,
-                newStatus: 5, // Accounts payable quote.
+                newStatus: 6, // Comprobación Estado de Viaje
             });
         } else {
             return res
