@@ -523,6 +523,7 @@ const Applicant = {
         r.notes,
         r.requested_fee,
         r.imposed_fee,
+        r.request_days,
         r.creation_date,
         r.last_mod_date,
         u.user_name,
