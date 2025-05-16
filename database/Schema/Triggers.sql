@@ -15,8 +15,10 @@ CREATE OR REPLACE TRIGGER CreateAlert
 AFTER INSERT ON Request
 FOR EACH ROW
 BEGIN
-    INSERT INTO Alert (request_id, message_id) VALUES
-        (NEW.request_id, NEW.request_status_id);
+    IF EXISTS (SELECT 1 FROM AlertMessage WHERE message_id = NEW.request_status_id) THEN
+        INSERT INTO Alert (request_id, message_id) VALUES
+            (NEW.request_id, NEW.request_status_id);
+    END IF;
 END$$
 
 CREATE OR REPLACE TRIGGER ManageAlertAfterRequestUpdate
