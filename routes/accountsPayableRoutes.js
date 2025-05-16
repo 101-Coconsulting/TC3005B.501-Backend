@@ -8,7 +8,7 @@ router.use((req, res, next) => {
 });
 
 // Route to attend a travel request (update status to 4)
-router.route("/attend-travel-request/:id")
+router.route("/attend-travel-request/:request_id")
     .put(AccountsPayableController.attendTravelRequest);
 
 export default router;

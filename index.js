@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3000;
 // Middleware for parsing JSON
 app.use(express.json());
 
-app.use("/api/applicants", applicantRoutes);
+app.use("/api/applicant", applicantRoutes);
 app.use("/api/authorizer", authorizerRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/travel-agent", travelAgentRoutes);
