@@ -14,6 +14,7 @@ router.post('/upload-receipt-files/:receipt_id',
     { name: 'xml', maxCount: 1 }
   ]), 
   async (req, res) => {
+    // This might need to be changed to require at least one file.
     if (!req.files || !req.files.pdf || !req.files.xml) {
       return res.status(400).json({ error: 'Both PDF and XML files are required' });
     }
