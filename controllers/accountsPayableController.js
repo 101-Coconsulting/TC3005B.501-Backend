@@ -15,17 +15,7 @@ const attendTravelRequest = async (req, res) => {
             return res.status(404).json({ error: "Travel request not found" });
         }
 
-        if(requestId.request_status_id == 5){
-             // Update request status to 5
-            const updated = await AccountsPayable.attendTravelRequest(requestId);
-        }
-        else{
-            return res
-            .status(400)
-            .json({ error: "Cannot attend request at this stage"});
-        }
-
-       
+        const updated = await AccountsPayable.attendTravelRequest(requestId);
 
         if (updated) {
             return res.status(200).json({
