@@ -25,8 +25,8 @@ export const getUserList = async (req, res) => {
 
 export const deactivateUser = async (req, res) => {
     try {
-        // Comentado para pruebas
-        /*
+        /* This doesn't work currently because there's no login yet
+        
         if (!req.user || req.user.role_name !== 'Admin') {
             return res.status(401).json({
                 error: "Admin privileges required"
