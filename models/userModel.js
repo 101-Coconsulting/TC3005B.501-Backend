@@ -32,22 +32,3 @@ export async function getUserData(userId) {
     connection.release();
   }
 }
-
-/**
- * Deactivate a user (soft delete)
- * @param {number} userId - User ID to deactivate
- * @returns {Promise<boolean>} - True if successful
- */
-export async function deactivateUserById(userId) {
-  const connection = await db.getConnection();
-  try {
-    const result = await connection.query(
-      `UPDATE User SET active = FALSE WHERE user_id = ?`,
-      [userId]
-    );
-
-    return result.affectedRows > 0;
-  } finally {
-    connection.release();
-  }
-}

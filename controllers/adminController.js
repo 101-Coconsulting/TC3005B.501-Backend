@@ -41,7 +41,7 @@ export const deactivateUser = async (req, res) => {
             return res.status(404).json({error: "User not found"});
         }
         
-        const result = await userModel.deactivateUserById(user_id);
+        const result = await Admin.deactivateUserById(user_id);
         
         return res.status(200).json({
             message: "User successfully deactivated",
