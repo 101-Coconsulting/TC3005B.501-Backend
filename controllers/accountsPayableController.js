@@ -7,6 +7,7 @@ import AccountsPayable from "../models/accountsPayableModel.js";
 
 const attendTravelRequest = async (req, res) => {
     const requestId = req.params.request_id;
+    const imposedFee = req.body.imposed_fee;
 
     try {
         // Check if request exists
@@ -15,12 +16,13 @@ const attendTravelRequest = async (req, res) => {
             return res.status(404).json({ error: "Travel request not found" });
         }
 
-        const updated = await AccountsPayable.attendTravelRequest(requestId);
+        const updated = await AccountsPayable.attendTravelRequest(requestId, imposedFee);
 
         if (updated) {
             return res.status(200).json({
                 message: "Travel request status updated successfully",
                 requestId: requestId,
+                imposedFee: imposedFee,
                 newStatus: 5, // Atencion Agencia de Viajes
             });
         } else {

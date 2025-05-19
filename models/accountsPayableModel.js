@@ -7,13 +7,14 @@ import pool from "../database/config/db.js";
 
 const AccountsPayable = {
     // Update request status to 5 (Atención Agencia de Viajes)
-    async attendTravelRequest(requestId) {
+    async attendTravelRequest(requestId, imposedFee) {
         let conn;
         try {
             conn = await pool.getConnection();
             const result = await conn.query(
-                "UPDATE `Request` SET request_status_id = 5 WHERE request_id = ?",
-                [requestId],
+                `UPDATE Request SET request_status_id = 5, imposed_fee = ? 
+                WHERE request_id = ?`,
+                [imposedFee, requestId],
             );
 
             return result.affectedRows > 0;
