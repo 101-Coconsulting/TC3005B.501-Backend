@@ -1,11 +1,11 @@
-/* 
+/*
 CPP Model
 Miguel Soria 09/05/25
 Queries to the DB related to CPP actions
 */
 import pool from "../database/config/db.js";
 
-const AccountsPayable= {
+const AccountsPayable = {
     // Update request status to 5 (Atención Agencia de Viajes)
     async attendTravelRequest(requestId) {
         let conn;

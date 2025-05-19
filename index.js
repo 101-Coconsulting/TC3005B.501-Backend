@@ -2,8 +2,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import applicantRoutes from "./routes/applicantRoutes.js";
-import authorizerRoutes from './routes/authorizerRoutes.js';
+import applicantRoutes from './routes/applicantRoutes.js';
+import authorizerRoutes from './routes/authorizerRoutes.js'
 import userRoutes from './routes/userRoutes.js';
 import travelAgentRoutes from "./routes/travelAgentRoutes.js";
 import adminRoutes from './routes/adminRoutes.js';
