@@ -2,7 +2,7 @@
 Admin Controller
 */
 import Admin from "../models/adminModel.js";
-import * as userModel from "../models/userModel.js";
+import userModel from "../models/userModel.js";
 
 export const getUserList = async (req, res) => {
     try {
