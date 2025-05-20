@@ -38,9 +38,6 @@ const AccountsPayable = {
                  FROM RequestWithRouteDetails WHERE request_id = ?`,
                 [requestId],
             );
-            // console.log(`Requires plane: ${rows[0].plane_needed_list}
-            //              Requires hotel: ${rows[0].hotel_needed_list}
-            //             Request status: ${rows[0].request_status_id}`);
             return rows[0];
         } catch (error) {
             console.error("Error checking if request exists:", error);
