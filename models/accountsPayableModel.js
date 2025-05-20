@@ -7,14 +7,14 @@ import pool from "../database/config/db.js";
 
 const AccountsPayable = {
     // Update request status to 5 (Atención Agencia de Viajes)
-    async attendTravelRequest(requestId, imposedFee) {
+    async attendTravelRequest(requestId, imposedFee, new_status) {
         let conn;
         try {
             conn = await pool.getConnection();
             const result = await conn.query(
-                `UPDATE Request SET request_status_id = 5, imposed_fee = ? 
+                `UPDATE Request SET request_status_id = ?, imposed_fee = ? 
                 WHERE request_id = ?`,
-                [imposedFee, requestId],
+                [new_status, imposedFee, requestId],
             );
 
             return result.affectedRows > 0;
@@ -34,11 +34,14 @@ const AccountsPayable = {
         try {
             conn = await pool.getConnection();
             const rows = await conn.query(
-                "SELECT request_id FROM `Request` WHERE request_id = ?",
+                 `SELECT request_id, request_status_id, hotel_needed_list, plane_needed_list 
+                 FROM RequestWithRouteDetails WHERE request_id = ?`,
                 [requestId],
             );
-
-            return rows.length > 0;
+            // console.log(`Requires plane: ${rows[0].plane_needed_list}
+            //              Requires hotel: ${rows[0].hotel_needed_list}
+            //             Request status: ${rows[0].request_status_id}`);
+            return rows[0];
         } catch (error) {
             console.error("Error checking if request exists:", error);
             throw error;
