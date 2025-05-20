@@ -152,19 +152,19 @@ export const cancelTravelRequest = async (req, res) => {
 };
 
 export async function createExpenseValidationHandler(req, res) {
-    try {
-        const count = await createExpenseValidationBatch(req.body.receipts);
-        return res.status(201).json({
-            count,
-            message: "Expense receipts created successfully",
-        });
-    } catch (err) {
-        if (err.code === "BAD_REQUEST") {
-            return res.status(400).json({ error: err.message });
-        }
-        console.error("Error in createExpenseValidationHandler:", err);
-        return res.status(500).json({ error: "Internal server error" });
+  try {
+    const count = await createExpenseValidationBatch(req.body.receipts);
+    return res.status(201).json({
+      count,
+      message: "Expense receipts created successfully",
+    });
+  } catch (err) {
+    if (err.code === "BAD_REQUEST") {
+      return res.status(400).json({ error: err.message });
     }
+    console.error("Error in createExpenseValidationHandler:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 }
 
 export const getCompletedRequests = async (req, res) => {
@@ -179,11 +179,11 @@ export const getCompletedRequests = async (req, res) => {
         }
         const formattedRequests = completedRequests.map(request => ({
             request_id: request.request_id,
+            origin_country : request.origin_countries,
             destination_country: request.destination_countries,
-            destination_city: request.destination_cities,
             beginning_date: request.beginning_dates,
-            ending_date: request.ending_date,
-            request_date: request.creation_date,
+            ending_date: request.ending_dates,
+            request_date: formatDate(request.creation_date),
             status: request.status
           }));
         res.json(formattedRequests);

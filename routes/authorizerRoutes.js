@@ -13,11 +13,11 @@ router.use((req, res, next) => {
 router.route("/get-alerts/:dept_id/:status_id/:n")
     .get(authorizerController.getAlerts);
 
-router.route("/authorize-travel-request/:id/:user_id")
+router.route("/authorize-travel-request/:request_id/:user_id")
     .put(authorizerController.authorizeTravelRequest);
 
 
-router.route("/decline-travel-request/:id/:user_id")
+router.route("/decline-travel-request/:request_id/:user_id")
     .put(authorizerController.declineTravelRequest);
 
 export default router;

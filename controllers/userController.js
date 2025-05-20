@@ -17,7 +17,6 @@ export async function getUserData(req, res) {
     }
 
     const userData = await userService.getUserById(userId);
-    console.log('User data fetched:', userData);
 
     if (!userData) {
       console.log('No user found for ID:', userId);

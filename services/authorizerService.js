@@ -22,9 +22,9 @@ const authorizeRequest = async (request_id, user_id) => {
     await Authorizer.authorizeTravelRequest(request_id, new_status_id);
 
     return {
-        new_status: role_id === 4 ? "Segunda Revisión" : "Cotizacion de Viaje"
-      };
-      
+      new_status: role_id === 4 ? "Segunda Revisión" : "Cotizacion de Viaje"
+    };
+
   } catch (err) {
     console.error("Error in authorizeRequest service:", err);
     throw err;

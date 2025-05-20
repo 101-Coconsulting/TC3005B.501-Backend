@@ -2,6 +2,7 @@
 Authorizer Controller
 */
 import Authorizer from "../models/authorizerModel.js";
+import authorizerServices from "../services/authorizerService.js";
 
 const getAlerts = async (req, res) => {
   const id = Number(req.params.dept_id);
@@ -19,7 +20,7 @@ const getAlerts = async (req, res) => {
 }
 
 const authorizeTravelRequest = async (req, res) => {
-  const { id: request_id, user_id } = req.params;
+  const { request_id, user_id } = req.params;
 
   try {
     const { new_status } = await authorizerServices.authorizeRequest(Number(request_id), Number(user_id));
@@ -37,7 +38,7 @@ const authorizeTravelRequest = async (req, res) => {
 };
 
 const declineTravelRequest = async (req, res) => {
-  const { id: request_id, user_id } = req.params;
+  const { request_id, user_id } = req.params;
 
   try {
     const result = await authorizerServices.declineRequest(Number(request_id), Number(user_id));
