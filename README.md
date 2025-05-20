@@ -96,17 +96,17 @@ In order to properly setup MariaDB, the following steps are required:
         ```sh
         mariadb -u DB_USER -p DB_USER_PASSWORD < Prepopulate.sql
         ```
-    3. Load database dummy data [/database/Scheme/Dummy.sql](/database/Scheme/Dummy.sql).
+    3. Load database triggers [/database/Scheme/Triggers.sql](/database/Scheme/Triggers.sql).
         ```sh
-        mariadb -u DB_USER -p DB_USER_PASSWORD < Dummy.sql
+        mariadb -u DB_USER -p DB_USER_PASSWORD < Triggers.sql
         ```
     4. Load database views [/database/Scheme/Views.sql](/database/Scheme/Views.sql).
         ```sh
         mariadb -u DB_USER -p DB_USER_PASSWORD < Views.sql
         ```
-    5. Load database triggers [/database/Scheme/Triggers.sql](/database/Scheme/Triggers.sql).
+    5. Load database dummy data [/database/Scheme/Dummy.sql](/database/Scheme/Dummy.sql).
         ```sh
-        mariadb -u DB_USER -p DB_USER_PASSWORD < Triggers.sql
+        mariadb -u DB_USER -p DB_USER_PASSWORD < Dummy.sql
         ```
 
 ### Environment Variables
