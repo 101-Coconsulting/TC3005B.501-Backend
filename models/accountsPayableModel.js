@@ -66,7 +66,7 @@ const AccountsPayable = {
             FROM
                 Receipt r
             JOIN
-                Receipt_type rt ON r.receipt_type_id = rt.receipt_type_id
+                Receipt_Type rt ON r.receipt_type_id = rt.receipt_type_id
             WHERE
                 r.request_id = ?
         `;
