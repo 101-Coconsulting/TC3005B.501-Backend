@@ -1,4 +1,4 @@
-import * as userModel from '../models/userModel.js';
+import userModel from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
 
 /**
