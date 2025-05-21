@@ -113,14 +113,14 @@ const User = {
   } finally {
     conn.release();
   }
-
-/**
+},
+/*
  * Get user by username
  * @param {string} username - Username
  * @returns {Promise<Object>} - User data
  */
-  export async function getUserUsername(username) {
-    const connection = await db.getConnection();
+  async getUserUsername(username) {
+    const connection = await pool.getConnection();
     try {
       const rows = await connection.query(
         `SELECT 
