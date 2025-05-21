@@ -2,8 +2,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import applicantRoutes from "./routes/applicantRoutes.js";
-import authorizerRoutes from './routes/authorizerRoutes.js';
+import applicantRoutes from './routes/applicantRoutes.js';
+import authorizerRoutes from './routes/authorizerRoutes.js'
 import userRoutes from './routes/userRoutes.js';
 import travelAgentRoutes from "./routes/travelAgentRoutes.js";
 import adminRoutes from './routes/adminRoutes.js';
@@ -13,8 +13,15 @@ import accountsPayableRoutes from './routes/accountsPayableRoutes.js';
 import fs from "fs";
 import https from "https";
 import express from "express";
+import cors from "cors"; 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// CORS configuration
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT']
+}));
 
 // Middleware for parsing JSON
 app.use(express.json());

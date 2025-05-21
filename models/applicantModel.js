@@ -37,8 +37,8 @@ const Applicant = {
             conn = await pool.getConnection();
             const rows = await conn.query(
                 `
-                SELECT d.department_name, d.costs_center FROM user u
-                JOIN department d
+                SELECT d.department_name, d.costs_center FROM User u
+                JOIN Department d
                 ON u.department_id = d.department_id
                 WHERE u.user_id = ?;
             `,
@@ -460,8 +460,8 @@ const Applicant = {
         let conn;
         const query = `
         SELECT request_id,
+            origin_countries,
             destination_countries,
-            destination_cities,
             beginning_dates,
             ending_dates,
             creation_date,
@@ -523,6 +523,7 @@ const Applicant = {
         r.notes,
         r.requested_fee,
         r.imposed_fee,
+        r.request_days,
         r.creation_date,
         r.last_mod_date,
         u.user_name,
@@ -568,31 +569,36 @@ const Applicant = {
     },
 
     /**
-     * Inserts multiple receipts in a single query. Returns the number of rows inserted.
-     * @param {Array<{receipt_type_id: number, request_id: number}>} receipts
-     * @returns {number} How many rows were inserted
+     * Inserts multiple receipts using receipt_type_id and amount.
+     * @param {Array<{receipt_type_id: number, request_id: number, amount: number}>} receipts
+     * @returns {number} number of inserted rows
      */
     async createExpenseBatch(receipts) {
         const conn = await pool.getConnection();
         try {
-            const placeholders = receipts.map(() => "(?, ?)").join(", ");
-            const params = receipts.flatMap((r) => [
-                r.receipt_type_id,
-                r.request_id,
-            ]);
+            await conn.beginTransaction();
 
+            const insertedRows = [];
+
+            for (const r of receipts) {
             const result = await conn.query(
-                `INSERT INTO Receipt (receipt_type_id, request_id)
-         VALUES ${placeholders}`,
-                params,
+                `INSERT INTO Receipt (receipt_type_id, request_id, amount)
+                VALUES (?, ?, ?)`,
+                [r.receipt_type_id, r.request_id, r.amount]
             );
+            insertedRows.push(result);
+            }
 
-            // result.affectedRows is the number of rows actually inserted
-            return result.affectedRows;
+            await conn.commit();
+            return insertedRows.length;
+        } catch (err) {
+            await conn.rollback();
+            throw err;
         } finally {
             conn.release();
         }
     },
+
 };
 
 export default Applicant;
