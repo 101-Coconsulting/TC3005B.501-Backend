@@ -4,7 +4,7 @@ import * as userController from '../controllers/userController.js';
 
 router.get('/get-user-data/:user_id', userController.getUserData);
 
-router.router('/login')
+router.route('/login')
     .post(userController.login);
 
 router.route('/get-travel-request/:request_id')
