@@ -49,7 +49,6 @@ const AccountsPayable= {
     },
     async authorizeExpenseValidation(id, status_id) {
         let conn;
-        console.log("Excelente estamos en el model");
         const query = `
             UPDATE Request
             SET request_status_id = ?
@@ -58,10 +57,9 @@ const AccountsPayable= {
         try {
           conn = await pool.getConnection();
           const rows = await conn.query(query, [status_id, id]);
-          console.log("Excelente el query paso");
           return rows;
         } catch (error) {
-          console.error('Error getting completed requests:', error);
+          console.error('Error Validating request:', error);
           throw error;
         } finally {
           if (conn){

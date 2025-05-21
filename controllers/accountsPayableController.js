@@ -39,7 +39,6 @@ const authorizeExpenseValidation = async (req, res) => {
     const { id: request_id, status_id } = req.params;
   
     try {
-        console.log("Entro al try :D");
         const { new_status } = await AccountsPayable.authorizeExpenseValidation(Number(request_id), Number(status_id));
         return res.status(200).json({
             message: "Request status updated successfully",
@@ -49,7 +48,7 @@ const authorizeExpenseValidation = async (req, res) => {
       if (err.status) {
         return res.status(err.status).json({ error: err.message });
       }
-      console.error("Unexpected error in authorizeTravelRequest controller:", err);
+      console.error("Unexpected error in authorizeExpenseValidation controller:", err);
       return res.status(500).json({ error: "Internal server error" });
     }
 }
