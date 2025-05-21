@@ -653,16 +653,99 @@ const Applicant = {
             // =======================================
             const request_days = getRequestDays(allRoutes);
 
+            // Set query to insert into Request table
+            const insertIntoRequestTable = `
+            INSERT INTO Request (
+                user_id, request_status_id, notes, requested_fee, imposed_fee, request_days
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                `;
+
             // Set status to 1 ('Abierto')
-            console.log("To be inserted:", {
+            const requestTableResult = await conn.execute(insertIntoRequestTable, [
                 user_id,
+                1, // Set status to 1 ('Abierto')
                 notes,
                 requested_fee,
                 imposed_fee,
                 request_days,
+            ]);
 
-            }, allRoutes
-            );
+            const requestId = requestTableResult.insertId;
+
+            // =======================================
+            // Step 2: Insert into Country & City table
+            // =======================================
+
+            for (const route of allRoutes) {
+                try {
+
+                    console.log("Processing route:", route);
+                    let
+                        id_origin_country,
+                        id_destination_country,
+                        id_origin_city,
+                        id_destination_city;
+
+                    // Search if the country exists in the database
+                    id_origin_country = await getCountryId(conn, route.origin_country_name);
+                    id_destination_country = await getCountryId(conn, route.destination_country_name);
+                    console.log("Country IDs:", id_origin_country, id_destination_country);
+
+                    // Search if the city exists in the database
+                    id_origin_city = await getCityId(conn, route.origin_city_name);
+                    id_destination_city = await getCityId(conn, route.destination_city_name);
+                    console.log("City IDs:", id_origin_city, id_destination_city);
+
+                    // Insert into Route table query
+                    const insertRouteTable = `
+                    INSERT INTO Route (
+                        id_origin_country, id_origin_city,
+                        id_destination_country, id_destination_city,
+                        router_index, plane_needed, hotel_needed,
+                        beginning_date, beginning_time,
+                        ending_date, ending_time
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    `;
+
+                    // Execute the query to insert into Route table
+                    let routeTableResult = await conn.query(insertRouteTable, [
+                        id_origin_country,
+                        id_origin_city,
+                        id_destination_country,
+                        id_destination_city,
+                        route.router_index,
+                        route.plane_needed,
+                        route.hotel_needed,
+                        route.beginning_date,
+                        route.beginning_time,
+                        route.ending_date,
+                        route.ending_time,
+                    ]);
+
+                    const routeId = routeTableResult.insertId;
+
+                    // ======================================
+                    // Step 3: Insert into Route_Request table
+                    // ======================================
+
+                    const insertIntoRouteRequestTable = `
+                    INSERT INTO Route_Request (request_id, route_id) VALUES (?, ?)
+                    `;
+                    await conn.query(insertIntoRouteRequestTable, [requestId, routeId]);
+
+                } catch (error) {
+                    console.error("Error processing route:", error);
+                    throw new Error("Database Error: Unable to process route");
+
+                }
+            }
+            // Commit the transaction
+            await conn.commit();
+            console.log(`Draft travel request created with ID: ${requestId}`);
+            return {
+                requestId: Number(requestId),
+                message: "Draft travel request successfully created",
+            };
 
         } catch (error) {
             console.error("Error creating draft travel request:", error);
