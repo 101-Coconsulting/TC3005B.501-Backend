@@ -134,3 +134,15 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# certificates
+*.csr
+*.key
+*.crt
+*.srl 
+
+# configuration
+*.cnf
+
+#MacOS Stuff
+.DS_Store
