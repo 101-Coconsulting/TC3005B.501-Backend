@@ -12,9 +12,9 @@ const authorizeRequest = async (request_id, user_id) => {
 
     let new_status_id;
     if (role_id === 4) { // N1
-      new_status_id = 2; // Primera Revisión
+      new_status_id = 3; // Primera Revisión
     } else if (role_id === 5) { // N2
-      new_status_id = 3; // Segunda Revisión
+      new_status_id = 4; // Segunda Revisión
     } else {
       throw { status: 400, message: "User role not authorized to approve request" };
     }
@@ -22,9 +22,9 @@ const authorizeRequest = async (request_id, user_id) => {
     await Authorizer.authorizeTravelRequest(request_id, new_status_id);
 
     return {
-        new_status: role_id === 4 ? "Primera Revisión" : "Segunda Revisión"
-      };
-      
+      new_status: role_id === 4 ? "Segunda Revisión" : "Cotizacion de Viaje"
+    };
+
   } catch (err) {
     console.error("Error in authorizeRequest service:", err);
     throw err;

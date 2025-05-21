@@ -2,18 +2,18 @@ USE CocoScheme;
 
 CREATE OR REPLACE VIEW UserRequestHistory AS
     SELECT
-        `Request`.request_id,
-        `Request`.user_id,
-        `Request`.creation_date,
+        Request.request_id,
+        Request.user_id,
+        Request.creation_date,
         Request_status.status,
         GROUP_CONCAT(DISTINCT Country_origin.country_name ORDER BY Route.router_index SEPARATOR ', ') AS trip_origins,
         GROUP_CONCAT(DISTINCT Country_destination.country_name ORDER BY Route.router_index SEPARATOR ', ') AS trip_destinations
     FROM
-        `Request`
+        Request
         INNER JOIN Request_status
-            ON `Request`.request_status_id = Request_status.request_status_id
+            ON Request.request_status_id = Request_status.request_status_id
         LEFT JOIN Route_Request
-            ON `Request`.request_id = Route_Request.request_id
+            ON Request.request_id = Route_Request.request_id
         LEFT JOIN Route
             ON Route_Request.route_id = Route.route_id
         LEFT JOIN Country AS Country_origin
@@ -21,9 +21,9 @@ CREATE OR REPLACE VIEW UserRequestHistory AS
         LEFT JOIN Country AS Country_destination
             ON Route.id_destination_country = Country_destination.country_id
     GROUP BY
-        `Request`.request_id,
-        `Request`.user_id,
-        `Request`.last_mod_date,
+        Request.request_id,
+        Request.user_id,
+        Request.last_mod_date,
         Request_status.status;
 
 
@@ -31,16 +31,16 @@ CREATE OR REPLACE VIEW UserRequestHistory AS
 
 CREATE OR REPLACE VIEW RequestWithRouteDetails AS
     SELECT
-        `Request`.request_id,
-        `Request`.user_id,
-        `Request`.request_status_id,
-        `Request`.notes,
-        `Request`.requested_fee,
-        `Request`.imposed_fee,
-        `Request`.request_days,
-        `Request`.creation_date,
-        `Request`.last_mod_date,
-        `Request`.active,
+        Request.request_id,
+        Request.user_id,
+        Request.request_status_id,
+        Request.notes,
+        Request.requested_fee,
+        Request.imposed_fee,
+        Request.request_days,
+        Request.creation_date,
+        Request.last_mod_date,
+        Request.active,
 
         `User`.user_name,
         `User`.email AS user_email,
@@ -63,15 +63,15 @@ CREATE OR REPLACE VIEW RequestWithRouteDetails AS
         GROUP_CONCAT(DISTINCT Route.plane_needed ORDER BY Route.router_index SEPARATOR ', ') AS plane_needed_list
 
     FROM
-        `Request`
+        Request
         LEFT JOIN `User`
-            ON `Request`.user_id = `User`.user_id
-        LEFT JOIN `Request_status`
-            ON `Request`.request_status_id = `Request_status`.request_status_id
-        LEFT JOIN `Department`
-            ON `User`.department_id = `Department`.department_id
+            ON Request.user_id = `User`.user_id
+        LEFT JOIN Request_status
+            ON Request.request_status_id = Request_status.request_status_id
+        LEFT JOIN Department
+            ON `User`.department_id = Department.department_id
         LEFT JOIN Route_Request
-            ON `Request`.request_id = Route_Request.request_id
+            ON Request.request_id = Route_Request.request_id
         LEFT JOIN Route
             ON Route_Request.route_id = Route.route_id
         LEFT JOIN Country AS Country_origin
@@ -83,22 +83,24 @@ CREATE OR REPLACE VIEW RequestWithRouteDetails AS
         LEFT JOIN City AS City_destination
             ON Route.id_destination_city = City_destination.city_id
     GROUP BY
-        `Request`.request_id,
-        `Request`.user_id,
-        `Request`.request_status_id,
-        `Request`.notes,
-        `Request`.requested_fee,
-        `Request`.imposed_fee,
-        `Request`.request_days,
-        `Request`.creation_date,
-        `Request`.last_mod_date,
-        `Request`.active,
+        Request.request_id,
+        Request.user_id,
+        Request.request_status_id,
+        Request.notes,
+        Request.requested_fee,
+        Request.imposed_fee,
+        Request.request_days,
+        Request.creation_date,
+        Request.last_mod_date,
+        Request.active,
         `User`.user_name,
         `User`.email,
         `User`.phone_number,
         Request_status.status,
         Department.department_name,
         Department.department_id;
+
+
 
 
 CREATE OR REPLACE VIEW UserFullInfo AS
@@ -111,4 +113,4 @@ CREATE OR REPLACE VIEW UserFullInfo AS
     FROM
         `User` u
         LEFT JOIN `Role` r ON u.role_id = r.role_id
-        LEFT JOIN `Department` d ON u.department_id = d.department_id;
+        LEFT JOIN Department d ON u.department_id = d.department_id;
