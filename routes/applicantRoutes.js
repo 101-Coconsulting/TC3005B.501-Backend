@@ -35,4 +35,7 @@ router.route("/get-user-request/:id")
 router.route("/get-user-requests/:id")
     .get(applicantController.getApplicantRequests);
 
+router.route("/create-draft-travel-request/:user_id")
+    .post(applicantController.createDraftTravelRequest);
+
 export default router;
