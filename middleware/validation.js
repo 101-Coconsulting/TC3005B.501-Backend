@@ -6,13 +6,20 @@ import { body, param, validationResult } from 'express-validator';
  */
 export const validateUserId = [
   param('id').optional().isNumeric().withMessage('The ID needs to be a valid number'),
+  param('request_id').optional().isNumeric().withMessage('Request ID must be a valid number'),
   param('user_id').optional().isNumeric().withMessage('User ID must be a valid number'),
   (req, res, next) => {
-    if (!req.params.id && !req.params.user_id) {
+    if (!req.params.id && !req.params.user_id && !req.params.request_id) {
       return res.status(400).json({ error: "At least one ID needs to be provided" });
     }
     next();
   }
+];
+
+export const validateDeptStatus = [
+  param('dept').isNumeric().withMessage('Department cannot be empty.'),
+  param('status').isNumeric().withMessage('Status cannot be empty.'),
+  param('n').optional().isNumeric().withMessage('N must be a valid number')
 ];
 
 /*
