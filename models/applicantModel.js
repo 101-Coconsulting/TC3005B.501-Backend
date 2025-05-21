@@ -1,6 +1,7 @@
 /*
 Applicant Model
 */
+import { all } from "axios";
 import pool from "../database/config/db.js";
 import { formatRoutes, getRequestDays, getCountryId, getCityId } from "../services/applicantService.js";
 
@@ -478,9 +479,9 @@ const Applicant = {
             console.error('Error getting completed requests:', error);
             throw error;
         } finally {
-            if (conn){
+            if (conn) {
                 conn.release();
-            } 
+            }
         }
     },
 
@@ -517,7 +518,7 @@ const Applicant = {
     async getApplicantRequest(id) {
         let conn;
         const query = `
-      SELECT 
+      SELECT
         r.request_id,
         rs.status AS request_status,
         r.notes,
@@ -581,12 +582,12 @@ const Applicant = {
             const insertedRows = [];
 
             for (const r of receipts) {
-            const result = await conn.query(
-                `INSERT INTO Receipt (receipt_type_id, request_id, amount)
+                const result = await conn.query(
+                    `INSERT INTO Receipt (receipt_type_id, request_id, amount)
                 VALUES (?, ?, ?)`,
-                [r.receipt_type_id, r.request_id, r.amount]
-            );
-            insertedRows.push(result);
+                    [r.receipt_type_id, r.request_id, r.amount]
+                );
+                insertedRows.push(result);
             }
 
             await conn.commit();
@@ -596,6 +597,76 @@ const Applicant = {
             throw err;
         } finally {
             conn.release();
+        }
+    },
+
+    // =========================================
+    // Create Draft Travel Request
+    // =========================================
+
+    async createDraftTravelRequest(user_id, savedDetails) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            await conn.beginTransaction();
+
+            // Destructure travel details from request body
+            // adding default values
+
+            const {
+                router_index = 0,                               // Default value 0
+                notes = '',                                     // Default value empty string
+                requested_fee = 0,                              // Default value 0
+                imposed_fee = 0,                                // Default value 0
+                origin_country_name = 'notSelected',            // Default value 'notSelected'
+                origin_city_name = 'notSelected',               // Default value 'notSelected'
+                destination_country_name = 'notSelected',       // Default value 'notSelected'
+                destination_city_name = 'notSelected',          // Default value 'notSelected'
+                beginning_date = '0000-01-01',                  // Default value '0000-01-01'
+                beginning_time = '00:00:00',                    // Default value '00:00:00'
+                ending_date = '0000-01-01',                     // Default value '0000-01-01'
+                ending_time = '00:00:00',                       // Default value '00:00:00'
+                plane_needed = false,                           // Default value false
+                hotel_needed = false,                           // Default value false
+                additionalRoutes = [],                          // Default value empty array
+            } = savedDetails;
+
+            const allRoutes = formatRoutes(
+                {
+                    router_index,
+                    origin_country_name,
+                    origin_city_name,
+                    destination_country_name,
+                    destination_city_name,
+                    beginning_date,
+                    beginning_time,
+                    ending_date,
+                    ending_time,
+                    plane_needed,
+                    hotel_needed,
+                },
+                additionalRoutes
+            );
+
+            // =======================================
+            // Step 1: Insert into Request table
+            // =======================================
+            const request_days = getRequestDays(allRoutes);
+
+            // Set status to 1 ('Abierto')
+            console.log("To be inserted:", {
+                user_id,
+                notes,
+                requested_fee,
+                imposed_fee,
+                request_days,
+
+            }, allRoutes
+            );
+
+        } catch (error) {
+            console.error("Error creating draft travel request:", error);
+            throw new Error("Database Error: Unable to fill Request table");
         }
     },
 
