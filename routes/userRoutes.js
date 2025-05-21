@@ -9,7 +9,7 @@ router.route("/get-user-data/:user_id")
 router.route('/get-travel-request/:request_id')
     .get(validateUserId, validateInputs, userController.getTravelRequestById);
 
-router.route('/get-travel-requests/:dept/:status/:n?')
+router.route('/get-travel-requests/:dept_id/:status_id/:n?')
     .get(validateDeptStatus, validateInputs, userController.getTravelRequestsByDeptStatus);
 
 export default router;
