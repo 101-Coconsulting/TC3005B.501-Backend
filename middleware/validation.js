@@ -28,7 +28,6 @@ export const validateDeptStatus = [
  */
 export const validateTravelRequest = [
   body('user_id').isNumeric().exists().withMessage('User ID must be a valid number'),
-  body('request_status_id').isNumeric().exists().withMessage('Request status ID must be a valid number'),
 
   body('requested_fee').isFloat({min: 0}).exists().withMessage('The minimum requested fee is 0'),
   body('imposed_fee').isFloat({min: 0}).exists().withMessage('The minimum imposed fee is 0'),
@@ -44,7 +43,24 @@ export const validateTravelRequest = [
   body('ending_time').isString().trim().notEmpty().withMessage('Trip end time cannot be empty.'),
 
   body('plane_needed').isBoolean().exists().withMessage('Please select if plane reservation is required or not.'),
-  body('hotel_needed').isBoolean().exists().withMessage('Please select if hotel reservation is required or not.')
+  body('hotel_needed').isBoolean().exists().withMessage('Please select if hotel reservation is required or not.'),
+
+  body('additionalRoutes').optional().isArray().withMessage('Additional routes must be an array'),
+  body('additionalRoutes.origin_country_name').optional().isString().trim().notEmpty().withMessage('Origin country cannot be empty.'),
+  body('additionalRoutes.origin_city_name').optional().isString().trim().notEmpty().withMessage('Origin city cannot be left empty.'),
+  body('additionalRoutes.destination_country_name').optional().isString().trim().notEmpty().withMessage('Destination country cannot be left empty.'),
+  body('additionalRoutes.destination_city_name').optional().isString().trim().notEmpty().withMessage('Destination city cannot be left empty.'),
+
+  body('additionalRoutes.beginning_date').optional().isString().trim().notEmpty().withMessage('Trip start date cannot be empty.'),
+  body('additionalRoutes.beginning_time').optional().isString().trim().notEmpty().withMessage('Trip start time cannot be empty.'),
+  body('additionalRoutes.ending_date').optional().isString().trim().notEmpty().withMessage('Trip end date cannot be empty.'),
+  body('additionalRoutes.ending_time').optional().isString().trim().notEmpty().withMessage('Trip end time cannot be empty.'),
+
+  body('additionalRoutes.plane_needed').optional().isBoolean().exists().withMessage('Please select if plane reservation is required or not.'),
+  body('additionalRoutes.hotel_needed').optional().isBoolean().exists().withMessage('Please select if hotel reservation is required or not.'),
+
+  
+
 ];
 
 /*
