@@ -17,8 +17,8 @@ export const validateUserId = [
 ];
 
 export const validateDeptStatus = [
-  param('dept').isNumeric().withMessage('Department cannot be empty.'),
-  param('status').isNumeric().withMessage('Status cannot be empty.'),
+  param('dept_id').isNumeric().withMessage('Department cannot be empty.'),
+  param('status_id').isNumeric().withMessage('Status cannot be empty.'),
   param('n').optional().isNumeric().withMessage('N must be a valid number')
 ];
 
