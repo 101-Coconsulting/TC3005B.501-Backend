@@ -1,7 +1,6 @@
 /*
 Applicant Model
 */
-import { all } from "axios";
 import pool from "../database/config/db.js";
 import { formatRoutes, getRequestDays, getCountryId, getCityId } from "../services/applicantService.js";
 
