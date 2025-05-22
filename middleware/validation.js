@@ -69,7 +69,7 @@ export const validateTravelRequest = [
  * (LuisDa)
  */
 export const validateExpenseReceipts = [
-  body('receipts').isArray().withMessage('Receipts must be an array.'),
+  body('receipts').isArray().notEmpty().withMessage('Receipts must be a non-empty array.'),
   body('receipts.*.receipt_type_id').isInt({ min: 0 }).withMessage('Receipt type ID must be a valid number'),
   body('receipts.*.request_id').isInt({ min: 0 }).withMessage('Request ID must be a valid number'),
   body('receipts.*.amount').isFloat({ min: 0 }).withMessage('Amounts needs to be a valid number'),
