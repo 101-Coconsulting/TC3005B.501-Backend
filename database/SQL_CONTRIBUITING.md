@@ -5,9 +5,9 @@
 Creating a Table: {#example-creating-table}
 
     ```sql
-    CREATE TABLE User (
+    CREATE TABLE IF NOT EXISTS User (
         user_id INT PRIMARY KEY,
-        user_name VARCHAR(10),
+        user_name VARCHAR(20),
         creation_date FLOAT,
         -- Department where the user works
         department_id INT FOREIGN KEY
@@ -67,6 +67,80 @@ Creating a DELETE Query: {#example-delete-query}
     DELETE FROM User
     WHERE name = 'Sosa';
     ```
+
+Creating a BEFORE Trigger: {#example-creating-before-trigger}
+
+    ```sql
+    DELIMITER $$
+
+    CREATE OR REPLACE TRIGGER [TriggerName]
+    BEFORE [crud action] ON [TableName]
+    FOR EACH ROW
+    BEGIN
+        IF [condition] THEN
+            [query]
+        ELSE IF [condition] THEN
+            [query]
+        END IF;
+    END$$
+    ```
+
+Creating a AFTER Trigger: {#example-creating-after-trigger}
+
+    ```sql
+    DELIMITER $$
+
+    CREATE OR REPLACE TRIGGER [TriggerName]
+    AFTER [crud action] ON [TableName]
+    FOR EACH ROW
+    BEGIN
+        IF [condition] THEN
+            [query]
+        ELSE IF [condition] THEN
+            [query]
+        END IF;
+    END$$
+    ```
+
+Trigger with OLD and NEW selected words: {#example-trigger-with-old-and-new}
+
+    ```sql
+    DELIMITER $$
+
+    CREATE OR REPLACE TRIGGER ManageAlertAfterRequestUpdate
+    AFTER UPDATE ON Request
+    FOR EACH ROW
+    BEGIN
+        IF NEW.request_status_id IN (8, 9, 10) THEN
+            DELETE FROM Alert
+            WHERE request_id = NEW.request_id;
+        ELSEIF OLD.request_status_id <> NEW.request_status_id THEN
+            UPDATE Alert
+            SET message_id = NEW.request_status_id
+            WHERE request_id = NEW.request_id;
+        END IF;
+    END$$
+    ```
+
+Creating a VIEW: {#example-creating-view}
+
+    ```sql
+    CREATE OR REPLACE VIEW [ViewName] AS
+        SELECT
+            [TableName].[RowName],
+            [TableName].[RowName],
+
+            GROUP_CONCAT(),
+            GROUP_CONCAT()
+        FROM
+            [TableName1]
+            LEFT JOIN [TableName2]
+                ON [TableName1].[Row] = [TableName2].[Row]
+        GROUP BY
+            [TableName].[RowName],
+            [TableName].[RowName];
+    ```
+
 
 ## 1. SQL Reserved Words Rule
 
@@ -155,6 +229,27 @@ Check the following examples:
 
 - For UPDATE and DELETE queries, follow the SELECT query structure is not  necessary, just separate them into multiple lines.
 
+## 5. Triggers Formatting Rules
+
+- The only tabs to use in triggers are; inside the logic code of the trigger (query and conditions), located between BEGIN and END selected words.
+
+- There are two types of trigger; BEFORE and AFTER triggers, you have to determinate when you want to activate the trigger; before or after the crud function being in use.
+
+Check the following examples:
+
+[Creating a BEFORE Trigger](#example-creating-before-trigger).
+
+[Creating a AFTER Trigger](#example-creating-after-trigger).
+
+- OLD and NEW are special selected words for triggers in UPDATES, INSERTS and DELETEING queries. There are use to reference data that is beinging change in the data base.
+
+Check this example: [Trigger using OLD and NEW](#example-trigger-with-old-and-new).
+
+## 6. Views Formatting Rules
+
+- 
+
+Check the example: [Creating a View](#example-creating-view).
 
 
 ## References
