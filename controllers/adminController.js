@@ -2,6 +2,7 @@
 Admin Controller
 */
 import Admin from "../models/adminModel.js";
+import userModel from "../models/userModel.js";
 
 export const getUserList = async (req, res) => {
     try {
@@ -22,6 +23,40 @@ export const getUserList = async (req, res) => {
     }
 }
 
+export const deactivateUser = async (req, res) => {
+    try {
+        /* This doesn't work currently because there's no login yet
+        
+        if (!req.user || req.user.role_name !== 'Admin') {
+            return res.status(401).json({
+                error: "Admin privileges required"
+            });
+        }
+        */
+
+        const user_id = parseInt(req.params.user_id);
+        
+        const user = await userModel.getUserData(user_id);
+        if (!user) {
+            return res.status(404).json({error: "User not found"});
+        }
+        
+        const result = await Admin.deactivateUserById(user_id);
+        
+        return res.status(200).json({
+            message: "User successfully deactivated",
+            user_id: user_id,
+            active: false
+        });
+    } catch (err) {
+        console.error("Error in deactivateUser:", err);
+        return res.status(500).json({
+            error: "Unexpected error while deactivating user"
+        });
+    }
+}
+
 export default {
     getUserList,
+    deactivateUser
 };
