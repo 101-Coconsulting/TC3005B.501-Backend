@@ -54,11 +54,11 @@ async function devdb() {
         console.error(error);
     } finally {
         if (conn){
-        conn.release();
+            conn.release();
         }
         pool.end()
-          .then(() => console.log("Database connection pool closed."))
-          .catch(err => console.error("Error closing database connection pool:", err));
+            .then(() => console.log("Database connection pool closed."))
+            .catch(err => console.error("Error closing database connection pool:", err));
     }
 }
 
