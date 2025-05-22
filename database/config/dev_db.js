@@ -3,12 +3,6 @@ import mariadb from 'mariadb';  // For connection to `mariadb` DataBase.
 
 import fs from "fs";  // For accesing the FileSystem an reading the `.sql` scripts.
 
-import path from "path";
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 dotenv.config();
 
 const pool = mariadb.createPool({
