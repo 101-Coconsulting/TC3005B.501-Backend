@@ -13,6 +13,7 @@ const pool = mariadb.createPool({
     password: process.env.DB_PASSWORD,
 });
 
+const environment = process.argv[2];
 
 async function devdb() {
     let conn;
@@ -20,7 +21,11 @@ async function devdb() {
     const prepop = fs.readFileSync("./database/Schema/Prepopulate.sql", 'utf8');
     const triggers = fs.readFileSync("./database/Schema/Triggers.sql", 'utf8');
     const views = fs.readFileSync("./database/Schema/Views.sql", 'utf8');
-    const dummy = fs.readFileSync("./database/Schema/Dummy.sql", 'utf8');
+    let dummy;
+    if (environment === 'dev') {
+        dummy = fs.readFileSync("./database/Schema/Dummy.sql", 'utf8');
+    }
+
     try {
         conn = await pool.getConnection();
         
@@ -40,9 +45,11 @@ async function devdb() {
         await conn.query(views);
         console.log("Views.sql executed.");
 
-        console.log("Executing Dummy.sql...");
-        await conn.query(dummy);
-        console.log("Dummy.sql executed.");
+        if (environment === 'dev' && dummy) {
+            console.log("Executing Dummy.sql...");
+            await conn.query(dummy);
+            console.log("Dummy.sql executed.");
+        }
         
     } catch (error) {
         console.error(error);
