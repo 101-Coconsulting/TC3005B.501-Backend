@@ -10,4 +10,7 @@ router.route('/get-travel-request/:request_id')
 router.route('/get-travel-requests/:dept/:status/:n?')
     .get(userController.getTravelRequestsByDeptStatus);
 
+router.route('/get-user-wallet/:user_id?')
+    .get(userController.getUserWallet);
+
 export default router;

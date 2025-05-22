@@ -114,6 +114,25 @@ const User = {
     conn.release();
   }
 },
+async getUserWallet(user_id) {
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      const rows = await conn.query(
+        `SELECT 
+          user_id,
+          user_name,
+          wallet
+          FROM User
+          WHERE user_id = ?`,
+        [user_id]
+      );
+
+      return rows[0];
+    } finally {
+      if (conn) conn.release();
+    }
+  },
 
 };
 

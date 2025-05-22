@@ -103,6 +103,28 @@ export const getTravelRequestById = async (req, res) => {
   }
 };
 
+export const getUserWallet = async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+    const user = await User.getUserWallet(user_id);
+
+    if (!user) {
+      return res.status(404).json({ error: `No user with id ${user_id} found`  });
+    }
+
+    const formatted = {
+      user_id: user.user_id,
+      user_name: user.user_name,
+      wallet: user.wallet,
+    };
+
+    return res.status(200).json(formatted);
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const formatDate = (date) => {
   return new Date(date).toISOString().split('T')[0];
 };
