@@ -1,5 +1,7 @@
-import dotenv from 'dotenv';
-import mariadb from 'mariadb';
+import dotenv from 'dotenv';  // For environment variable loading.
+import mariadb from 'mariadb';  // For connection to `mariadb` DataBase.
+
+import fs from "fs";  // For accesing the FileSystem an reading the `.sql` scripts.
 
 import path from "path";
 import { fileURLToPath } from 'url';
@@ -10,14 +12,12 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 const pool = mariadb.createPool({
-  multipleStatements: true,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+    multipleStatements: true,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
 });
-
-import fs from "fs";
 
 
 async function devdb() {
