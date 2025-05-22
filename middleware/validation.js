@@ -62,17 +62,17 @@ export const validateTravelRequest = [
 
   body('additionalRoutes.*.plane_needed').isBoolean().exists().withMessage('Please select if plane reservation is required or not.'),
   body('additionalRoutes.*.hotel_needed').isBoolean().exists().withMessage('Please select if hotel reservation is required or not.'),
-
-  
-
 ];
 
 /*
  * This will validate the receipts as they are created
  * (LuisDa)
  */
-const validateExpenseReceipts = [
-
+export const validateExpenseReceipts = [
+  body('receipts').isArray().withMessage('Receipts must be an array.'),
+  body('receipts.*.receipt_type_id').isInt({ min: 0 }).withMessage('Receipt type ID must be a valid number'),
+  body('receipts.*.request_id').isInt({ min: 0 }).withMessage('Request ID must be a valid number'),
+  body('receipts.*.amount').isFloat({ min: 0 }).withMessage('Amounts needs to be a valid number'),
 ];
 
 /*
