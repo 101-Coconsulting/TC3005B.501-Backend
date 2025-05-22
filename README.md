@@ -87,26 +87,26 @@ In order to properly setup MariaDB, the following steps are required:
     ```sh
     cd database/Scheme
     ```
-5. [Run the `mariadb` client in batch mode](https://mariadb.com/kb/en/mariadb-command-line-client/).
+5. [Run the `mariadb` client in batch mode](https://mariadb.com/kb/en/mariadb-command-line-client/). With `DB_USER` and `DB_USER_PASSWORD` being your created `mariadb` user and its password.
     1. Load database scheme [/database/Scheme/Scheme.sql](/database/Scheme/Scheme.sql).
         ```sh
-        mariadb < Scheme.sql
+        mariadb -u DB_USER -p DB_USER_PASSWORD < Scheme.sql
         ```
     2. Load database initial prepopulation [/database/Scheme/Prepopulate.sql](/database/Scheme/Prepopulate.sql).
         ```sh
-        mariadb < Prepopulate.sql
+        mariadb -u DB_USER -p DB_USER_PASSWORD < Prepopulate.sql
         ```
-    3. Load database dummy data [/database/Scheme/Dummy.sql](/database/Scheme/Dummy.sql).
+    3. Load database triggers [/database/Scheme/Triggers.sql](/database/Scheme/Triggers.sql).
         ```sh
-        mariadb < Dummy.sql
+        mariadb -u DB_USER -p DB_USER_PASSWORD < Triggers.sql
         ```
     4. Load database views [/database/Scheme/Views.sql](/database/Scheme/Views.sql).
         ```sh
-        mariadb < Views.sql
+        mariadb -u DB_USER -p DB_USER_PASSWORD < Views.sql
         ```
-    5. Load database triggers [/database/Scheme/Triggers.sql](/database/Scheme/Triggers.sql).
+    5. Load database dummy data [/database/Scheme/Dummy.sql](/database/Scheme/Dummy.sql).
         ```sh
-        mariadb < Triggers.sql
+        mariadb -u DB_USER -p DB_USER_PASSWORD < Dummy.sql
         ```
 
 ### Environment Variables

@@ -108,8 +108,10 @@ CREATE OR REPLACE VIEW UserFullInfo AS
         u.user_id,
         u.user_name,
         u.email,
+        u.active,
         r.role_name,
-        d.department_name
+        d.department_name,
+        d.department_id
     FROM
         `User` u
         LEFT JOIN `Role` r ON u.role_id = r.role_id
