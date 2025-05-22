@@ -23,10 +23,10 @@ import fs from "fs";
 async function devdb() {
     let conn;
     const schema = fs.readFileSync("./database/Schema/Scheme.sql", 'utf8');
-        const prepop = fs.readFileSync("./database/Schema/Prepopulate.sql", 'utf8');
-        const triggers = fs.readFileSync("./database/Schema/Triggers.sql", 'utf8');
-        const views = fs.readFileSync("./database/Schema/Views.sql", 'utf8');
-        const dummy = fs.readFileSync("./database/Schema/Dummy.sql", 'utf8');
+    const prepop = fs.readFileSync("./database/Schema/Prepopulate.sql", 'utf8');
+    const triggers = fs.readFileSync("./database/Schema/Triggers.sql", 'utf8');
+    const views = fs.readFileSync("./database/Schema/Views.sql", 'utf8');
+    const dummy = fs.readFileSync("./database/Schema/Dummy.sql", 'utf8');
     try {
         conn = await pool.getConnection();
         
