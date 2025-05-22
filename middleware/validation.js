@@ -53,7 +53,7 @@ export const validateTravelRequest = [
   body('additionalRoutes.*.origin_country_name').isString().trim().notEmpty().withMessage('Origin country cannot be empty.'),
   body('additionalRoutes.*.origin_city_name').isString().trim().notEmpty().withMessage('Origin city cannot be left empty.'),
   body('additionalRoutes.*.destination_country_name').isString().trim().notEmpty().withMessage('Destination country cannot be left empty.'),
-  body('additionalRoutes.*.destination_city_name').optional().isString().trim().notEmpty().withMessage('Destination city cannot be left empty.'),
+  body('additionalRoutes.*.destination_city_name').isString().trim().notEmpty().withMessage('Destination city cannot be left empty.'),
 
   body('additionalRoutes.*.beginning_date').isString().trim().notEmpty().withMessage('Trip start date cannot be empty.'),
   body('additionalRoutes.*.beginning_time').isString().trim().notEmpty().withMessage('Trip start time cannot be empty.'),
