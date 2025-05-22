@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { validateUserId, validateInputs } from "../middleware/validation.js";
+import { validateId, validateInputs } from "../middleware/validation.js";
 
 import AccountsPayableController from "../controllers/accountsPayableController.js";
 
@@ -10,6 +10,6 @@ router.use((req, res, next) => {
 
 // Route to attend a travel request (update status to 4)
 router.route("/attend-travel-request/:request_id")
-    .put(validateUserId, validateInputs, AccountsPayableController.attendTravelRequest);
+    .put(validateId, validateInputs, AccountsPayableController.attendTravelRequest);
 
 export default router;

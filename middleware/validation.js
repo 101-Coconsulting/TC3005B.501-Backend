@@ -4,7 +4,7 @@ import { body, param, validationResult } from 'express-validator';
  * This will validate the field of user id, given in any endpoint
  * (LuisDa)
  */
-export const validateUserId = [
+export const validateId = [
   param('id').optional().isNumeric().withMessage('The ID needs to be a valid number'),
   param('request_id').optional().isNumeric().withMessage('Request ID must be a valid number'),
   param('user_id').optional().isNumeric().withMessage('User ID must be a valid number'),
@@ -87,7 +87,7 @@ export const validateInputs = (req, res, next) => {
 };
 
 export default {
-  validateUserId,
+  validateId,
   validateTravelRequest,
   validateExpenseReceipts,
   validateInputs
