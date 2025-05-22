@@ -48,6 +48,45 @@ const AccountsPayable = {
             }
         }
     },
+
+    async getReceiptStatusesForRequest(requestId) {
+        let conn;
+        const query = `
+            SELECT validation FROM Receipt
+            WHERE request_id = ?
+        `;
+
+        try {
+            conn = await pool.getConnection();
+            const rows = await conn.query(query, [requestId]);
+            return rows.map(r => r.validation);
+        } catch (error) {
+            console.error('Error fetching receipt statuses:', error);
+            throw error;
+        } finally {
+            if (conn) conn.release();
+        }
+    },
+
+    async updateRequestStatus(requestId, statusId) {
+        let conn;
+        const query = `
+            UPDATE Request
+            SET request_status_id = ?
+            WHERE request_id = ?
+        `;
+
+        try {
+            conn = await pool.getConnection();
+            await conn.query(query, [statusId, requestId]);
+        } catch (error) {
+            console.error('Error updating request status:', error);
+            throw error;
+        } finally {
+            if (conn) conn.release();
+        }
+    },
+
 };
 
 export default AccountsPayable;

@@ -4,6 +4,7 @@ Miguel Soria 09.05/25
 Manages parameters and checks for CPP endpoints
 */
 import AccountsPayable from "../models/accountsPayableModel.js";
+import AccountsPayableService from '../services/accountsPayableService.js';
 
 const attendTravelRequest = async (req, res) => {
     const requestId = req.params.request_id;
@@ -53,7 +54,21 @@ const attendTravelRequest = async (req, res) => {
     }
 };
 
+const validateReceiptsHandler = async (req, res) => {
+    const requestId = req.params.request_id;
+
+    try {
+        const result = await AccountsPayableService.validateReceiptsAndUpdateStatus(requestId);
+        res.status(200).json(result);
+    } catch (err) {
+        console.error('Error in validateReceiptsHandler:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 // exports for the router
 export default {
     attendTravelRequest,
+    validateReceiptsHandler,
+    
 };
