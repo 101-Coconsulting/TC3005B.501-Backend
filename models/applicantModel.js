@@ -752,6 +752,70 @@ const Applicant = {
         }
     },
 
+    // =========================================
+    // Confirm Draft Travel Request
+    // =========================================
+
+    async confirmDraftTravelRequest(userId, requestId) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            await conn.beginTransaction();
+
+            // Get the role from the userId
+            const role = await conn.query(
+                `SELECT role_id FROM User WHERE user_id = ?`,
+                [userId],
+            );
+            let request_status;
+            switch (role[0].role_id) {
+                case 1: // 1 = Applicant
+                    request_status = 2; // 2 = Primera Revision
+                    console.log("Role ID:", role[0].role_id);
+                    break;
+
+                case 2: // 2 = N1
+                    request_status = 3; // 3 = Segunda Revision
+                    console.log("Role ID:", role[0].role_id);
+                    break;
+
+                case 3: // 3 = N2
+                    request_status = 4; // 4 = Cotizacion Viaje
+                    console.log("Role ID:", role[0].role_id);
+                    break;
+
+                default:
+                    throw new Error("User role in not allowed to create a travel request");
+
+            }
+
+            // Update the request status
+            const updateRequestStatus = `
+                UPDATE Request
+                SET request_status_id = ?, last_mod_date = CURRENT_TIMESTAMP
+                WHERE request_id = ?
+            `;
+
+            await conn.execute(updateRequestStatus, [
+                request_status,
+                requestId,
+            ]);
+
+
+            // Commit the transaction
+            await conn.commit();
+            console.log(`Draft travel request ${requestId} confirmed successfully.`);
+            return {
+                requestId: Number(requestId),
+                message: "Draft travel request successfully confirmed",
+            };
+
+        } catch (error) {
+            console.error("Error confirming draft travel request:", error);
+            throw new Error("Database Error: Unable to confirm draft travel request");
+        }
+    },
+
 };
 
 export default Applicant;

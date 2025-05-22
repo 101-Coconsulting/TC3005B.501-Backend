@@ -215,6 +215,23 @@ const formatDate = (date) => {
   return new Date(date).toISOString().split("T")[0];
 };
 
+export const confirmDraftTravelRequest = async (req, res) => {
+
+  const userId = Number(req.params.user_id);
+  const requestId = Number(req.params.request_id);
+
+  try {
+    const result = await Applicant.confirmDraftTravelRequest(userId, requestId);
+    return res.status(200).json(result);
+  } catch (err) {
+    if (err.status) {
+      return res.status(err.status).json({ error: err.message });
+    }
+    console.error("Unexpected error in confirmDraftTravelRequest controller:", err);
+    return res.status(500).json({ error: "Unexpected error while confirming draft request" });
+  }
+};
+
 export default {
   getApplicantById,
   getApplicantRequests,
@@ -226,4 +243,5 @@ export default {
   getCompletedRequests,
   createExpenseValidationHandler,
   createDraftTravelRequest,
+  confirmDraftTravelRequest,
 };
