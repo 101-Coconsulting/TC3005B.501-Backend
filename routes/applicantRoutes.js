@@ -4,7 +4,7 @@ Applicant Routes
 import express from "express";
 const router = express.Router();
 import applicantController from "../controllers/applicantController.js";
-import { validateUserId, validateTravelRequest, validateInputs } from "../middleware/validation.js";
+import { validateUserId, validateTravelRequest, validateExpenseReceipts, validateInputs } from "../middleware/validation.js";
 
 router.use((req, res, next) => {
     next();
@@ -25,7 +25,7 @@ router.route("/cancel-travel-request/:request_id")
     .put(validateUserId, validateInputs, applicantController.cancelTravelRequest);
 
 router.route("/create-expense-validation")
-    .post(applicantController.createExpenseValidationHandler);
+    .post(validateExpenseReceipts, validateInputs, applicantController.createExpenseValidationHandler);
 
 router.route("/get-completed-requests/:id")
     .get(validateUserId, validateInputs, applicantController.getCompletedRequests);
