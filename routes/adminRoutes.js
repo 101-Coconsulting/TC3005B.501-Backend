@@ -14,6 +14,6 @@ router.route("/get-user-list")
     .get(getUserList);
 
 router.route("/delete-user/:user_id")
-    .patch(deactivateUser);
+    .put(deactivateUser);
 
 export default router;
