@@ -9,7 +9,7 @@ const Admin = {
     let conn;
     try {
       conn = await pool.getConnection();
-      const rows = await conn.query('SELECT * FROM UserFullInfo');
+      const rows = await conn.query('SELECT * FROM UserFullInfo WHERE active = 1');
       return rows;
       
     } catch (error) {
