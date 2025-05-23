@@ -768,25 +768,20 @@ const Applicant = {
                 [userId],
             );
             let request_status;
-            switch (role[0].role_id) {
-                case 1: // 1 = Applicant
-                    request_status = 2; // 2 = Primera Revision
-                    console.log("Role ID:", role[0].role_id);
-                    break;
-
-                case 2: // 2 = N1
-                    request_status = 4; // 3 = Segunda Revision
-                    console.log("Role ID:", role[0].role_id);
-                    break;
-
-                case 3: // 3 = N2
-                    request_status = 5; // 4 = Cotizacion Viaje
-                    console.log("Role ID:", role[0].role_id);
-                    break;
-
-                default:
-                    throw new Error("User role in not allowed to create a travel request");
-
+            if (role[0].role_id == 1) {
+                console.log("Role ID:", role[0].role_id);
+                request_status = 2; // 2 = First Revision
+            }
+            else if (role[0].role_id == 4) {
+                console.log("Role ID:", role[0].role_id);
+                request_status = 3; // 3 = Second Revision
+            }
+            else if (role[0].role_id == 5) {
+                console.log("Role ID:", role[0].role_id);
+                request_status = 4; // 4 = Trip Quote
+            }
+            else {
+                throw new Error("User role in not allowed to create a travel request");
             }
 
             // Update the request status
