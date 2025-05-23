@@ -11,4 +11,7 @@ router.use((req, res, next) => {
 router.route("/attend-travel-request/:id")
     .put(AccountsPayableController.attendTravelRequest);
 
+router.route("/validate-receipt/:receipt_id")
+    .put(AccountsPayableController.validateReceipt);
+
 export default router;
