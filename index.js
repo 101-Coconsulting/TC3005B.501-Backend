@@ -48,7 +48,6 @@ const ca = fs.readFileSync("./certs/ca.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 // HTTPS server configuration
-console.clear();
 const httpsServer = https.createServer(credentials, app);
 httpsServer.listen(PORT, () =>
     
