@@ -35,7 +35,7 @@ BEGIN
     END IF;
 END$$
 
-CREATE OR REPLACE TRIGGER ResetRejectedReceiptOnRequestStatusChange
+CREATE OR REPLACE TRIGGER ResetRejectedReceipts
 AFTER UPDATE ON Request
 FOR EACH ROW
 BEGIN
