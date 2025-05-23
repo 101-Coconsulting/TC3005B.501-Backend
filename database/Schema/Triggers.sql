@@ -35,4 +35,11 @@ BEGIN
     END IF;
 END$$
 
+CREATE OR REPLACE TRIGGER ResetRejectedReceiptOnRequestStatusChange
+AFTER UPDATE ON Request
+FOR EACH ROW
+BEGIN
+    IF NEW.request_status_id = 6 AND OLD.request_status_id != NEW.request_status_id THEN
+        UPDATE Receipt
+
 DELIMITER ;
