@@ -39,7 +39,7 @@ CREATE OR REPLACE TRIGGER ResetRejectedReceipts
 AFTER UPDATE ON Request
 FOR EACH ROW
 BEGIN
-    IF NEW.request_status_id = 6 AND OLD.request_status_id != NEW.request_status_id THEN
+    IF OLD.request_status_id = 7 AND NEW.request_status_id = 6 THEN
         UPDATE Receipt
         SET validation = 'Pendiente'
         WHERE request_id = NEW.request_id
