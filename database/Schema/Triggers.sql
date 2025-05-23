@@ -41,5 +41,10 @@ FOR EACH ROW
 BEGIN
     IF NEW.request_status_id = 6 AND OLD.request_status_id != NEW.request_status_id THEN
         UPDATE Receipt
+        SET validation = 'Pendiente'
+        WHERE request_id = NEW.request_id
+        AND validation = 'Rechazado';
+    END IF;
+END$$
 
 DELIMITER ;
