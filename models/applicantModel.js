@@ -775,12 +775,12 @@ const Applicant = {
                     break;
 
                 case 2: // 2 = N1
-                    request_status = 3; // 3 = Segunda Revision
+                    request_status = 4; // 3 = Segunda Revision
                     console.log("Role ID:", role[0].role_id);
                     break;
 
                 case 3: // 3 = N2
-                    request_status = 4; // 4 = Cotizacion Viaje
+                    request_status = 5; // 4 = Cotizacion Viaje
                     console.log("Role ID:", role[0].role_id);
                     break;
 
