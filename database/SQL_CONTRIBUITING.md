@@ -247,7 +247,11 @@ Check this example: [Trigger using OLD and NEW](#example-trigger-with-old-and-ne
 
 ## 6. Views Formatting Rules
 
-- 
+- As shown in the example, tabs are important to be able to separate the 3 sections of the views (SELECT, FROM and GROUP BY).
+
+- For the SELECT section, a separation will be made with an enter between the mentioned columns of the table and the GROUP_CONCAT.
+
+- While for the FROM section, a tab will be made for each line using ON after a JOIN.
 
 Check the example: [Creating a View](#example-creating-view).
 
