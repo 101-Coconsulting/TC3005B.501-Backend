@@ -53,14 +53,15 @@ const validateReceipt = async (req, res) => {
         }
 
         //Check if the receipt was already validated
-        console.log("Receipt Validation: ", receipt.validation);
-
         if(receipt.validation != "Pendiente"){
             return res.status(404).json({ error: "Receipt already approved or rejected" });
         }
 
-        // Update request status to 5
-        const updated = await AccountsPayable.validateReceipt(receiptId);
+        /* Since the "rejcted" state is 3 and the "approved" state
+        is 2, by subtracting the approval value (1 or 0) we can send
+        the desired value for the validation (3 for rejected or 2 for
+        approved*/
+        const updated = await AccountsPayable.validateReceipt(receiptId, 3 - approval);
         
         if(!updated){
             return res
