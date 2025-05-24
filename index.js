@@ -13,7 +13,7 @@ import accountsPayableRoutes from './routes/accountsPayableRoutes.js';
 import fs from "fs";
 import https from "https";
 import express from "express";
-import cors from "cors"; 
+import cors from "cors";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -35,9 +35,9 @@ app.use("/api/accounts-payable", accountsPayableRoutes);
 
 // Basic route
 app.get("/", (req, res) => {
-    res.json({
-        message: "This is my backend endpoint for the travel management system",
-    });
+  res.json({
+    message: "This is my backend endpoint for the travel management system",
+  });
 });
 
 
@@ -50,5 +50,5 @@ const credentials = { key: privateKey, cert: certificate, ca: ca };
 // HTTPS server configuration
 const httpsServer = https.createServer(credentials, app);
 httpsServer.listen(PORT, () =>
-    console.log(`Server running on port ${PORT} with HTTPS`),
+  console.log(`Server running on port ${PORT} with HTTPS`),
 );

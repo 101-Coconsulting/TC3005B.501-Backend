@@ -17,17 +17,17 @@ export const formatRoutes = (mainRoute, additionalRoutes = []) => {
             hotel_needed: mainRoute.hotel_needed,
         },
         ...additionalRoutes.map((route) => ({
-            origin_country_name: route.origin_country_name,
-            origin_city_name: route.origin_city_name,
-            destination_country_name: route.destination_country_name,
-            destination_city_name: route.destination_city_name,
             router_index: route.router_index,
-            beginning_date: route.beginning_date,
-            beginning_time: route.beginning_time,
-            ending_date: route.ending_date,
-            ending_time: route.ending_time,
-            plane_needed: route.plane_needed,
-            hotel_needed: route.hotel_needed,
+            origin_country_name: route.origin_country_name || 'notSelected',
+            origin_city_name: route.origin_city_name || 'notSelected',
+            destination_country_name: route.destination_country_name || 'notSelected',
+            destination_city_name: route.destination_city_name || 'notSelected',
+            beginning_date: route.beginning_date || '0000-01-01',
+            beginning_time: route.beginning_time || '00:00:00',
+            ending_date: route.ending_date || '0000-01-01',
+            ending_time: route.ending_time || '00:00:00',
+            plane_needed: route.plane_needed || false,
+            hotel_needed: route.hotel_needed || false,
         })),
     ];
 };
@@ -97,28 +97,28 @@ export const cancelTravelRequestValidation = async (request_id) => {
 };
 
 export async function createExpenseValidationBatch(receipts) {
-  if (!Array.isArray(receipts) || receipts.length === 0) {
-    const err = new Error('The "receipts" field must be a non-empty array');
-    err.code = "BAD_REQUEST";
-    throw err;
-  }
-
-  for (const r of receipts) {
-    if (
-      typeof r.receipt_type_id !== "number" ||
-      typeof r.request_id !== "number" ||
-      typeof r.amount !== "number"
-    ) {
-      const err = new Error(
-        'Each receipt must include "receipt_type_id", "request_id", and "amount" (all as numbers)'
-      );
-      err.code = "BAD_REQUEST";
-      throw err;
+    if (!Array.isArray(receipts) || receipts.length === 0) {
+        const err = new Error('The "receipts" field must be a non-empty array');
+        err.code = "BAD_REQUEST";
+        throw err;
     }
-  }
 
-  const insertedCount = await Applicant.createExpenseBatch(receipts);
-  return insertedCount;
+    for (const r of receipts) {
+        if (
+            typeof r.receipt_type_id !== "number" ||
+            typeof r.request_id !== "number" ||
+            typeof r.amount !== "number"
+        ) {
+            const err = new Error(
+                'Each receipt must include "receipt_type_id", "request_id", and "amount" (all as numbers)'
+            );
+            err.code = "BAD_REQUEST";
+            throw err;
+        }
+    }
+
+    const insertedCount = await Applicant.createExpenseBatch(receipts);
+    return insertedCount;
 }
 
 // Check if the country exists in the database If not, insert it
