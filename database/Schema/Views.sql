@@ -6,6 +6,7 @@ CREATE OR REPLACE VIEW UserRequestHistory AS
         Request.user_id,
         Request.creation_date,
         Request_status.status,
+
         GROUP_CONCAT(DISTINCT Country_origin.country_name ORDER BY Route.router_index SEPARATOR ', ') AS trip_origins,
         GROUP_CONCAT(DISTINCT Country_destination.country_name ORDER BY Route.router_index SEPARATOR ', ') AS trip_destinations
     FROM
@@ -61,7 +62,6 @@ CREATE OR REPLACE VIEW RequestWithRouteDetails AS
         GROUP_CONCAT(DISTINCT Route.ending_time ORDER BY Route.router_index SEPARATOR ', ') AS ending_times,
         GROUP_CONCAT(DISTINCT Route.hotel_needed ORDER BY Route.router_index SEPARATOR ', ') AS hotel_needed_list,
         GROUP_CONCAT(DISTINCT Route.plane_needed ORDER BY Route.router_index SEPARATOR ', ') AS plane_needed_list
-
     FROM
         Request
         LEFT JOIN `User`
@@ -93,10 +93,13 @@ CREATE OR REPLACE VIEW RequestWithRouteDetails AS
         Request.creation_date,
         Request.last_mod_date,
         Request.active,
+
         `User`.user_name,
         `User`.email,
         `User`.phone_number,
+
         Request_status.status,
+        
         Department.department_name,
         Department.department_id;
 
