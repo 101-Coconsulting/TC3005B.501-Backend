@@ -20,7 +20,7 @@ async function devdb() {
 
     try {
         conn = await pool.getConnection();
-        
+
         console.log("Executing Scheme.sql...");
         await conn.query({
             sql: fs.readFileSync("./database/Schema/Scheme.sql", "utf8")
@@ -46,7 +46,7 @@ async function devdb() {
             await conn.importFile({file: "./database/Schema/Dummy.sql"});
             console.log("Dummy.sql executed.");
         }
-        
+
     } catch (error) {
         console.error(error);
     } finally {
