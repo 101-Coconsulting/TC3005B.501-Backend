@@ -17,37 +17,33 @@ const environment = process.argv[2];
 
 async function devdb() {
     let conn;
-    const schema = fs.readFileSync("./database/Schema/Scheme.sql", 'utf8');
-    const prepop = fs.readFileSync("./database/Schema/Prepopulate.sql", 'utf8');
-    const triggers = fs.readFileSync("./database/Schema/Triggers.sql", 'utf8');
-    const views = fs.readFileSync("./database/Schema/Views.sql", 'utf8');
-    let dummy;
-    if (environment === 'dev') {
-        dummy = fs.readFileSync("./database/Schema/Dummy.sql", 'utf8');
-    }
 
     try {
         conn = await pool.getConnection();
         
         console.log("Executing Scheme.sql...");
-        await conn.query(schema);
+        await conn.query({
+            sql: fs.readFileSync("./database/Schema/Scheme.sql", "utf8")
+        });
         console.log("Scheme.sql executed.");
 
         console.log("Executing Prepopulate.sql...");
-        await conn.query(prepop);
+        await conn.importFile({file: "./database/Schema/Prepopulate.sql"});
         console.log("Prepopulate.sql executed.");
 
         console.log("Executing Triggers.sql...");
-        await conn.query(triggers);
+        await conn.query({
+            sql: fs.readFileSync("./database/Schema/Triggers.sql", "utf8")
+        });
         console.log("Triggers.sql executed.");
 
         console.log("Executing Views.sql...");
-        await conn.query(views);
+        await conn.importFile({file: "./database/Schema/Views.sql"});
         console.log("Views.sql executed.");
 
-        if (environment === 'dev' && dummy) {
+        if (environment === 'dev') {
             console.log("Executing Dummy.sql...");
-            await conn.query(dummy);
+            await conn.importFile({file: "./database/Schema/Dummy.sql"});
             console.log("Dummy.sql executed.");
         }
         
