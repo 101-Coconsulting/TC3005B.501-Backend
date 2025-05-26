@@ -478,9 +478,9 @@ const Applicant = {
             console.error('Error getting completed requests:', error);
             throw error;
         } finally {
-            if (conn){
+            if (conn) {
                 conn.release();
-            } 
+            }
         }
     },
 
@@ -517,7 +517,7 @@ const Applicant = {
     async getApplicantRequest(id) {
         let conn;
         const query = `
-      SELECT 
+      SELECT
         r.request_id,
         rs.status AS request_status,
         r.notes,
@@ -581,12 +581,12 @@ const Applicant = {
             const insertedRows = [];
 
             for (const r of receipts) {
-            const result = await conn.query(
-                `INSERT INTO Receipt (receipt_type_id, request_id, amount)
+                const result = await conn.query(
+                    `INSERT INTO Receipt (receipt_type_id, request_id, amount)
                 VALUES (?, ?, ?)`,
-                [r.receipt_type_id, r.request_id, r.amount]
-            );
-            insertedRows.push(result);
+                    [r.receipt_type_id, r.request_id, r.amount]
+                );
+                insertedRows.push(result);
             }
 
             await conn.commit();
@@ -596,6 +596,245 @@ const Applicant = {
             throw err;
         } finally {
             conn.release();
+        }
+    },
+
+    // =========================================
+    // Create Draft Travel Request
+    // =========================================
+
+    async createDraftTravelRequest(user_id, savedDetails) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            await conn.beginTransaction();
+
+            // Destructure travel details from request body
+            // adding default values
+
+            const {
+                router_index = 0,                               // Default value 0
+                notes = '',                                     // Default value empty string
+                requested_fee = 0,                              // Default value 0
+                imposed_fee = 0,                                // Default value 0
+                origin_country_name = 'notSelected',            // Default value 'notSelected'
+                origin_city_name = 'notSelected',               // Default value 'notSelected'
+                destination_country_name = 'notSelected',       // Default value 'notSelected'
+                destination_city_name = 'notSelected',          // Default value 'notSelected'
+                beginning_date = '0000-01-01',                  // Default value '0000-01-01'
+                beginning_time = '00:00:00',                    // Default value '00:00:00'
+                ending_date = '0000-01-01',                     // Default value '0000-01-01'
+                ending_time = '00:00:00',                       // Default value '00:00:00'
+                plane_needed = false,                           // Default value false
+                hotel_needed = false,                           // Default value false
+                additionalRoutes = [],                          // Default value empty array
+            } = savedDetails;
+
+            const allRoutes = formatRoutes(
+                {
+                    router_index,
+                    origin_country_name,
+                    origin_city_name,
+                    destination_country_name,
+                    destination_city_name,
+                    beginning_date,
+                    beginning_time,
+                    ending_date,
+                    ending_time,
+                    plane_needed,
+                    hotel_needed,
+                },
+                additionalRoutes
+            );
+
+            // =======================================
+            // Step 1: Insert into Request table
+            // =======================================
+            const request_days = getRequestDays(allRoutes);
+
+            // Set query to insert into Request table
+            const insertIntoRequestTable = `
+            INSERT INTO Request (
+                user_id, request_status_id, notes, requested_fee, imposed_fee, request_days
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                `;
+
+            // Set status to 1 ('Abierto')
+            const requestTableResult = await conn.execute(insertIntoRequestTable, [
+                user_id,
+                1, // Set status to 1 ('Abierto')
+                notes,
+                requested_fee,
+                imposed_fee,
+                request_days,
+            ]);
+
+            const requestId = requestTableResult.insertId;
+
+            // =======================================
+            // Step 2: Insert into Country & City table
+            // =======================================
+
+            for (const route of allRoutes) {
+                try {
+
+                    console.log("Processing route:", route);
+                    let
+                        id_origin_country,
+                        id_destination_country,
+                        id_origin_city,
+                        id_destination_city;
+
+                    // Search if the country exists in the database
+                    id_origin_country = await getCountryId(conn, route.origin_country_name);
+                    id_destination_country = await getCountryId(conn, route.destination_country_name);
+                    console.log("Country IDs:", id_origin_country, id_destination_country);
+
+                    // Search if the city exists in the database
+                    id_origin_city = await getCityId(conn, route.origin_city_name);
+                    id_destination_city = await getCityId(conn, route.destination_city_name);
+                    console.log("City IDs:", id_origin_city, id_destination_city);
+
+                    // Insert into Route table query
+                    const insertRouteTable = `
+                    INSERT INTO Route (
+                        id_origin_country, id_origin_city,
+                        id_destination_country, id_destination_city,
+                        router_index, plane_needed, hotel_needed,
+                        beginning_date, beginning_time,
+                        ending_date, ending_time
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    `;
+
+                    // Execute the query to insert into Route table
+                    let routeTableResult = await conn.query(insertRouteTable, [
+                        id_origin_country,
+                        id_origin_city,
+                        id_destination_country,
+                        id_destination_city,
+                        route.router_index,
+                        route.plane_needed,
+                        route.hotel_needed,
+                        route.beginning_date,
+                        route.beginning_time,
+                        route.ending_date,
+                        route.ending_time,
+                    ]);
+
+                    const routeId = routeTableResult.insertId;
+
+                    // ======================================
+                    // Step 3: Insert into Route_Request table
+                    // ======================================
+
+                    const insertIntoRouteRequestTable = `
+                    INSERT INTO Route_Request (request_id, route_id) VALUES (?, ?)
+                    `;
+                    await conn.query(insertIntoRouteRequestTable, [requestId, routeId]);
+
+                } catch (error) {
+                    console.error("Error processing route:", error);
+                    throw new Error("Database Error: Unable to process route");
+
+                }
+            }
+            // Commit the transaction
+            await conn.commit();
+            console.log(`Draft travel request created with ID: ${requestId}`);
+            return {
+                requestId: Number(requestId),
+                message: "Draft travel request successfully created",
+            };
+
+        } catch (error) {
+            console.error("Error creating draft travel request:", error);
+            throw new Error("Database Error: Unable to fill Request table");
+        }
+    },
+
+    // =========================================
+    // Confirm Draft Travel Request
+    // =========================================
+
+    async confirmDraftTravelRequest(userId, requestId) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            await conn.beginTransaction();
+
+            // Get the role from the userId
+            const role = await conn.query(
+                `SELECT role_id FROM User WHERE user_id = ?`,
+                [userId],
+            );
+            let request_status;
+            if (role[0].role_id == 1) {
+                console.log("Role ID:", role[0].role_id);
+                request_status = 2; // 2 = First Revision
+            }
+            else if (role[0].role_id == 4) {
+                console.log("Role ID:", role[0].role_id);
+                request_status = 3; // 3 = Second Revision
+            }
+            else if (role[0].role_id == 5) {
+                console.log("Role ID:", role[0].role_id);
+                request_status = 4; // 4 = Trip Quote
+            }
+            else {
+                throw new Error("User role in not allowed to create a travel request");
+            }
+
+            // Update the request status
+            const updateRequestStatus = `
+                UPDATE Request
+                SET request_status_id = ?, last_mod_date = CURRENT_TIMESTAMP
+                WHERE request_id = ?
+            `;
+
+            await conn.execute(updateRequestStatus, [
+                request_status,
+                requestId,
+            ]);
+
+
+            // Commit the transaction
+            await conn.commit();
+            console.log(`Draft travel request ${requestId} confirmed successfully.`);
+            return {
+                requestId: Number(requestId),
+                message: "Draft travel request successfully confirmed",
+            };
+
+        } catch (error) {
+            console.error("Error confirming draft travel request:", error);
+            throw new Error("Database Error: Unable to confirm draft travel request");
+        }
+    },
+
+    async getRequestStatus(requestId) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            const rows = await conn.query(
+                `SELECT request_status_id FROM Request WHERE request_id = ?`,
+                [requestId]
+            );
+            return rows[0]?.request_status_id || null;
+        } finally {
+            if (conn) conn.release();
+        }
+    },
+
+    async updateRequestStatusToValidationStage(requestId) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            await conn.query(
+                `UPDATE Request SET request_status_id = 7 WHERE request_id = ?`,
+                [requestId]
+            );
+        } finally {
+            if (conn) conn.release();
         }
     },
 
