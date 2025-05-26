@@ -35,7 +35,7 @@ BEGIN
     END IF;
 END$$
 
-CREATE TRIGGER DeductFromWalletOnFeeImposed
+CREATE OR REPLACE TRIGGER DeductFromWalletOnFeeImposed
 AFTER UPDATE ON Request
 FOR EACH ROW
 BEGIN
@@ -55,6 +55,18 @@ BEGIN
         JOIN Request r ON r.request_id = NEW.request_id
         SET u.wallet = u.wallet + NEW.amount
         WHERE u.user_id = r.user_id;
+    END IF;
+END$$
+
+CREATE OR REPLACE TRIGGER ResetRejectedReceipts
+AFTER UPDATE ON Request
+FOR EACH ROW
+BEGIN
+    IF OLD.request_status_id = 7 AND NEW.request_status_id = 6 THEN
+        UPDATE Receipt
+        SET validation = 'Pendiente'
+        WHERE request_id = NEW.request_id
+        AND validation = 'Rechazado';
     END IF;
 END$$
 

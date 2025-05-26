@@ -18,7 +18,7 @@ INSERT INTO AlertMessage (message_text) VALUES
     ('Los comprobantes están listos para validación.');
 
 INSERT INTO Request_status (status) VALUES
-    ('Abierto'),
+    ('Borrador'),
     ('Primera Revisión'),
     ('Segunda Revisión'),
     ('Cotización del Viaje'),
