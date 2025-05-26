@@ -25,7 +25,7 @@ const hash = async (data) => {
  * @param {Object} userData - User data
  * @returns {Promise<Object>} Created user data
  */
-const createUser = async (userData) => {
+export async function createUser(userData) {
   try {
     const hashedPassword = await hash(userData.password);
     const encryptedEmail = encrypt(userData.email);
@@ -37,8 +37,14 @@ const createUser = async (userData) => {
       user_name: userData.user_name,
       password: hashedPassword,
       workstation: userData.workstation,
-      email: encryptedEmailgin/155-task-administrator---create-new-users
-    }
+      email: encryptedEmail,
+      phone_number: encryptedPhone
+    };
+    console.log(newUser);
+
+    return await Admin.createUser(newUser);
+  } catch (error) {
+    throw new Error(`Error creating user: ${error.message}`);
   }
 };
 
@@ -67,6 +73,7 @@ const validateUserRow = async (rowData, rowNumber) => {
 const getForeignKeyValues = async (rowData, rowNumber) => {
   const rowErrors = [];
   let userData = {...rowData};
+  console.log()
 
   try {
     const roleId = await Admin.findRoleID(userData.role_name);
@@ -83,8 +90,16 @@ const getForeignKeyValues = async (rowData, rowNumber) => {
       userData.department_id = departmentId;
     }
 
-    const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
+    const hashedPassword = hash(userData.password);
     userData.password = hashedPassword;
+
+    const encryptedEmail = encrypt(userData.email);
+    userData.email = encryptedEmail;
+
+    console.log(userData.phone_number);
+    const encryptedPhone = encrypt(userData.phone_number);
+    userData.phone_number = encryptedPhone;
+    console.log(encryptedPhone);
 
   } catch (error) {
     rowErrors.push(`Error processing row ${rowNumber}`);
