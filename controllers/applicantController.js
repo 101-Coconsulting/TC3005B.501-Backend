@@ -156,14 +156,17 @@ export async function createExpenseValidationHandler(req, res) {
     const count = await createExpenseValidationBatch(req.body.receipts);
     return res.status(201).json({
       count,
-      message: "Expense receipts created successfully",
+      message: "Expense receipts created successfully and request moved to validation stage",
     });
   } catch (err) {
-    if (err.code === "BAD_REQUEST") {
-      return res.status(400).json({ error: err.message });
+    if (err.message.includes("must belong to the same request_id")) {
+      return res.status(400).json({ error: "All receipts must belong to the same request_id." });
+    }
+    if (err.message.includes("must be in status 6")) {
+      return res.status(400).json({ error: "Request must be in status 6 (Comprobación gastos del viaje) to add receipts." });
     }
     console.error("Error in createExpenseValidationHandler:", err);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error while creating expense validation" });
   }
 }
 

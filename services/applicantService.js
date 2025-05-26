@@ -97,28 +97,23 @@ export const cancelTravelRequestValidation = async (request_id) => {
 };
 
 export async function createExpenseValidationBatch(receipts) {
-  if (!Array.isArray(receipts) || receipts.length === 0) {
-    const err = new Error('The "receipts" field must be a non-empty array');
-    err.code = "BAD_REQUEST";
-    throw err;
-  }
+    const requestIds = [...new Set(receipts.map(r => r.request_id))];
 
-  for (const r of receipts) {
-    if (
-      typeof r.receipt_type_id !== "number" ||
-      typeof r.request_id !== "number" ||
-      typeof r.amount !== "number"
-    ) {
-      const err = new Error(
-        'Each receipt must include "receipt_type_id", "request_id", and "amount" (all as numbers)'
-      );
-      err.code = "BAD_REQUEST";
-      throw err;
+    if (requestIds.length !== 1) {
+        throw new Error("All receipts must belong to the same request_id.");
     }
-  }
 
-  const insertedCount = await Applicant.createExpenseBatch(receipts);
-  return insertedCount;
+    const requestId = requestIds[0];
+    const currentStatus = await Applicant.getRequestStatus(requestId);
+
+    if (currentStatus !== 6) {
+        throw new Error("Request must be in status 6 (Comprobación gastos del viaje) to add receipts.");
+    }
+
+    const insertedCount = await Applicant.createExpenseBatch(receipts);
+    await Applicant.updateRequestStatusToValidationStage(requestId);
+
+    return insertedCount;
 }
 
 // Check if the country exists in the database If not, insert it

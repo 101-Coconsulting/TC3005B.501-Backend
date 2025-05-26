@@ -599,6 +599,21 @@ const Applicant = {
         }
     },
 
+    async updateRequestStatusToValidationStage(requestId) {
+        const conn = await pool.getConnection();
+        try {
+            await conn.query(
+                `UPDATE Request SET request_status_id = 7 WHERE request_id = ?`,
+                [requestId]
+            );
+        } catch (err) {
+            console.error('Error updating request status to 7:', err);
+            throw err;
+        } finally {
+            conn.release();
+        }
+    },
+
 };
 
 export default Applicant;
