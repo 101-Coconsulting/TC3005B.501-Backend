@@ -87,6 +87,47 @@ const AccountsPayable = {
         }
     },
 
+    async receiptExists(receiptId) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            const rows = await conn.query(
+                "SELECT receipt_id, validation FROM `Receipt` WHERE receipt_id = ?",
+                [receiptId],
+            );
+            return rows[0];
+        } catch (error) {
+            console.error("Error checking if receipt exists:", error);
+            throw error;
+        } finally {
+            if (conn) {
+                conn.release();
+            }
+        }
+    },
+
+    //Accept or Reject a Travel Request
+    async validateReceipt(requestId, approval) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            const result = await conn.query(
+                `UPDATE Receipt
+                SET validation = ? WHERE receipt_id = ?`,
+                [approval, requestId],
+            );
+
+            return result.affectedRows > 0;
+        } catch (error) {
+            console.error("Error updating receipt status:", error);
+            throw error;
+        } finally {
+            if (conn) {
+                conn.release();
+            }
+        }
+    },
+
 };
 
 export default AccountsPayable;
