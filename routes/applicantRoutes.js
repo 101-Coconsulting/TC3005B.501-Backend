@@ -36,4 +36,10 @@ router.route("/get-user-request/:id")
 router.route("/get-user-requests/:id")
     .get(validateId, validateInputs, applicantController.getApplicantRequests);
 
+router.route("/create-draft-travel-request/:user_id")
+    .post(applicantController.createDraftTravelRequest);
+
+router.route("/confirm-draft-travel-request/:user_id/:request_id")
+    .put(applicantController.confirmDraftTravelRequest);
+
 export default router;
