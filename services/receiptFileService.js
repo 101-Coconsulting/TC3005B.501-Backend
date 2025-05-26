@@ -12,7 +12,7 @@ export async function uploadReceiptFiles(receiptId, pdfFile, xmlFile) {
       pdfFile.mimetype,
       { receiptId, fileType: 'pdf' }
     );
-    
+
     // Upload XML file
     const xmlResult = await uploadFile(
       xmlFile.buffer,
@@ -20,14 +20,14 @@ export async function uploadReceiptFiles(receiptId, pdfFile, xmlFile) {
       xmlFile.mimetype,
       { receiptId, fileType: 'xml' }
     );
-    
+
     // Update the receipt record with both file IDs
     const conn = await pool.getConnection();
     try {
       await conn.query(
-        `UPDATE Receipt 
-         SET pdf_file_id = ?, pdf_file_name = ?, 
-             xml_file_id = ?, xml_file_name = ? 
+        `UPDATE Receipt
+         SET pdf_file_id = ?, pdf_file_name = ?,
+             xml_file_id = ?, xml_file_name = ?
          WHERE receipt_id = ?`,
         [
           pdfResult.fileId, pdfResult.fileName,
@@ -35,7 +35,7 @@ export async function uploadReceiptFiles(receiptId, pdfFile, xmlFile) {
           receiptId
         ]
       );
-      
+
       return {
         pdf: pdfResult,
         xml: xmlResult
@@ -64,16 +64,16 @@ export async function getReceiptFilesMetadata(receiptId) {
   const conn = await pool.getConnection();
   try {
     const [receipt] = await conn.query(
-      `SELECT pdf_file_id, pdf_file_name, xml_file_id, xml_file_name 
-       FROM Receipt 
+      `SELECT pdf_file_id, pdf_file_name, xml_file_id, xml_file_name
+       FROM Receipt
        WHERE receipt_id = ?`,
       [receiptId]
     );
-    
+
     if (!receipt) {
       throw new Error('Receipt not found');
     }
-    
+
     return {
       pdf: {
         fileId: receipt.pdf_file_id,

@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `User`(
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     active BOOL NOT NULL DEFAULT TRUE,
-  
+
     FOREIGN KEY (role_id) REFERENCES `Role`(role_id),
     FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS Receipt (
 
     submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     validation_date TIMESTAMP,
-    
+
     pdf_file_id VARCHAR(24) NULL,
     pdf_file_name VARCHAR(255) NULL,
     xml_file_id VARCHAR(24) NULL,

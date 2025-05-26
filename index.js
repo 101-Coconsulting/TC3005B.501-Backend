@@ -17,7 +17,7 @@ import { connectMongo } from './services/fileStorage.js';
 import fs from "fs";
 import https from "https";
 import express from "express";
-import cors from "cors"; 
+import cors from "cors";
 const app = express();
 const PORT = process.env.PORT || 3000;
 

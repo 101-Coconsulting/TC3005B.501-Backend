@@ -8,26 +8,26 @@ const router = express.Router();
 const upload = multer();
 
 // Upload both PDF and XML files for a receipt
-router.post('/upload-receipt-files/:receipt_id', 
+router.post('/upload-receipt-files/:receipt_id',
   upload.fields([
     { name: 'pdf', maxCount: 1 },
     { name: 'xml', maxCount: 1 }
-  ]), 
+  ]),
   async (req, res) => {
     // This might need to be changed to require at least one file.
     if (!req.files || !req.files.pdf || !req.files.xml) {
       return res.status(400).json({ error: 'Both PDF and XML files are required' });
     }
-    
+
     const receiptId = parseInt(req.params.receipt_id, 10);
-    
+
     try {
       const result = await uploadReceiptFiles(
         receiptId,
         req.files.pdf[0],
         req.files.xml[0]
       );
-      
+
       res.status(201).json({
         message: 'Files uploaded successfully',
         pdf: {
@@ -50,17 +50,17 @@ router.post('/upload-receipt-files/:receipt_id',
 router.get('/receipt-file/:file_id', async (req, res) => {
   try {
     const fileId = new ObjectId(req.params.file_id);
-    
+
     // Get file metadata from MongoDB
     const file = await db.collection('fs.files').findOne({ _id: fileId });
     if (!file) {
       return res.status(404).json({ error: 'File not found' });
     }
-    
+
     // Set appropriate headers
     res.set('Content-Type', file.contentType);
     res.set('Content-Disposition', `attachment; filename="${file.filename}"`);
-    
+
     // Stream the file to the response
     const downloadStream = await getReceiptFile(fileId);
     downloadStream.pipe(res);
@@ -73,7 +73,7 @@ router.get('/receipt-file/:file_id', async (req, res) => {
 // Get receipt files metadata
 router.get('/receipt-files/:receipt_id', async (req, res) => {
   const receiptId = parseInt(req.params.receipt_id, 10);
-  
+
   try {
     const metadata = await getReceiptFilesMetadata(receiptId);
     res.json(metadata);

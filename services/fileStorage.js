@@ -39,7 +39,7 @@ async function uploadFile(fileBuffer, fileName, fileType, metadata = {}) {
   });
 
   const fileId = uploadStream.id.toString();
-  
+
   return new Promise((resolve, reject) => {
     readableStream.pipe(uploadStream)
       .on('error', reject)
