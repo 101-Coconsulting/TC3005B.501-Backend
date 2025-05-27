@@ -8,7 +8,6 @@ router.use((req, res, next) => {
     next();
 });
 
-// Route to attend a travel request (update status to 4)
 router.route("/attend-travel-request/:request_id")
     .put(validateId, validateInputs, AccountsPayableController.attendTravelRequest);
 
@@ -17,5 +16,8 @@ router.route("/validate-receipts/:request_id")
 
 router.route("/validate-receipt/:receipt_id")
     .put(AccountsPayableController.validateReceipt);
+
+router.route("/get-expense-validations/:request_id")
+    .get(AccountsPayableController.getExpenseValidations);
 
 export default router;
