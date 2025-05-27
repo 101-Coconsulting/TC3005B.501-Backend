@@ -18,6 +18,6 @@ router.route("/validate-receipt/:receipt_id")
     .put(AccountsPayableController.validateReceipt);
 
 router.route("/get-expense-validations/:request_id")
-    .get(AccountsPayableController.getExpenseValidations);
+    .get(validateId, validateInputs, AccountsPayableController.getExpenseValidations);
 
 export default router;
