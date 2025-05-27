@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Generate private key for CA 
 openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out ca.key
 
