@@ -154,3 +154,30 @@ export const getCityId = async (conn, cityName) => {
         return CityRows.city_id;
     }
 };
+
+export async function sendReceiptsForValidation(requestId) {
+  const currentStatus = await Applicant.getRequestStatus(requestId);
+
+  if (currentStatus === null) {
+    const err = new Error(`No request found with id ${requestId}`);
+    err.status = 404;
+    throw err;
+  }
+
+  if (currentStatus !== 6) {
+    const err = new Error(
+      "Request must be in status 6 (Comprobación gastos del viaje) to send for validation"
+    );
+    err.status = 400;
+    throw err;
+  }
+
+  await Applicant.updateRequestStatusToValidationStage(requestId);
+
+  return {
+    request_id: Number(requestId),
+    updated_status: 7,
+    message: "Request status updated to 'Validación de comprobantes'",
+  };
+}
+

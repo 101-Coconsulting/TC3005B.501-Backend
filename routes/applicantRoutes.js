@@ -42,4 +42,7 @@ router.route("/create-draft-travel-request/:user_id")
 router.route("/confirm-draft-travel-request/:user_id/:request_id")
     .put(applicantController.confirmDraftTravelRequest);
 
+router.route("/send-expense-validation/:request_id")
+    .put(applicantController.sendExpenseValidation);
+
 export default router;

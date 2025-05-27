@@ -2,7 +2,7 @@
 Applicant Controller
 */
 import Applicant from "../models/applicantModel.js";
-import { cancelTravelRequestValidation, createExpenseValidationBatch } from '../services/applicantService.js';
+import { cancelTravelRequestValidation, createExpenseValidationBatch, sendReceiptsForValidation } from '../services/applicantService.js';
 
 export const getApplicantById = async (req, res) => {
   const id = req.params.id;
@@ -232,6 +232,22 @@ export const confirmDraftTravelRequest = async (req, res) => {
   }
 };
 
+export const sendExpenseValidation = async (req, res) => {
+  const requestId = req.params.request_id;
+
+  try {
+    const result = await sendReceiptsForValidation(requestId);
+    return res.status(200).json(result);
+  } catch (err) {
+    if (err.status) {
+      return res.status(err.status).json({ error: err.message });
+    }
+    console.error("Unexpected error in sendExpenseValidation controller:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 export default {
   getApplicantById,
   getApplicantRequests,
@@ -244,4 +260,6 @@ export default {
   createExpenseValidationHandler,
   createDraftTravelRequest,
   confirmDraftTravelRequest,
+  sendExpenseValidation,
+  
 };

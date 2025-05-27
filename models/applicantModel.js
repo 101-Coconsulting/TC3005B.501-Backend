@@ -811,6 +811,33 @@ const Applicant = {
         }
     },
 
+    async getRequestStatus(requestId) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            const rows = await conn.query(
+                `SELECT request_status_id FROM Request WHERE request_id = ?`,
+                [requestId]
+            );
+            return rows[0]?.request_status_id || null;
+        } finally {
+            if (conn) conn.release();
+        }
+    },
+
+    async updateRequestStatusToValidationStage(requestId) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            await conn.query(
+                `UPDATE Request SET request_status_id = 7 WHERE request_id = ?`,
+                [requestId]
+            );
+        } finally {
+            if (conn) conn.release();
+        }
+    },
+
 };
 
 export default Applicant;
