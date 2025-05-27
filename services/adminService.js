@@ -64,7 +64,7 @@ const validateUserRow = async (rowData, rowNumber) => {
   }
 
   if (rowErrors.length > 0) {
-    return { row_number: rowNumber, error: rowErros.join(', ') };
+    return { row_number: rowNumber, error: rowErrors.join(', ') };
   }
 
   return null;
@@ -90,16 +90,14 @@ const getForeignKeyValues = async (rowData, rowNumber) => {
       userData.department_id = departmentId;
     }
 
-    const hashedPassword = hash(userData.password);
+    const hashedPassword = await hash(userData.password);
     userData.password = hashedPassword;
 
     const encryptedEmail = encrypt(userData.email);
     userData.email = encryptedEmail;
 
-    console.log(userData.phone_number);
     const encryptedPhone = encrypt(userData.phone_number);
     userData.phone_number = encryptedPhone;
-    console.log(encryptedPhone);
 
   } catch (error) {
     rowErrors.push(`Error processing row ${rowNumber}`);
@@ -115,7 +113,7 @@ const getForeignKeyValues = async (rowData, rowNumber) => {
   return userData;
 };
 
-const parseCSV = async (filePath) => {
+export const parseCSV = async (filePath) => {
   const results = {
     total_records: 0,
     created: 0,

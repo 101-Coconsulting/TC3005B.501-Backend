@@ -41,10 +41,11 @@ export const createMultipleUsers = async (req, res) => {
     const filePath = req.file.path;
 
     try {
-        const result = await parseCSV(filePath);
+        const result = await adminService.parseCSV(filePath);
         res.status(200).json(result);
     } catch (error) {
-        res.status(500).json(result);
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
