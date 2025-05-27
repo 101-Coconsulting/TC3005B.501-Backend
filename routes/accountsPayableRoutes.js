@@ -13,6 +13,6 @@ router.route("/attend-travel-request/:request_id")
     .put(validateId, validateInputs, AccountsPayableController.attendTravelRequest);
 
 router.route("/get-expense-validations/:request_id")
-    .get(AccountsPayableController.getExpenseValidations);
+    .get(validateId, validateInputs, AccountsPayableController.getExpenseValidations);
 
 export default router;
