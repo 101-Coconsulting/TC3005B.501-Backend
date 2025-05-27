@@ -109,6 +109,11 @@ In order to properly setup MariaDB, the following steps are required:
         mariadb -u DB_USER -p DB_USER_PASSWORD < Dummy.sql
         ```
 
+### Setup MongoDB
+1. [Download `mongodb`](https://www.mongodb.com/docs/manual/installation/) using your preferred method or package manager.
+2. [Download `mongosh`](https://www.mongodb.com/try/download/shell) if you want to interact with the database directly (recommended).
+3. Test that mongo was installed correctly by running the `mongod` or `mongosh` command. `mongod` will usually return error codes since no connection is currently made to then database.
+
 ### Environment Variables
 
 Finally, it is crucial that a local `.env` file is created. Based off of the [`.env.example`](/.env.example) file provided, which includes all necessary environment variables to be set in order for the server to be able to connect to the `mariadb` database, as well as the required JSON Web Token(JWT) information required for verifying authorized requests and encryption.
@@ -118,7 +123,7 @@ Finally, it is crucial that a local `.env` file is created. Based off of the [`.
     ```sh
     cp .env.example .env
     ```
-3. Edit the newly created `.env` file, and edit the required variables based on your previous [`mariadb` configuration](#configuring-the-database):
+3. Edit the newly created `.env` file, and edit the required variables based on your previous [`mariadb` configuration](#configuring-the-database) and `mongodb` configuration:
     ```sh
     # Server Configuration
     PORT=3000
@@ -131,10 +136,6 @@ Finally, it is crucial that a local `.env` file is created. Based off of the [`.
     DB_USER=username  # Change this
     DB_PASSWORD=password  # Change this
 
-    # Root User
-    DB_ROOT_USER=root_username  # Change this
-    DB_ROOT_PASSWORD=root_password  # Change this
-
     # JWT Configuration
     JWT_SECRET=your_jwt_secret_key  # Change this
     JWT_EXPIRES_IN=1d
@@ -144,11 +145,13 @@ Finally, it is crucial that a local `.env` file is created. Based off of the [`.
 
     # Other Configuration
     # CORS_ORIGIN=http://localhost:3000
+
+    MONGO_URI=mongodb://localhost:27017
     ```
 
 ### Running
 
-To run the Backend, ensure the `mariadb` server is running, and utilize whichever package manager you used for dependencies to run the project.
+To run the Backend, ensure the `mariadb` and `mongodb` servera are running, and utilize whichever package manager you used for dependencies to run the project.
 
 #### Using `pnpm`
 
@@ -162,4 +165,4 @@ pnpm run dev
 npm run dev
 ```
 
-And you're good to go! `nodemon` should start and you should be able to start sending requests to your specified `PORT` on `localhost`!
+And you're good to go! `nodemon` should start and you should be able to start sending requests to your specified `PORT` on `localhost` as well as a confirmation message of connection to the file database!
