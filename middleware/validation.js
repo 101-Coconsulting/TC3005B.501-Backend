@@ -1,13 +1,13 @@
 import { body, param, validationResult } from 'express-validator';
 
 /*
- * This will validate the field of user id, given in any endpoint
+ * This will validate and sanitize the field of user id, given in any endpoint
  * (LuisDa)
  */
 export const validateId = [
-  param('id').optional().isNumeric().withMessage('The ID needs to be a valid number'),
-  param('request_id').optional().isNumeric().withMessage('Request ID must be a valid number'),
-  param('user_id').optional().isNumeric().withMessage('User ID must be a valid number'),
+  param('id').optional().isNumeric().toInt().withMessage('The ID needs to be a valid number'),
+  param('request_id').optional().isNumeric().toInt().withMessage('Request ID must be a valid number'),
+  param('user_id').optional().isNumeric().toInt().withMessage('User ID must be a valid number'),
   (req, res, next) => {
     if (!req.params.id && !req.params.user_id && !req.params.request_id) {
       return res.status(400).json({ error: "At least one ID needs to be provided" });
@@ -16,10 +16,14 @@ export const validateId = [
   }
 ];
 
+/*
+ * This will validate and sanitize the Department, status ID and N
+ * (LuisDa)
+ */
 export const validateDeptStatus = [
-  param('dept_id').isNumeric().withMessage('Department cannot be empty.'),
-  param('status_id').isNumeric().withMessage('Status cannot be empty.'),
-  param('n').optional().isNumeric().withMessage('N must be a valid number')
+  param('dept_id').isNumeric().toInt().withMessage('Department cannot be empty.'),
+  param('status_id').isNumeric().toInt().withMessage('Status cannot be empty.'),
+  param('n').optional().isNumeric().toInt().withMessage('N must be a valid number')
 ];
 
 /*
@@ -65,14 +69,14 @@ export const validateTravelRequest = [
 ];
 
 /*
- * This will validate the receipts as they are created
+ * This will validate and sanitize the receipts as they are created
  * (LuisDa)
  */
 export const validateExpenseReceipts = [
   body('receipts').isArray().notEmpty().withMessage('Receipts must be a non-empty array.'),
-  body('receipts.*.receipt_type_id').isInt({ min: 0 }).withMessage('Receipt type ID must be a valid number'),
-  body('receipts.*.request_id').isInt({ min: 0 }).withMessage('Request ID must be a valid number'),
-  body('receipts.*.amount').isFloat({ min: 0 }).withMessage('Amounts needs to be a valid number'),
+  body('receipts.*.receipt_type_id').isInt({ min: 0 }).toInt().withMessage('Receipt type ID must be a valid number'),
+  body('receipts.*.request_id').isInt({ min: 0 }).toInt().withMessage('Request ID must be a valid number'),
+  body('receipts.*.amount').isFloat({ min: 0 }).toFloat().withMessage('Amounts needs to be a valid number'),
 ];
 
 /*
