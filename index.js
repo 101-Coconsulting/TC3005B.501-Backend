@@ -43,9 +43,9 @@ connectMongo().catch(err => console.error('Failed to connect to MongoDB:', err))
 
 // Basic route
 app.get("/", (req, res) => {
-    res.json({
-        message: "This is my backend endpoint for the travel management system",
-    });
+  res.json({
+    message: "This is my backend endpoint for the travel management system",
+  });
 });
 
 
@@ -56,7 +56,18 @@ const ca = fs.readFileSync("./certs/ca.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 // HTTPS server configuration
+console.clear();
 const httpsServer = https.createServer(credentials, app);
 httpsServer.listen(PORT, () =>
-    console.log(`Server running on port ${PORT} with HTTPS`),
+  console.log(`
+         )         )            (   (
+   (  ( /(   (  ( /(      (     )\\ ))\\ )
+   )\\ )\\())  )\\ )\\())     )\\   (()/(()/(
+ (((_|(_)\ (((_|(_)\   ((((_)(  /(_))(_))
+ )\\___ ((_))\\___ ((_)   )\\ _ )\\(_))(_))
+((/ __/ _ ((/ __/ _ \\   (_)_\\(_) _ \\_ _|
+ | (_| (_) | (_| (_) |   / _ \\ |  _/| |
+  \\___\\___/ \\___\\___/   /_/ \\_\\|_| |___|
+🚀 Server running on port ${PORT} with HTTPS
+`),
 );

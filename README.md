@@ -151,7 +151,7 @@ Finally, it is crucial that a local `.env` file is created. Based off of the [`.
 
 ### Running
 
-To run the Backend, ensure the `mariadb` and `mongodb` servera are running, and utilize whichever package manager you used for dependencies to run the project.
+To run the Backend, ensure the `mariadb` and `mongodb` servers are running, and utilize whichever package manager you used for dependencies to run the project.
 
 #### Using `pnpm`
 
