@@ -83,28 +83,33 @@ In order to properly setup MariaDB, the following steps are required:
 1. [Download `mariadb`](https://mariadb.com/kb/en/where-to-download-mariadb/).
 2. It is recommended that you [secure your MariaDB installation](https://mariadb.com/kb/en/mysql_secure_installation/).
 3. [Start the `mariadb` server](https://mariadb.com/kb/en/starting-and-stopping-mariadb-automatically/).
-4. Go to the [/database/Scheme](/database/Scheme) directory.
+4. To setup the database with dummy data, run `node database/config/dev_db.js`from the root of the repository.
+5. To setup only the database, run `node database/config/init_db.js` from the root of the repository.
+
+#### Manual MariaDB Setup
+
+1. Go to the [/database/Scheme](/database/Scheme) directory.
     ```sh
     cd database/Scheme
     ```
-5. [Run the `mariadb` client in batch mode](https://mariadb.com/kb/en/mariadb-command-line-client/). With `DB_USER` and `DB_USER_PASSWORD` being your created `mariadb` user and its password.
-    1. Load database scheme [/database/Scheme/Scheme.sql](/database/Scheme/Scheme.sql).
+2. [Run the `mariadb` client in batch mode](https://mariadb.com/kb/en/mariadb-command-line-client/). With `DB_USER` and `DB_USER_PASSWORD` being your created `mariadb` user and its password.
+    i. Load database scheme [/database/Scheme/Scheme.sql](/database/Scheme/Scheme.sql).
         ```sh
         mariadb -u DB_USER -p DB_USER_PASSWORD < Scheme.sql
         ```
-    2. Load database initial prepopulation [/database/Scheme/Prepopulate.sql](/database/Scheme/Prepopulate.sql).
+    ii. Load database initial prepopulation [/database/Scheme/Prepopulate.sql](/database/Scheme/Prepopulate.sql).
         ```sh
         mariadb -u DB_USER -p DB_USER_PASSWORD < Prepopulate.sql
         ```
-    3. Load database triggers [/database/Scheme/Triggers.sql](/database/Scheme/Triggers.sql).
+    iii. Load database triggers [/database/Scheme/Triggers.sql](/database/Scheme/Triggers.sql).
         ```sh
         mariadb -u DB_USER -p DB_USER_PASSWORD < Triggers.sql
         ```
-    4. Load database views [/database/Scheme/Views.sql](/database/Scheme/Views.sql).
+    iv. Load database views [/database/Scheme/Views.sql](/database/Scheme/Views.sql).
         ```sh
         mariadb -u DB_USER -p DB_USER_PASSWORD < Views.sql
         ```
-    5. Load database dummy data [/database/Scheme/Dummy.sql](/database/Scheme/Dummy.sql).
+    v. Load database dummy data [/database/Scheme/Dummy.sql](/database/Scheme/Dummy.sql).
         ```sh
         mariadb -u DB_USER -p DB_USER_PASSWORD < Dummy.sql
         ```
