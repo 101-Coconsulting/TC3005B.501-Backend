@@ -60,6 +60,19 @@ CREATE TABLE IF NOT EXISTS Request (
     FOREIGN KEY (request_status_id) REFERENCES Request_status(request_status_id)
 );
 
+CREATE TABLE IF NOT EXISTS Request_log (
+    request_log_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    request_id INT,
+    request_status_id INT,
+    user_id INT,
+    mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (request_id) REFERENCES Request(request_id),
+    FOREIGN KEY (request_status_id) REFERENCES Request_status(request_status_id),
+    FOREIGN KEY (user_id) REFERENCES `User`(user_id)
+);
+
 CREATE TABLE IF NOT EXISTS Alert (
     alert_id INT PRIMARY KEY AUTO_INCREMENT,
     request_id INT,
