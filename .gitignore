@@ -146,3 +146,10 @@ dist
 
 #MacOS Stuff
 .DS_Store
+
+# Super-linter outputs
+super-linter-output
+super-linter.log
+
+# GitHub Actions leftovers
+github_conf
