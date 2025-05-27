@@ -12,6 +12,9 @@ router.use((req, res, next) => {
 router.route("/attend-travel-request/:request_id")
     .put(validateId, validateInputs, AccountsPayableController.attendTravelRequest);
 
+router.route("/validate-receipts/:request_id")
+    .put(AccountsPayableController.validateReceiptsHandler);
+
 router.route("/validate-receipt/:receipt_id")
     .put(AccountsPayableController.validateReceipt);
 
