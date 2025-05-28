@@ -25,11 +25,10 @@ export async function getUserData(userId) {
       WHERE u.user_id = ?`,
       [userId]
     );
-
     
     return rows[0];
 
   } finally {
     connection.release();
   }
-}
+};
