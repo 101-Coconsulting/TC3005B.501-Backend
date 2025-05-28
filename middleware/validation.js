@@ -249,7 +249,7 @@ export const validateExpenseReceipts = [
  * This will validate and sanitize the draft of travel requests as they are created
  * (Sosa)
  */
-export const draftTravelRequest = [
+export const validateDraftTravelRequest = [
   param('id')
     .isNumeric()
     .withMessage("ID must be a valid number")
@@ -462,5 +462,5 @@ export default {
   validateTravelRequest,
   validateExpenseReceipts,
   validateInputs,
-  draftTravelRequest
+  validateDraftTravelRequest
 };
