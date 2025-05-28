@@ -115,6 +115,34 @@ const User = {
   }
 },
 
+  async getRequestLogs(request_id) {
+    let conn;
+    const query = `
+      SELECT 
+        rl.request_log_id,
+        rl.request_id,
+        rl.user_id,
+        rl.mod_date,
+        rs.status,
+        u.user_name
+      FROM Request_log rl
+      JOIN Request_status rs ON rl.request_status_id = rs.request_status_id
+      JOIN User u ON rl.user_id = u.user_id
+      WHERE rl.request_id = ?
+      ORDER BY rl.mod_date ASC
+    `;
+
+    try {
+      conn = await pool.getConnection();
+      const rows = await conn.query(query, [request_id]);
+      return rows;
+    } catch (error) {
+      console.error('Error in getRequestLogs:', error);
+      throw error;
+    } finally {
+      if (conn) conn.release();
+    }
+  }
 };
 
 export default User;

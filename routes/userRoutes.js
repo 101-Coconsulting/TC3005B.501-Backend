@@ -12,4 +12,7 @@ router.route('/get-travel-request/:request_id')
 router.route('/get-travel-requests/:dept_id/:status_id/:n?')
     .get(validateDeptStatus, validateInputs, userController.getTravelRequestsByDeptStatus);
 
+router.route('/get-request-logs/:request_id')
+    .get(validateId, validateInputs, userController.getRequestLogs);
+
 export default router;
