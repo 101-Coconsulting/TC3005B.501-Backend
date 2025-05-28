@@ -103,6 +103,38 @@ export const getTravelRequestById = async (req, res) => {
   }
 };
 
+export const getRequestLogs = async (req, res) => {
+  const { request_id } = req.params;
+
+  try {
+    const logs = await User.getRequestLogs(request_id);
+
+    if (!logs || logs.length === 0) {
+      return res.status(404).json({ error: "No logs found for this request" });
+    }
+
+    const formattedLogs = logs.map(log => {
+      const date = new Date(log.mod_date);
+      return {
+        log_id: log.request_log_id,
+        request_id: log.request_id,
+        status: log.status,
+        user: {
+          user_id: log.user_id,
+          user_name: log.user_name
+        },
+        modification_date: date.toISOString().split('T')[0],
+        modification_hour: date.toTimeString().split(' ')[0]
+      };
+    });
+
+    return res.status(200).json(formattedLogs);
+  } catch (err) {
+    console.error("Error in getRequestLogs controller:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const formatDate = (date) => {
-  return new Date(date).toISOString().split('T')[0];
+  return new Date(date).toISOString().replace('T', ' ').slice(0, 19);
 };
