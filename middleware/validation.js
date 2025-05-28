@@ -110,7 +110,6 @@ export const validateTravelRequest = [
     .isString()
     .trim()
     .notEmpty()
-    .toDate()
     .withMessage('Trip start date cannot be empty.')
     .bail(),
   body('beginning_time')
@@ -123,7 +122,6 @@ export const validateTravelRequest = [
     .isString()
     .trim()
     .notEmpty()
-    .toDate()
     .withMessage('Trip end date cannot be empty.')
     .bail(),
   body('ending_time')
@@ -185,7 +183,6 @@ export const validateTravelRequest = [
     .isString()
     .trim()
     .notEmpty()
-    .toDate()
     .withMessage('Trip start date cannot be empty.')
     .bail(),
   body('additionalRoutes.*.beginning_time')
@@ -198,7 +195,6 @@ export const validateTravelRequest = [
     .isString()
     .trim()
     .notEmpty()
-    .toDate()
     .withMessage('Trip end date cannot be empty.')
     .bail(),
   body('additionalRoutes.*.ending_time')
