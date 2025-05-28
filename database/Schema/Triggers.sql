@@ -42,7 +42,7 @@ BEGIN
         SET wallet = wallet - (NEW.imposed_fee - IFNULL(OLD.imposed_fee, 0))
         WHERE user_id = NEW.user_id;
     END IF;
-END$$
+END;
 
 CREATE OR REPLACE TRIGGER AddToWalletOnReceiptApproved
 AFTER UPDATE ON Receipt
@@ -54,7 +54,7 @@ BEGIN
         SET u.wallet = u.wallet + NEW.amount
         WHERE u.user_id = r.user_id;
     END IF;
-END$$
+END;
 
 CREATE OR REPLACE TRIGGER ResetRejectedReceipts
 AFTER UPDATE ON Request
