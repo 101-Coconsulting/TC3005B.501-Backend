@@ -14,7 +14,7 @@ Creating a Table: {#example-creating-table}
     );
     ```
 
-Creating a SELECT Query: {#example-select-query}
+Creating a `SELECT` Query: {#example-select-query}
 
     ```sql
     SELECT u.user_id,
@@ -28,7 +28,7 @@ Creating a SELECT Query: {#example-select-query}
         OR u.name = 'Salvador Vaquero';
     ```
 
-Creating a SELECT Query with CASE: {#example-select-query-case}
+Creating a `SELECT` Query with `CASE`: {#example-select-query-case}
 
     ```sql
     SELECT u.user_id,
@@ -42,7 +42,7 @@ Creating a SELECT Query with CASE: {#example-select-query-case}
       FROM User AS u;
     ```
 
-Creating a INSERT Query: {#example-insert-query}
+Creating a `INSERT` Query: {#example-insert-query}
 
     ```sql
     INSERT INTO User(user_id, name, email) VALUES
@@ -53,7 +53,7 @@ Creating a INSERT Query: {#example-insert-query}
         (5, 'Enique', 'quique@tec.mx');
     ```
 
-Creating a UPDATE Query: {#example-update-query}
+Creating a `UPDATE` Query: {#example-update-query}
 
     ```sql
     UPDATE User
@@ -61,7 +61,7 @@ Creating a UPDATE Query: {#example-update-query}
     WHERE name = 'Pedro';
     ```
 
-Creating a DELETE Query: {#example-delete-query}
+Creating a `DELETE` Query: {#example-delete-query}
 
     ```sql
     DELETE FROM User
@@ -144,7 +144,9 @@ Creating a VIEW: {#example-creating-view}
 
 ## 1. SQL Reserved Words Rule
 
-- Use uppercase letters for SQL reserved words. This makes the code easier to read and understand. (CREATE, TABLE, INT, VARCHAR, SELECT, FROM, WHERE, AND, OR, etc.)
+- Use uppercase letters for SQL reserved words. This makes the code easier to
+  read and understand. (`CREATE`, `TABLE`, `INT`, `VARCHAR`, `SELECT`, `FROM`,
+  `WHERE`, `AND`, `OR`, etc.)
 
 ## 2. Naming Tables and Columns Rules
 
@@ -153,25 +155,25 @@ Check the example: [Creating a Table](#example-creating-table).
 ### Tables
 
 - Use capital letters only for the first letter of table names.
-
 - Do not use plural forms for table names.
 
 ### Table Elements (Columns)
 
 - Use descriptive IDs for primary keys, such as "user_id".
-
 - Do not use capital letters in column names.
 
 ### General Naming Rules (Applies to both, Tables and Columns)
 
 - Names should not be too long (10 characters max).
 
-- Use underscores ('_') only if necessary when the name consists of two or more words.
+- Use underscores ('\_') only if necessary when the name consists of two or more
+  words.
 
 - Do not use plural for column names.
-    + Example: Use "user" instead of "users".
+  + Example: Use "user" instead of "users".
 
-- Ensure the name is not an SQL reserved word. If necessary, use double quotes (" ").
+- Ensure the name is not an SQL reserved word. If necessary, use double quotes
+  (" ").
 
 - Names must be unique; do not use the same name for other tables nor rows.
 
@@ -183,51 +185,59 @@ Check the example: [Creating a Table](#example-creating-table).
 
 ## 3. Comments
 
-- Avoid using comments unless absolutely necessary for explaining of a table, column, query, etc.
+- Avoid using comments unless absolutely necessary for explaining of a table,
+  column, query, etc.
 
-There are two ways to write a comment in SQL:
-
-- For one line.
-
-- For multiple lines.
-
-    + Example:
-    ```sql
-    -- Single-line comment
-    /*
-    Multi-line comment
-    */
-    ```
+- There are two ways to write a comment in SQL:
+    1. For one line.
+        + Example:
+        ```sql
+        -- Single-line comment
+        ```
+    
+    2. For multiple lines.
+        + Example:
+        ```sql
+        /*
+        Multi-line comment
+        */
+        ```
 
 ## 4. Query Formatting Rules
 
-### SELECT Query
+### `SELECT` Query
 
-Check the example: [Creating a SELECT Query](#example-select-query).
+Check the example: [Creating a `SELECT` Query](#example-select-query).
 
-- Write SQL keywords at the beginning of the line, followed by the rest of the code. ('Keywords' | 'Rest of the code').
+- Write SQL keywords at the beginning of the line, followed by the rest of the
+  code. ('Keywords' | 'Rest of the code').
 
-- If the WHERE clause has multiple conditions (AND, OR), write them in separate lines.
+- If the `WHERE` clause has multiple conditions (`AND`, `OR`), write them in
+  separate lines.
 
-- Use AS for aliases when necessary for better readability.
+- Use `AS` for aliases when necessary for better readability.
 
-- Use JOIN when a FOREIGN KEY is involved.
+- Use `JOIN` when a `FOREIGN KEY` is involved.
 
-- Format CASE statements properly, aligning END with CASE. Check the example: [Creating a SELECT Query with CASE](#example-select-query-case). For this case.
+- Format `CASE` statements properly, aligning `END` with `CASE`. Check the
+  example: [Creating a `SELECT` Query with `CASE`](#example-select-query-case).
+  For this case.
 
-### For INSERT, UPDATE and DELETE Queries
+### For `INSERT`, `UPDATE` and `DELETE` Queries
 
 Check the following examples:
 
-[Creating a INSERT Query](#example-insert-query).
+[Creating a `INSERT` Query](#example-insert-query).
 
-[Creating a UPDATE Query](#example-update-query).
+[Creating a `UPDATE` Query](#example-update-query).
 
-[Creating a DELETE Query](#example-delete-query).
+[Creating a `DELETE` Query](#example-delete-query).
 
-- Use tabs before the values you want to INSERT. In the case of multiple lines of VALUES, use the tab for each.
+- Use tabs before the values you want to `INSERT`. In the case of multiple lines
+  of `VALUES`, use the tab for each.
 
-- For UPDATE and DELETE queries, follow the SELECT query structure is not  necessary, just separate them into multiple lines.
+- For `UPDATE` and `DELETE` queries, follow the `SELECT` query structure is not 
+  necessary, just separate them into multiple lines.
 
 ## 5. Triggers Formatting Rules
 
@@ -258,4 +268,5 @@ Check the example: [Creating a View](#example-creating-view).
 
 ## References
 
-Rules, examples and info based from: https://learnsql.es/blog/24-reglas-del-estandar-de-formato-sql/
+Rules, examples and info based from:
+https://learnsql.es/blog/24-reglas-del-estandar-de-formato-sql/
