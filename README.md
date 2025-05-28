@@ -1,6 +1,7 @@
 # TC3005B.501-Backend
 
-API and Database for the conection and the functioning of the trip management system portal developed in course TC3005B by group 501.
+API and Database for the conection and the functioning of the trip management
+system portal developed in course TC3005B by group 501.
 
 ## Getting Started
 
@@ -24,7 +25,11 @@ gh repo clone 101-Coconsulting/TC3005B.501-Backend
 
 ### Dependencies
 
-The dependencies for this project are managed using [the pnpm package manager](https://pnpm.io/), so it is recommended to use this. However, [npm](https://www.npmjs.com/) can also be used. The dependencies are automatically managed by `pnpm` in the `package.json` file, so they are installed automatically when issuing the install command.
+The dependencies for this project are managed using [the pnpm package manager](https://pnpm.io/),
+so it is recommended to use this. However, [npm](https://www.npmjs.com/) can
+also be used. The dependencies are automatically managed by `pnpm` in the
+`package.json` file, so they are installed automatically when issuing the
+install command.
 
 #### Using `pnpm`
 
@@ -40,12 +45,14 @@ npm install
 
 ### Create HTTPS certificates
 
-To succesfully create the certificates to use the server with HTTPS you will need to follow the next steps:
+To succesfully create the certificates to use the server with HTTPS you will
+need to follow the next steps:
 
 #### Configuring OpenSSL
 
 > [!Important]
-> You have to download the `.cnf` file provided in SharePoint and place it in the [`/certs`](/certs) directory.
+> You have to download the `.cnf` file provided in SharePoint and place it in
+> the [`/certs`](/certs) directory.
 
 #### Generating keys and certificates
 
@@ -55,7 +62,8 @@ To succesfully create the certificates to use the server with HTTPS you will nee
     cd certs
     ```
 
-2. Run the next line of code in the terminal to ensure the [`/certs/create_certs.sh`](/certs/create_certs.sh) file is executable:
+2. Run the next line of code in the terminal to ensure the
+   [`/certs/create_certs.sh`](/certs/create_certs.sh) file is executable:
 
     ```sh
     chmod +x create_certs.sh
@@ -67,10 +75,12 @@ To succesfully create the certificates to use the server with HTTPS you will nee
     ./create_certs.sh
     ```
 
-Now you should have 6 new files in the [`/certs`](/certs) directory and should be able to run the server using HTTPS.
+Now you should have 6 new files in the [`/certs`](/certs) directory and should
+be able to run the server using HTTPS.
 
 > [!Caution]
-> After creating the certificates, when making a commit be sure not to be uploading the certificates to the repository.
+> After creating the certificates, when making a commit be sure not to be
+uploading the certificates to the repository.
 
 ### Configuring the Database
 
@@ -92,44 +102,64 @@ In order to properly setup MariaDB, the following steps are required:
     ```sh
     cd database/Scheme
     ```
-2. [Run the `mariadb` client in batch mode](https://mariadb.com/kb/en/mariadb-command-line-client/). With `DB_USER` and `DB_USER_PASSWORD` being your created `mariadb` user and its password.
-    i. Load database scheme [/database/Scheme/Scheme.sql](/database/Scheme/Scheme.sql).
+2. [Run the `mariadb` client in batch mode](https://mariadb.com/kb/en/mariadb-command-line-client/).
+   With `DB_USER` and `DB_USER_PASSWORD` being your created `mariadb` user and
+   its password.
+    1. Load database scheme
+       [/database/Scheme/Scheme.sql](/database/Scheme/Scheme.sql).
         ```sh
         mariadb -u DB_USER -p DB_USER_PASSWORD < Scheme.sql
         ```
-    ii. Load database initial prepopulation [/database/Scheme/Prepopulate.sql](/database/Scheme/Prepopulate.sql).
+    2. Load database initial prepopulation
+       [/database/Scheme/Prepopulate.sql](/database/Scheme/Prepopulate.sql).
         ```sh
         mariadb -u DB_USER -p DB_USER_PASSWORD < Prepopulate.sql
         ```
-    iii. Load database triggers [/database/Scheme/Triggers.sql](/database/Scheme/Triggers.sql).
+    3. Load database triggers
+       [/database/Scheme/Triggers.sql](/database/Scheme/Triggers.sql).
         ```sh
         mariadb -u DB_USER -p DB_USER_PASSWORD < Triggers.sql
         ```
-    iv. Load database views [/database/Scheme/Views.sql](/database/Scheme/Views.sql).
+    4. Load database views
+       [/database/Scheme/Views.sql](/database/Scheme/Views.sql).
         ```sh
         mariadb -u DB_USER -p DB_USER_PASSWORD < Views.sql
         ```
-    v. Load database dummy data [/database/Scheme/Dummy.sql](/database/Scheme/Dummy.sql).
+    5. Load database dummy data
+       [/database/Scheme/Dummy.sql](/database/Scheme/Dummy.sql).
         ```sh
         mariadb -u DB_USER -p DB_USER_PASSWORD < Dummy.sql
         ```
 
 ### Setup MongoDB
-1. [Download `mongodb`](https://www.mongodb.com/docs/manual/installation/) using your preferred method or package manager.
-2. [Download `mongosh`](https://www.mongodb.com/try/download/shell) if you want to interact with the database directly (recommended).
-3. Test that mongo was installed correctly by running the `mongod` or `mongosh` command. `mongod` will usually return error codes since no connection is currently made to then database.
-4. Verify that mongo is running using ` systemctl status mongod `
-5. If the status appears as inactive, use the command ` systemctl start mongod `
+
+1. [Download `mongodb`](https://www.mongodb.com/docs/manual/installation/)
+    using your preferred method or package manager.
+2. [Download `mongosh`](https://www.mongodb.com/try/download/shell) if you want
+    to interact with the database directly (recommended).
+3. Test that mongo was installed correctly by running the `mongod` or `mongosh`
+    command. `mongod` will usually return error codes since no connection is
+    currently made to then database.
+4. Verify that mongo is running using `systemctl status mongod`
+5. If the status appears as inactive, use the command `systemctl start mongod`
+
 ### Environment Variables
 
-Finally, it is crucial that a local `.env` file is created. Based off of the [`.env.example`](/.env.example) file provided, which includes all necessary environment variables to be set in order for the server to be able to connect to the `mariadb` database, as well as the required JSON Web Token(JWT) information required for verifying authorized requests and encryption.
+Finally, it is crucial that a local `.env` file is created. Based off of the
+[`.env.example`](/.env.example) file provided, which includes all necessary
+environment variables to be set in order for the server to be able to connect
+to the `mariadb` database, as well as the required JSON Web Token(JWT)
+information required for verifying authorized requests and encryption.
 
 1. Go to the [root directory](/) of your local repository.
-2. Create your `.env` file based off of the [`.env.example`](/.env.example) file.
+2. Create your `.env` file based off of the [`.env.example`](/.env.example)
+   file.
     ```sh
     cp .env.example .env
     ```
-3. Edit the newly created `.env` file, and edit the required variables based on your previous [`mariadb` configuration](#configuring-the-database) and `mongodb` configuration:
+3. Edit the newly created `.env` file, and edit the required variables based on
+   your previous [`mariadb` configuration](#configuring-the-database) and
+   `mongodb` configuration:
     ```sh
     # Server Configuration
     PORT=3000
@@ -157,7 +187,8 @@ Finally, it is crucial that a local `.env` file is created. Based off of the [`.
 
 ### Running
 
-To run the Backend, ensure the `mariadb` and `mongodb` servers are running, and utilize whichever package manager you used for dependencies to run the project.
+To run the Backend, ensure the `mariadb` and `mongodb` servers are running, and
+utilize whichever package manager you used for dependencies to run the project.
 
 #### Using `pnpm`
 
@@ -171,4 +202,6 @@ pnpm run dev
 npm run dev
 ```
 
-And you're good to go! `nodemon` should start and you should be able to start sending requests to your specified `PORT` on `localhost` as well as a confirmation message of connection to the file database!
+And you're good to go! `nodemon` should start and you should be able to start
+sending requests to your specified `PORT` on `localhost`! As well as a
+confirmation message of connection to the file database!
