@@ -1,7 +1,7 @@
-
 # 📘 MariaDB Setup Guide via CLI
 
-This guide provides step-by-step instructions for setting up a MariaDB database, user, table, and stored procedure using the MariaDB CLI.
+This guide provides step-by-step instructions for setting up a MariaDB
+database, user, table, and stored procedure using the MariaDB CLI.
 
 ---
 
