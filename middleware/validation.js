@@ -53,11 +53,6 @@ export const validateDeptStatus = [
  * (Sosa)
  */
 export const validateTravelRequest = [
-  param('id')
-    .isNumeric()
-    .withMessage("ID must be a valid number")
-    .bail(),
-
   body('router_index')
     .isInt({ min: 0 })
     .withMessage('Router index must be a valid number')
@@ -246,11 +241,6 @@ export const validateExpenseReceipts = [
  * (Sosa)
  */
 export const validateDraftTravelRequest = [
-  param('id')
-    .isNumeric()
-    .withMessage("ID must be a valid number")
-    .bail(),
-
   body('router_index')
     .optional()
     .isInt({ min: 0 })
@@ -312,7 +302,6 @@ export const validateDraftTravelRequest = [
     .isString()
     .trim()
     .notEmpty()
-    .toDate()
     .withMessage('Trip start date cannot be empty.')
     .bail(),
   body('beginning_time')
@@ -327,7 +316,6 @@ export const validateDraftTravelRequest = [
     .isString()
     .trim()
     .notEmpty()
-    .toDate()
     .withMessage('Trip end date cannot be empty.')
     .bail(),
   body('ending_time')
@@ -398,7 +386,6 @@ export const validateDraftTravelRequest = [
     .isString()
     .trim()
     .notEmpty()
-    .toDate()
     .withMessage('Trip start date cannot be empty.')
     .bail(),
   body('additionalRoutes.*.beginning_time')
@@ -413,7 +400,6 @@ export const validateDraftTravelRequest = [
     .isString()
     .trim()
     .notEmpty()
-    .toDate()
     .withMessage('Trip end date cannot be empty.')
     .bail(),
   body('additionalRoutes.*.ending_time')
