@@ -18,7 +18,7 @@ router.route("/get-cc/:user_id")
     .get(validateId, validateInputs, applicantController.getCostCenterByUserId);
 
 router.route("/create-travel-request/:id")
-    .post(validateTravelRequest, validateInputs, applicantController.createTravelRequest);
+    .post(validateId, validateTravelRequest, validateInputs, applicantController.createTravelRequest);
 
 router.route("/edit-travel-request/:id")
     .put(validateId, validateTravelRequest, validateInputs, applicantController.editTravelRequest);
