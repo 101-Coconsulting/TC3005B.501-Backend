@@ -1,31 +1,48 @@
-# Changelog
+# Changelog 🥥
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),  
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]: Request Follow-Up
+## [Unreleased]: Login + Configuration
+
+### Security
+
+-  Validate additional endpoints
 
 ### Added
 
-- Login to restrict endpoint use.
-- Data sanitization and validation.
-- CPP receipt verification.
-- File repository to upload and access receipts.
+- Create one or multiple users
+- Delete a user
+- Edit a user
+- Login
 
-## [0.1.0] - 2025-05-07: Pre-Trip Flow
+> [!NOTE]
+These features might still be changed depending on the progress made by the corresponding teams.
+
+# Features Included in Release
+
+## [0.3.0] - 2025-05-27: Post-Trip Flow
+
+### Security
+- Input validation
 
 ### Added
 
-- Dummy Data Setup for Use.
-- User Request and Profile data fetching.
-- Travel Request Creation, Editing, and Cancelling.
-- Applicant can retrieve data of completed or cancelled requests.
-- Authorizers can retrieve travel requests that they need to attend according to their role.
-- Authorizers can change the status of a travel request according to certain role and status conditions.
-- Travel Agents can change the status of a travel request according to certain role and status conditions.
-- Certificates can be generated to use https protocol.
+- Send an Applicant's receipts to Accounts Payable
+- Approval or Rejection of a Receipt
+- Create an expense validation
+- Obtain a user's total balance in order to request a refund or payment
+- Creating and submitting a Request Draft
 
-[unreleased]: https://github.com/101-Coconsulting/TC3005B.501-Backend/compare/v0.1.0...HEAD  
-[0.1.0]: https://github.com/101-Coconsulting/TC3005B.501-Backend/releases/tag/v0.1.0
+### Changed
+- Obtaining a user's information will now include their department and whether or not they are active
+- Import SQL Files rather than creating a pool during the Setup
+- Dummy Data to more accurately represent a company
+
+[unreleased]: https://github.com/101-Coconsulting/TC3005B.501-Backend/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/101-Coconsulting/TC3005B.501-Backend/releases/tag/v0.2.0
+[0.2.0]: https://github.com/101-Coconsulting/TC3005B.501-Backend/releases/tag/v0.2.0
+[0.3.0]: https://github.com/101-Coconsulting/TC3005B.501-Backend/releases/tag/v0.3.0
+[0.4.0]: https://github.com/101-Coconsulting/TC3005B.501-Backend/releases/tag/v0.4.0
