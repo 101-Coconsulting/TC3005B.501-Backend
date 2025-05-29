@@ -31,10 +31,12 @@ export async function getUserData(req, res) {
 }
 
 export const getTravelRequestsByDeptStatus = async (req, res) => {
-  const { dept, status, n } = req.params;
+  const deptId = Number(req.params.dept_id);
+  const statusId = Number(req.params.status_id);
+  const n = req.params.n ? Number(req.params.n) : null;
 
   try {
-    const travelRequests = await User.getTravelRequestsByDeptStatus(dept, status, n);
+    const travelRequests = await User.getTravelRequestsByDeptStatus(deptId, statusId, n);
 
     if (!travelRequests || travelRequests.length === 0) {
       return res.status(404).json({ error: "No travel requests found" });

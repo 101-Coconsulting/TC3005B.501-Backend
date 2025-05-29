@@ -83,7 +83,7 @@ const User = {
     }
   },
 
-  async getTravelRequestsByDeptStatus(dept, statusId, n) {
+  async getTravelRequestsByDeptStatus(deptId, statusId, n) {
   const conn = await pool.getConnection();
   try {
     const baseQuery = `
@@ -107,7 +107,7 @@ const User = {
       ${n ? 'LIMIT ?' : ''}
     `;
 
-    const params = n ? [dept, statusId, Number(n)] : [dept, statusId];
+    const params = n ? [deptId, statusId, Number(n)] : [deptId, statusId];
     const rows = await conn.query(baseQuery, params);
     return rows;
   } finally {
