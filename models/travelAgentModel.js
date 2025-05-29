@@ -7,14 +7,21 @@ import pool from "../database/config/db.js";
 
 const TravelAgent = {
     // Update request status to 6 
-    async attendTravelRequest(requestId) {
+    async attendTravelRequest(requestId, user_id) {
         let conn;
+        const logQuery = `
+            INSERT INTO Request_log (request_id, request_status_id, user_id)
+            VALUES (?, ?, ?)
+        `;
         try {
             conn = await pool.getConnection();
             const result = await conn.query(
                 "UPDATE `Request` SET request_status_id = 6 WHERE request_id = ?",
                 [requestId],
             );
+            if (result.affectedRows > 0) {
+                await conn.query(logQuery, [requestId, status_id, user_id]);
+            }
 
             return result.affectedRows > 0;
         } catch (error) {
