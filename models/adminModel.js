@@ -78,6 +78,36 @@ const Admin = {
       } 
     }
   },
+
+  async updateUser(user_id, fieldsToUpdate) {
+    let conn;
+
+    const setClauses = [];
+    const values =[];
+
+    for (const field in fieldsToUpdate) {
+        setClauses.push(`${field} = ?`);
+        values.push(fieldsToUpdate[field]);
+      }
+
+    values.push(user_id);
+
+    const query = `
+        UPDATE User
+        SET ${setClauses.join(', ')}
+        WHERE user_id = ?
+      `;
+    try {
+      conn = await pool.getConnection();
+      const result = await conn.query(query, values);
+      return result;
+    } catch (error) {
+      throw error;
+    } finally {
+      if (conn) conn.release();
+    }
+  },
+  
 };
 
 export default Admin;
