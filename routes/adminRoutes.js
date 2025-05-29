@@ -9,6 +9,8 @@ import { authenticateToken, authorizeRole } from "../middleware/auth.js";
 import { validateCreateUser, validateInputs } from "../middleware/validation.js";
 import { generalRateLimiter } from "../middleware/rateLimiters.js";
 
+import { getUserList, putUser } from "../controllers/adminController.js";
+
 const upload = multer({
     dest: "uploads/"
 });
@@ -30,6 +32,9 @@ router.route("/create-multiple-users")
         upload.single("file"),
         adminController.createMultipleUsers
     );
+
+router.route('/update-user/:user_id')
+    .put(putUser);
 
 router.route("/delete-user/:user_id")
     .put(adminController.deactivateUser);
