@@ -19,11 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Login
 
 > [!NOTE]
-These features might still be changed depending on the progress made by the corresponding teams.
+These features might still be changed depending on the progress made by the
+corresponding teams.
 
 ## [0.3.0] - 2025-05-27: Post-Trip Flow
 
 ### Security
+
 - Input validation
 
 ### Added
@@ -38,8 +40,11 @@ These features might still be changed depending on the progress made by the corr
 
 ### Changed
 
-- Obtaining a user's information will now include their department and whether or not they are active
+- Obtaining a user's information will now include their department and whether
+  or not they are active
+
 - Import SQL Files rather than creating a pool during the Setup
+
 - Dummy Data to more accurately represent a company
 
 ## [0.2.0] - 2025-05-21: Request Follow-Up
@@ -47,10 +52,18 @@ These features might still be changed depending on the progress made by the corr
 ### Added
 
 - View a User's requests (active + completed)
-- Authorizers can retrieve travel requests that they need to attend according to their role.
-- Authorizers can change the status of a travel request according to certain role and status conditions.
-- Travel Agents can change the status of a travel request according to certain role and status conditions.
+
+- Authorizers can retrieve travel requests that they need to attend according
+  to their role.
+
+- Authorizers can change the status of a travel request according to certain
+  role and status conditions.
+
+- Travel Agents can change the status of a travel request according to certain
+  role and status conditions.
+
 - Request Modification
+
 - Request Cancellation
 
 ### Fix
@@ -66,9 +79,13 @@ These features might still be changed depending on the progress made by the corr
 ### Added
 
 - DB Scheme.
+
 - Dummy Data Setup for Use.
+
 - User Request and Profile data fetching.
+
 - Travel Request Creation.
+
 - Applicant can retrieve data of completed or cancelled requests.
 
 [unreleased]: https://github.com/101-Coconsulting/TC3005B.501-Backend/compare/v0.3.0...HEAD
