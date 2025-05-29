@@ -50,16 +50,22 @@ const query =  `
     }
   },
 
-  async authorizeTravelRequest(request_id, status_id) {
+  async authorizeTravelRequest(request_id, status_id, user_id) {
     let conn;
     const query = `
             UPDATE Request
             SET request_status_id = ?
             WHERE request_id = ?
         `;
+
+    const logQuery = `
+          INSERT INTO Request_log (request_id, request_status_id, user_id)
+          VALUES (?, ?, ?)
+      `;
     try {
       conn = await pool.getConnection();
       const rows = await conn.query(query, [status_id, request_id]);
+      await conn.query(logQuery, [request_id, status_id, user_id]);
       return rows;
     } catch (error) {
       console.error('Error getting completed requests:', error);
@@ -71,18 +77,22 @@ const query =  `
     }
   },
 
-  async declineTravelRequest(request_id) {
+  async declineTravelRequest(request_id, user_id) {
     let conn;
     const query = `
             UPDATE Request
             SET request_status_id = 10
             WHERE request_id = ?
         `;
+    const logQuery = `
+            INSERT INTO Request_log (request_id, request_status_id, user_id)
+            VALUES (?, ?, ?)
+        `;
     try {
       conn = await pool.getConnection();
 
       const rows = await conn.query(query, [request_id]);
-
+      await conn.query(logQuery, [request_id, status_id, user_id]);
       return true;
     } catch (error) {
       console.error('Error getting completed requests:', error);
