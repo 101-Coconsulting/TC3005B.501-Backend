@@ -7,17 +7,17 @@ import { body, param, validationResult } from 'express-validator';
 export const validateId = [
   param('id')
     .optional()
-    .isNumeric()
+    .isInt()
     .toInt()
     .withMessage('The ID needs to be a valid number'),
   param('request_id')
     .optional()
-    .isNumeric()
+    .isInt()
     .toInt()
     .withMessage('Request ID must be a valid number'),
   param('user_id')
     .optional()
-    .isNumeric()
+    .isInt()
     .toInt()
     .withMessage('User ID must be a valid number'),
   (req, res, next) => {
@@ -34,16 +34,16 @@ export const validateId = [
  */
 export const validateDeptStatus = [
   param('dept_id')
-    .isNumeric()
+    .isInt()
     .toInt()
     .withMessage('Department cannot be empty.'),
   param('status_id')
-    .isNumeric()
+    .isInt()
     .toInt()
     .withMessage('Status cannot be empty.'),
   param('n')
     .optional()
-    .isNumeric()
+    .isInt()
     .toInt()
     .withMessage('N must be a valid number')
 ];
@@ -127,14 +127,14 @@ export const validateTravelRequest = [
     .bail(),
 
   body('plane_needed')
-    .toBoolean()
     .isBoolean()
+    .toBoolean()
     .exists()
     .withMessage('Please select if plane reservation is required or not.')
     .bail(),
   body('hotel_needed')
-    .toBoolean()
     .isBoolean()
+    .toBoolean()
     .exists()
     .withMessage('Please select if hotel reservation is required or not.')
     .bail(),
@@ -145,7 +145,7 @@ export const validateTravelRequest = [
     .withMessage('Additional routes must be an array')
     .bail(),
   body('additionalRoutes.*.router_index')
-    .isNumeric()
+    .isInt()
     .exists()
     .withMessage("Router index must be a valid number")
     .bail(),
@@ -200,14 +200,14 @@ export const validateTravelRequest = [
     .bail(),
 
   body('additionalRoutes.*.plane_needed')
-    .toBoolean()
     .isBoolean()
+    .toBoolean()
     .exists()
     .withMessage('Please select if plane reservation is required or not.')
     .bail(),
   body('additionalRoutes.*.hotel_needed')
-    .toBoolean()
     .isBoolean()
+    .toBoolean()
     .exists()
     .withMessage('Please select if hotel reservation is required or not.')
     .bail(),
@@ -328,15 +328,15 @@ export const validateDraftTravelRequest = [
 
   body('plane_needed')
     .optional()
-    .toBoolean()
     .isBoolean()
+    .toBoolean()
     .exists()
     .withMessage('Please select if plane reservation is required or not.')
     .bail(),
   body('hotel_needed')
     .optional()
-    .toBoolean()
     .isBoolean()
+    .toBoolean()
     .exists()
     .withMessage('Please select if hotel reservation is required or not.')
     .bail(),
@@ -412,15 +412,15 @@ export const validateDraftTravelRequest = [
 
   body('additionalRoutes.*.plane_needed')
     .optional()
-    .toBoolean()
     .isBoolean()
+    .toBoolean()
     .exists()
     .withMessage('Please select if plane reservation is required or not.')
     .bail(),
   body('additionalRoutes.*.hotel_needed')
     .optional()
-    .toBoolean()
     .isBoolean()
+    .toBoolean()
     .exists()
     .withMessage('Please select if hotel reservation is required or not.')
     .bail(),
