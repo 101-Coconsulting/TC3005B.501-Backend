@@ -1,4 +1,4 @@
-import * as userModel from '../models/userModel.js';
+import User from '../models/userModel.js';
 
 /**
  * Get user by ID
@@ -7,7 +7,7 @@ import * as userModel from '../models/userModel.js';
  */
 export async function getUserById(userId) {
   try {
-    return await userModel.getUserData(userId);
+    return await User.getUserData(userId);
   } catch (error) {
     throw new Error(`Error fetching user with ID ${userId}: ${error.message}`);
   }

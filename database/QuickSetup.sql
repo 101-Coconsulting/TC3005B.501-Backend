@@ -1,3 +1,394 @@
+-- #############################################################################--
+-- Scheme --
+-- #############################################################################--
+
+DROP DATABASE IF EXISTS CocoScheme;
+CREATE DATABASE CocoScheme CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE CocoScheme;
+
+CREATE TABLE IF NOT EXISTS `Role` (
+    role_id INT PRIMARY KEY AUTO_INCREMENT,
+    role_name VARCHAR(20) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Department (
+    department_id INT PRIMARY KEY AUTO_INCREMENT,
+    department_name VARCHAR(20) UNIQUE NOT NULL,
+    costs_center VARCHAR(20),
+    active BOOL NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE IF NOT EXISTS AlertMessage (
+    message_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    message_text VARCHAR(60) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `User`(
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    role_id INT,
+    department_id INT,
+
+    user_name VARCHAR(60) UNIQUE NOT NULL,
+    password VARCHAR(60) NOT NULL,
+    workstation VARCHAR(20) NOT NULL,
+    email VARCHAR(254) UNIQUE NOT NULL,
+    phone_number VARCHAR(254),
+    wallet FLOAT DEFAULT 0.00,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    active BOOL NOT NULL DEFAULT TRUE,
+  
+    FOREIGN KEY (role_id) REFERENCES `Role`(role_id),
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
+);
+
+CREATE TABLE IF NOT EXISTS Request_status (
+    request_status_id INT PRIMARY KEY AUTO_INCREMENT,
+    status VARCHAR(30) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Request (
+    request_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    request_status_id INT DEFAULT 1,
+
+    notes LONGTEXT,
+    requested_fee FLOAT,
+    imposed_fee FLOAT,
+    request_days FLOAT,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_mod_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    active BOOL NOT NULL DEFAULT TRUE,
+
+    FOREIGN KEY (user_id) REFERENCES `User`(user_id),
+    FOREIGN KEY (request_status_id) REFERENCES Request_status(request_status_id)
+);
+
+CREATE TABLE IF NOT EXISTS Alert (
+    alert_id INT PRIMARY KEY AUTO_INCREMENT,
+    request_id INT,
+    message_id INT,
+
+    alert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (request_id) REFERENCES Request(request_id),
+    FOREIGN KEY (message_id) REFERENCES AlertMessage(message_id)
+);
+
+CREATE TABLE IF NOT EXISTS Country (
+    country_id INT PRIMARY KEY AUTO_INCREMENT,
+    country_name VARCHAR(60) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS City (
+    city_id INT PRIMARY KEY AUTO_INCREMENT,
+    city_name VARCHAR(200) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `Route` (
+    route_id INT PRIMARY KEY AUTO_INCREMENT,
+    id_origin_country INT,
+    id_origin_city INT,
+    id_destination_country INT,
+    id_destination_city INT,
+
+    router_index INT,
+    plane_needed BOOL NOT NULL DEFAULT FALSE,
+    hotel_needed BOOL NOT NULL DEFAULT FALSE,
+    beginning_date DATE,
+    beginning_time TIME,
+    ending_date DATE,
+    ending_time TIME,
+
+    FOREIGN KEY (id_origin_country) REFERENCES Country(country_id),
+    FOREIGN KEY (id_origin_city) REFERENCES City(city_id),
+    FOREIGN KEY (id_destination_country) REFERENCES Country(country_id),
+    FOREIGN KEY (id_destination_city) REFERENCES City(city_id)
+);
+
+CREATE TABLE IF NOT EXISTS Route_Request (
+    route_request_id INT PRIMARY KEY AUTO_INCREMENT,
+    request_id INT,
+    route_id INT,
+
+    FOREIGN KEY (request_id) REFERENCES Request(request_id),
+    FOREIGN KEY (route_id) REFERENCES `Route`(route_id)
+);
+
+CREATE TABLE IF NOT EXISTS Receipt_Type (
+    receipt_type_id INT PRIMARY KEY AUTO_INCREMENT,
+    receipt_type_name VARCHAR(20) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Receipt (
+    receipt_id INT PRIMARY KEY AUTO_INCREMENT,
+    receipt_type_id INT,
+    request_id INT,
+
+    validation ENUM('Pendiente', 'Aprobado', 'Rechazado') DEFAULT 'Pendiente',
+    amount FLOAT NOT NULL,
+    refund BOOL DEFAULT TRUE,
+
+    submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    validation_date TIMESTAMP,
+
+    FOREIGN KEY (receipt_type_id) REFERENCES Receipt_Type(receipt_type_id),
+    FOREIGN KEY (request_id) REFERENCES Request(request_id)
+);
+
+-- #############################################################################--
+-- Prepopulate --
+-- #############################################################################--
+
+USE CocoScheme;
+
+INSERT INTO `Role` (role_name) VALUES
+    ('Solicitante'),
+    ('Agencia de viajes'),
+    ('Cuentas por pagar'),
+    ('N1'),
+    ('N2'),
+    ('Administrador');
+
+INSERT INTO AlertMessage (message_text) VALUES
+    ('Se ha abierto una solicitud.'),
+    ('Se requiere tu revisión para Primera Revisión.'),
+    ('Se requiere tu revisión para Segunda Revisión.'),
+    ('La solicitud está lista para generar su cotización de viaje.'),
+    ('Se deben asignar los servicios del viaje para la solicitud.'),
+    ('Se requiere validar comprobantes de los gastos del viaje.'),
+    ('Los comprobantes están listos para validación.');
+
+INSERT INTO Request_status (status) VALUES
+    ('Borrador'),
+    ('Primera Revisión'),
+    ('Segunda Revisión'),
+    ('Cotización del Viaje'),
+    ('Atención Agencia de Viajes'),
+    ('Comprobación gastos del viaje'),
+    ('Validación de comprobantes'),
+    ('Finalizado'),
+    ('Cancelado'),
+    ('Rechazado');
+
+INSERT INTO Receipt_Type (receipt_type_name) VALUES
+    ('Hospedaje'),
+    ('Comida'),
+    ('Transporte'),
+    ('Caseta'),
+    ('Autobús'),
+    ('Vuelo'),
+    ('Otro');
+
+-- #############################################################################--
+-- Triggers --
+-- #############################################################################--
+
+USE CocoScheme;
+
+DELIMITER $$
+
+CREATE OR REPLACE TRIGGER DeactivateRequest
+BEFORE UPDATE ON Request
+FOR EACH ROW
+BEGIN
+    IF NEW.request_status_id IN (9, 10) THEN
+        SET NEW.active = FALSE;
+    END IF;
+END$$
+
+CREATE OR REPLACE TRIGGER CreateAlert
+AFTER INSERT ON Request
+FOR EACH ROW
+BEGIN
+    IF EXISTS (SELECT 1 FROM AlertMessage WHERE message_id = NEW.request_status_id) THEN
+        INSERT INTO Alert (request_id, message_id) VALUES
+            (NEW.request_id, NEW.request_status_id);
+    END IF;
+END$$
+
+CREATE OR REPLACE TRIGGER ManageAlertAfterRequestUpdate
+AFTER UPDATE ON Request
+FOR EACH ROW
+BEGIN
+    IF NEW.request_status_id IN (8, 9, 10) THEN
+        DELETE FROM Alert
+        WHERE request_id = NEW.request_id;
+    ELSEIF OLD.request_status_id <> NEW.request_status_id THEN
+        UPDATE Alert
+        SET message_id = NEW.request_status_id
+        WHERE request_id = NEW.request_id;
+    END IF;
+END$$
+
+CREATE OR REPLACE TRIGGER DeductFromWalletOnFeeImposed
+AFTER UPDATE ON Request
+FOR EACH ROW
+BEGIN
+    IF NEW.imposed_fee IS NOT NULL AND (OLD.imposed_fee IS NULL OR NEW.imposed_fee != OLD.imposed_fee) THEN
+        UPDATE `User`
+        SET wallet = wallet - (NEW.imposed_fee - IFNULL(OLD.imposed_fee, 0))
+        WHERE user_id = NEW.user_id;
+    END IF;
+END$$
+
+CREATE OR REPLACE TRIGGER AddToWalletOnReceiptApproved
+AFTER UPDATE ON Receipt
+FOR EACH ROW
+BEGIN
+    IF NEW.validation = 'Aprobado' AND OLD.validation != 'Aprobado' THEN
+        UPDATE `User` u
+        JOIN Request r ON r.request_id = NEW.request_id
+        SET u.wallet = u.wallet + NEW.amount
+        WHERE u.user_id = r.user_id;
+    END IF;
+END$$
+
+CREATE OR REPLACE TRIGGER ResetRejectedReceipts
+AFTER UPDATE ON Request
+FOR EACH ROW
+BEGIN
+    IF OLD.request_status_id = 7 AND NEW.request_status_id = 6 THEN
+        UPDATE Receipt
+        SET validation = 'Pendiente'
+        WHERE request_id = NEW.request_id
+        AND validation = 'Rechazado';
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- #############################################################################--
+-- Views --
+-- #############################################################################--
+
+USE CocoScheme;
+
+CREATE OR REPLACE VIEW UserRequestHistory AS
+    SELECT
+        Request.request_id,
+        Request.user_id,
+        Request.creation_date,
+        Request_status.status,
+
+        GROUP_CONCAT(DISTINCT Country_origin.country_name ORDER BY Route.router_index SEPARATOR ', ') AS trip_origins,
+        GROUP_CONCAT(DISTINCT Country_destination.country_name ORDER BY Route.router_index SEPARATOR ', ') AS trip_destinations
+    FROM
+        Request
+        INNER JOIN Request_status
+            ON Request.request_status_id = Request_status.request_status_id
+        LEFT JOIN Route_Request
+            ON Request.request_id = Route_Request.request_id
+        LEFT JOIN Route
+            ON Route_Request.route_id = Route.route_id
+        LEFT JOIN Country AS Country_origin
+            ON Route.id_origin_country = Country_origin.country_id
+        LEFT JOIN Country AS Country_destination
+            ON Route.id_destination_country = Country_destination.country_id
+    GROUP BY
+        Request.request_id,
+        Request.user_id,
+        Request.last_mod_date,
+        Request_status.status;
+
+
+
+
+CREATE OR REPLACE VIEW RequestWithRouteDetails AS
+    SELECT
+        Request.request_id,
+        Request.user_id,
+        Request.request_status_id,
+        Request.notes,
+        Request.requested_fee,
+        Request.imposed_fee,
+        Request.request_days,
+        Request.creation_date,
+        Request.last_mod_date,
+        Request.active,
+
+        `User`.user_name,
+        `User`.email AS user_email,
+        `User`.phone_number AS user_phone_number,
+
+        Request_status.status,
+
+        Department.department_name,
+        Department.department_id,
+
+        GROUP_CONCAT(DISTINCT Country_origin.country_name ORDER BY Route.router_index SEPARATOR ', ') AS origin_countries,
+        GROUP_CONCAT(DISTINCT City_origin.city_name ORDER BY Route.router_index SEPARATOR ', ') AS origin_cities,
+        GROUP_CONCAT(DISTINCT Country_destination.country_name ORDER BY Route.router_index SEPARATOR ', ') AS destination_countries,
+        GROUP_CONCAT(DISTINCT City_destination.city_name ORDER BY Route.router_index SEPARATOR ', ') AS destination_cities,
+        GROUP_CONCAT(DISTINCT Route.beginning_date ORDER BY Route.router_index SEPARATOR ', ') AS beginning_dates,
+        GROUP_CONCAT(DISTINCT Route.beginning_time ORDER BY Route.router_index SEPARATOR ', ') AS beginning_times,
+        GROUP_CONCAT(DISTINCT Route.ending_date ORDER BY Route.router_index SEPARATOR ', ') AS ending_dates,
+        GROUP_CONCAT(DISTINCT Route.ending_time ORDER BY Route.router_index SEPARATOR ', ') AS ending_times,
+        GROUP_CONCAT(DISTINCT Route.hotel_needed ORDER BY Route.router_index SEPARATOR ', ') AS hotel_needed_list,
+        GROUP_CONCAT(DISTINCT Route.plane_needed ORDER BY Route.router_index SEPARATOR ', ') AS plane_needed_list
+    FROM
+        Request
+        LEFT JOIN `User`
+            ON Request.user_id = `User`.user_id
+        LEFT JOIN Request_status
+            ON Request.request_status_id = Request_status.request_status_id
+        LEFT JOIN Department
+            ON `User`.department_id = Department.department_id
+        LEFT JOIN Route_Request
+            ON Request.request_id = Route_Request.request_id
+        LEFT JOIN Route
+            ON Route_Request.route_id = Route.route_id
+        LEFT JOIN Country AS Country_origin
+            ON Route.id_origin_country = Country_origin.country_id
+        LEFT JOIN City AS City_origin
+            ON Route.id_origin_city = City_origin.city_id
+        LEFT JOIN Country AS Country_destination
+            ON Route.id_destination_country = Country_destination.country_id
+        LEFT JOIN City AS City_destination
+            ON Route.id_destination_city = City_destination.city_id
+    GROUP BY
+        Request.request_id,
+        Request.user_id,
+        Request.request_status_id,
+        Request.notes,
+        Request.requested_fee,
+        Request.imposed_fee,
+        Request.request_days,
+        Request.creation_date,
+        Request.last_mod_date,
+        Request.active,
+
+        `User`.user_name,
+        `User`.email,
+        `User`.phone_number,
+
+        Request_status.status,
+        
+        Department.department_name,
+        Department.department_id;
+
+
+
+
+CREATE OR REPLACE VIEW UserFullInfo AS
+    SELECT
+        u.user_id,
+        u.user_name,
+        u.email,
+        u.active,
+        r.role_name,
+        d.department_name,
+        d.department_id
+    FROM
+        `User` u
+        LEFT JOIN `Role` r ON u.role_id = r.role_id
+        LEFT JOIN Department d ON u.department_id = d.department_id;
+
+-- #############################################################################--
+-- Dummy Data --
+-- #############################################################################--
+
 USE CocoScheme;
 
 INSERT INTO Department (department_name, costs_center, active) VALUES
