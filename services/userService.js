@@ -12,3 +12,9 @@ export async function getUserById(userId) {
     throw new Error(`Error fetching user with ID ${userId}: ${error.message}`);
   }
 }
+
+
+// Export default object with all service functions
+export default {
+  getUserById
+};  
