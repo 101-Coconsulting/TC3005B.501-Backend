@@ -9,12 +9,19 @@ const TravelAgent = {
     // Update request status to 6 
     async attendTravelRequest(requestId) {
         let conn;
+        const logQuery = `
+            INSERT INTO Request_log (request_id, request_status_id, user_id)
+            VALUES (?, (SELECT request_status_id FROM Request WHERE request_id = ?), (SELECT user_id FROM Request WHERE request_id = ?))
+        `;
         try {
             conn = await pool.getConnection();
             const result = await conn.query(
                 "UPDATE `Request` SET request_status_id = 6 WHERE request_id = ?",
                 [requestId],
             );
+            if (result.affectedRows > 0) {
+                await conn.query(logQuery, [requestId, requestId, requestId]);
+            }
 
             return result.affectedRows > 0;
         } catch (error) {
