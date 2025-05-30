@@ -11,7 +11,7 @@ const AccountsPayable = {
         let conn;
         const logQuery = `
             INSERT INTO Request_log (request_id, request_status_id, user_id)
-            VALUES (?, ?, ?)
+            VALUES (?, ?, (SELECT user_id FROM Request WHERE request_id  = ?))
         `;
         try {
             conn = await pool.getConnection();
@@ -21,7 +21,7 @@ const AccountsPayable = {
                 [new_status, imposedFee, requestId],
             );
             if (result.affectedRows > 0) {
-                await conn.query(logQuery, [requestId, new_status, user_id]);
+                await conn.query(logQuery, [requestId, new_status, requestId]);
             }
             return result.affectedRows > 0;
         } catch (error) {
