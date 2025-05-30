@@ -8,12 +8,16 @@ import userRoutes from './routes/userRoutes.js';
 import travelAgentRoutes from "./routes/travelAgentRoutes.js";
 import adminRoutes from './routes/adminRoutes.js';
 import accountsPayableRoutes from './routes/accountsPayableRoutes.js';
+import fileRoutes from './routes/fileRoutes.js';
+
+// Import MongoDB connection for file storage
+import { connectMongo } from './services/fileStorage.js';
 
 // Import required modules
 import fs from "fs";
 import https from "https";
 import express from "express";
-import cors from "cors"; 
+import cors from "cors";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -32,12 +36,16 @@ app.use("/api/user", userRoutes);
 app.use("/api/travel-agent", travelAgentRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/accounts-payable", accountsPayableRoutes);
+app.use("/api/files", fileRoutes);
+
+// Connect to MongoDB for file storage
+connectMongo().catch(err => console.error('Failed to connect to MongoDB:', err));
 
 // Basic route
 app.get("/", (req, res) => {
-    res.json({
-        message: "This is my backend endpoint for the travel management system",
-    });
+  res.json({
+    message: "This is my backend endpoint for the travel management system",
+  });
 });
 
 
@@ -48,7 +56,18 @@ const ca = fs.readFileSync("./certs/ca.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 // HTTPS server configuration
+console.clear();
 const httpsServer = https.createServer(credentials, app);
 httpsServer.listen(PORT, () =>
-    console.log(`Server running on port ${PORT} with HTTPS`),
+  console.log(`
+         )         )            (   (
+   (  ( /(   (  ( /(      (     )\\ ))\\ )
+   )\\ )\\())  )\\ )\\())     )\\   (()/(()/(
+ (((_|(_)\ (((_|(_)\   ((((_)(  /(_))(_))
+ )\\___ ((_))\\___ ((_)   )\\ _ )\\(_))(_))
+((/ __/ _ ((/ __/ _ \\   (_)_\\(_) _ \\_ _|
+ | (_| (_) | (_| (_) |   / _ \\ |  _/| |
+  \\___\\___/ \\___\\___/   /_/ \\_\\|_| |___|
+🚀 Server running on port ${PORT} with HTTPS
+`),
 );

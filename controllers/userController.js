@@ -31,10 +31,12 @@ export async function getUserData(req, res) {
 }
 
 export const getTravelRequestsByDeptStatus = async (req, res) => {
-  const { dept, status, n } = req.params;
+  const deptId = Number(req.params.dept_id);
+  const statusId = Number(req.params.status_id);
+  const n = req.params.n ? Number(req.params.n) : null;
 
   try {
-    const travelRequests = await User.getTravelRequestsByDeptStatus(dept, status, n);
+    const travelRequests = await User.getTravelRequestsByDeptStatus(deptId, statusId, n);
 
     if (!travelRequests || travelRequests.length === 0) {
       return res.status(404).json({ error: "No travel requests found" });
@@ -99,6 +101,28 @@ export const getTravelRequestById = async (req, res) => {
     return res.status(200).json(response);
   } catch (err) {
     console.error("Error in getTravelRequestById controller:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getUserWallet = async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+    const user = await User.getUserWallet(user_id);
+
+    if (!user) {
+      return res.status(404).json({ error: `No user with id ${user_id} found`  });
+    }
+
+    const formatted = {
+      user_id: user.user_id,
+      user_name: user.user_name,
+      wallet: user.wallet,
+    };
+
+    return res.status(200).json(formatted);
+  } catch (err) {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
