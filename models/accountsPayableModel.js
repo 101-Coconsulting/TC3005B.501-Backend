@@ -48,6 +48,85 @@ const AccountsPayable = {
             }
         }
     },
+  
+    async getReceiptStatusesForRequest(requestId) {
+        let conn;
+        const query = `
+            SELECT validation FROM Receipt
+            WHERE request_id = ?
+        `;
+
+        try {
+            conn = await pool.getConnection();
+            const rows = await conn.query(query, [requestId]);
+            return rows.map(r => r.validation);
+        } catch (error) {
+            console.error('Error fetching receipt statuses:', error);
+            throw error;
+        } finally {
+            if (conn) conn.release();
+        }
+    },
+
+    async updateRequestStatus(requestId, statusId) {
+        let conn;
+        const query = `
+            UPDATE Request
+            SET request_status_id = ?
+            WHERE request_id = ?
+        `;
+
+        try {
+            conn = await pool.getConnection();
+            await conn.query(query, [statusId, requestId]);
+        } catch (error) {
+            console.error('Error updating request status:', error);
+            throw error;
+        } finally {
+            if (conn) conn.release();
+        }
+    },
+
+    async receiptExists(receiptId) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            const rows = await conn.query(
+                "SELECT receipt_id, validation FROM `Receipt` WHERE receipt_id = ?",
+                [receiptId],
+            );
+            return rows[0];
+        } catch (error) {
+            console.error("Error checking if receipt exists:", error);
+            throw error;
+        } finally {
+            if (conn) {
+                conn.release();
+            }
+        }
+    },
+
+    //Accept or Reject a Travel Request
+    async validateReceipt(requestId, approval) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            const result = await conn.query(
+                `UPDATE Receipt
+                SET validation = ? WHERE receipt_id = ?`,
+                [approval, requestId],
+            );
+
+            return result.affectedRows > 0;
+        } catch (error) {
+            console.error("Error updating receipt status:", error);
+            throw error;
+        } finally {
+            if (conn) {
+                conn.release();
+            }
+        }
+    },
 
     async getExpenseValidations(requestId) {
         let conn;
@@ -114,6 +193,7 @@ const AccountsPayable = {
             }
         }
     },
+
 };
 
 export default AccountsPayable;
