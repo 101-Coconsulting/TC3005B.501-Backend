@@ -127,6 +127,7 @@ const User = {
         `SELECT 
           u.user_name,
           u.user_id,
+          u.department_id,
           u.password, 
           r.role_name 
         FROM User u

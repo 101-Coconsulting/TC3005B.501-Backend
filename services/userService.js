@@ -43,7 +43,8 @@ export async function authenticateUser(username, password) {
       token,
       role: user.role_name,
       username: user.user_name,
-      id: user.user_id  
+      user_id: user.user_id,
+      department_id: user.department_id 
     };
   } catch (error) {
     throw new Error(`Authentication failed: ${error.message}`);
