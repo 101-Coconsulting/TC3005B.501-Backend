@@ -16,7 +16,7 @@ router.use((req, res, next) => {
 });
 
 router.route("/get-user-list")
-    .get(validateId, validateInputs, adminController.getUserList);
+    .get(adminController.getUserList);
 router.route('/create-user')
     .post(adminController.createUser);
 router.route("/create-multiple-users")
