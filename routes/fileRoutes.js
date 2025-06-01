@@ -3,6 +3,7 @@ import multer from 'multer';
 import { ObjectId } from 'mongodb';
 import { uploadReceiptFiles, getReceiptFile, getReceiptFilesMetadata } from '../services/receiptFileService.js';
 import { db } from '../services/fileStorage.js';
+import { generalRateLimiter } from '../middleware/rateLimiters.js';
 
 const router = express.Router();
 const upload = multer();
@@ -47,7 +48,7 @@ router.post('/upload-receipt-files/:receipt_id',
 );
 
 // Get receipt file (PDF or XML)
-router.get('/receipt-file/:file_id', async (req, res) => {
+router.get('/receipt-file/:file_id', generalRateLimiter, async (req, res) => {
   try {
     const fileId = new ObjectId(req.params.file_id);
 
