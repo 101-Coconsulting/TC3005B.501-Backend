@@ -35,7 +35,35 @@ export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
     const result = await userService.authenticateUser(username, password);
-    res.json(result);
+    //res.json(result);
+     res
+      .cookie("token", result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+        maxAge: 1000 * 60 * 60 * 24, // 1 día
+      })
+      .cookie("role", result.role, {
+        sameSite: "Strict",
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      })
+      .cookie("username", result.username, {
+        sameSite: "Strict",
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      })
+      .cookie("id", result.user_id.toString(), {
+        sameSite: "Strict",
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      })
+      .cookie("department_id", result.department_id.toString(), {
+        sameSite: "Strict",
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      })
+      .json(result);
   } catch (error) {
     res.status(401).json({ error: error.message });
   }
