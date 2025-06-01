@@ -1,5 +1,6 @@
 import userModel from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 /**
  * Get user by ID
@@ -27,8 +28,8 @@ export async function authenticateUser(username, password) {
     if (!user || user.length === 0) {
       throw new Error("Invalid username or password");
     }
-
-    const isMatch = user.password === password;
+    
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new Error("Invalid username or password");
     }
