@@ -122,7 +122,7 @@ const Admin = {
           throw new Error('User with this email or username already exists');
       }
 
-      const result = await connection.query(
+      await connection.query(
         `INSERT INTO User (
           role_id,
           department_id,
