@@ -50,3 +50,8 @@ export async function authenticateUser(username, password) {
     throw new Error(`Authentication failed: ${error.message}`);
   }
 }
+
+// Export default object with all service functions
+export default {
+  getUserById
+};  
