@@ -45,21 +45,25 @@ export const login = async (req, res) => {
       })
       .cookie("role", result.role, {
         sameSite: "Strict",
+        httpOnly: true,
         secure: true,
         maxAge: 1000 * 60 * 60 * 24,
       })
       .cookie("username", result.username, {
         sameSite: "Strict",
+        httpOnly: true,
         secure: true,
         maxAge: 1000 * 60 * 60 * 24,
       })
       .cookie("id", result.user_id.toString(), {
         sameSite: "Strict",
+        httpOnly: true,
         secure: true,
         maxAge: 1000 * 60 * 60 * 24,
       })
       .cookie("department_id", result.department_id.toString(), {
         sameSite: "Strict",
+        httpOnly: true,
         secure: true,
         maxAge: 1000 * 60 * 60 * 24,
       })
