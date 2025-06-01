@@ -9,6 +9,9 @@ router.route("/get-user-data/:user_id")
 router.route('/login')
     .post(userController.login);
 
+router.route("/logout")
+    .get(userController.logout);
+    
 router.route('/get-travel-request/:request_id')
     .get(validateId, validateInputs, userController.getTravelRequestById);
 

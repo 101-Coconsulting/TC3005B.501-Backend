@@ -169,3 +169,21 @@ export const getUserWallet = async (req, res) => {
 const formatDate = (date) => {
   return new Date(date).toISOString().split('T')[0];
 };
+
+export const logout = (req, res) => {
+  const cookieOptions = {
+    path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
+  };
+
+  res
+    .clearCookie("token", cookieOptions)
+    .clearCookie("role", cookieOptions)
+    .clearCookie("username", cookieOptions)
+    .clearCookie("id", cookieOptions)
+    .clearCookie("department_id", cookieOptions)
+    .status(200)
+    .json({ message: "Sesión cerrada correctamente" });
+};
