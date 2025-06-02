@@ -20,6 +20,13 @@ const hash = async (data) => {
   return await bcrypt.hash(data, 10);
 }
 
+const decrypt = (encryptedData) => {
+  const decipher = crypto. createDecipheriv('aes-256-cbc', Buffer.from(AES_SECRET_KEY), Buffer.from(AES_IV));
+  let decrypted = decipher.update(encryptedData, 'base64', 'utf8');
+  decrypted += decipher.final('utf8');
+  return decrypted;
+}
+
 /*
  * Create a new user (admin functionality)
  * @param {Object} userData - User data
@@ -208,7 +215,13 @@ export const parseCSV = async (filePath) => {
  */
 export async function getUserList() {
   try {
-    return await Admin.getUserList();
+    const userData = await Admin.getUserList();
+
+    return userData.map(user => ({
+      ...userData,
+      email: decrypt(user.email),
+      phone: decrypt(user.phone),
+    }));
   } catch (error) {
     throw new Error(`Error fetching user list: ${error.message}`);
   }
