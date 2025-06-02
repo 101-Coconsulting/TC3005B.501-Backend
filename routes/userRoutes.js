@@ -19,6 +19,6 @@ router.route('/get-travel-requests/:dept_id/:status_id/:n?')
     .get(validateDeptStatus, validateInputs, userController.getTravelRequestsByDeptStatus);
 
 router.route('/get-user-wallet/:user_id?')
-    .get(userController.getUserWallet);
+    .get(validateId, validateInputs, userController.getUserWallet);
 
 export default router;
