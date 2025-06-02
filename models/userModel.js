@@ -114,6 +114,35 @@ const User = {
     conn.release();
   }
 },
+
+/*
+ * Get user by username
+ * @param {string} username - Username
+ * @returns {Promise<Object>} - User data
+ */
+  async getUserUsername(username) {
+    const connection = await pool.getConnection();
+    try {
+      const rows = await connection.query(
+        `SELECT 
+          u.user_name,
+          u.user_id,
+          u.department_id,
+          u.password, 
+          r.role_name 
+        FROM User u
+        JOIN Role r ON u.role_id = r.role_id
+        WHERE u.user_name = ?`,
+        [username]
+      );
+
+      return rows[0];
+
+    } finally {
+      connection.release();
+    }
+  },
+
 async getUserWallet(user_id) {
     let conn;
     try {

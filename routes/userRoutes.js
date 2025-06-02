@@ -6,6 +6,12 @@ import { validateId, validateInputs, validateDeptStatus } from "../middleware/va
 router.route("/get-user-data/:user_id")
     .get(validateId, validateInputs, userController.getUserData);
 
+router.route('/login')
+    .post(userController.login);
+
+router.route("/logout")
+    .get(userController.logout);
+    
 router.route('/get-travel-request/:request_id')
     .get(validateId, validateInputs, userController.getTravelRequestById);
 
@@ -13,6 +19,6 @@ router.route('/get-travel-requests/:dept_id/:status_id/:n?')
     .get(validateDeptStatus, validateInputs, userController.getTravelRequestsByDeptStatus);
 
 router.route('/get-user-wallet/:user_id?')
-    .get(userController.getUserWallet);
+    .get(validateId, validateInputs, userController.getUserWallet);
 
 export default router;
