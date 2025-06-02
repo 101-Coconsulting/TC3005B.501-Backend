@@ -147,23 +147,6 @@ const Admin = {
       connection.release();
     }
   },
-
-  // Find applicant by ID
-  async getUserList() {
-    let conn;
-    try {
-      conn = await db.getConnection();
-      const rows = await conn.query('SELECT * FROM UserFullInfo');
-      return rows;
-    } catch (error) {
-      console.error('Error finding applicant by ID:', error);
-      throw error;
-    } finally {
-      if (conn){
-        conn.release();
-      }
-    }
-  }
 };
 
 export default Admin;
