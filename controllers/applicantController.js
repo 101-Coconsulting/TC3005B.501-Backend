@@ -3,6 +3,7 @@ Applicant Controller
 */
 import Applicant from "../models/applicantModel.js";
 import { cancelTravelRequestValidation, createExpenseValidationBatch, sendReceiptsForValidation } from '../services/applicantService.js';
+import { decrypt } from '../middleware/decryption.js';
 
 export const getApplicantById = async (req, res) => {
   const id = req.params.id;
@@ -54,6 +55,8 @@ export const getApplicantRequest = async (req, res) => {
     }
 
     const baseData = requestData[0];
+    const decryptedEmail = decrypt(baseData.user_email);
+    const decryptedPhone = decrypt(baseData.user_phone_number);
 
     const response = {
       request_id: baseData.request_id,
@@ -65,8 +68,8 @@ export const getApplicantRequest = async (req, res) => {
       creation_date: formatDate(baseData.creation_date),
       user: {
         user_name: baseData.user_name,
-        user_email: baseData.user_email,
-        user_phone_number: baseData.user_phone_number,
+        user_email: decryptedEmail,
+        user_phone_number: decryptedPhone,
       },
       routes: requestData.map((row) => ({
         router_index: row.router_index,
