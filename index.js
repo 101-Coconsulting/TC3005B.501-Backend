@@ -18,17 +18,22 @@ import fs from "fs";
 import https from "https";
 import express from "express";
 import cors from "cors";
+import cookieParser from 'cookie-parser';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // CORS configuration
 app.use(cors({
-  origin: '*',
+  origin: 'https://localhost:4321',
+  credentials: true,
   methods: ['GET', 'POST', 'PUT']
 }));
 
 // Middleware for parsing JSON
 app.use(express.json());
+
+// Middleware for parsing URL-encoded data
+app.use(cookieParser());
 
 app.use("/api/applicant", applicantRoutes);
 app.use("/api/authorizer", authorizerRoutes);
