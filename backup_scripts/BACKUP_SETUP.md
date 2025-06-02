@@ -6,7 +6,7 @@ In the VM, create the backup script by running:
 `sudo vim /usr/local/bin/backup-mariadb.sh`
 
 ### Shell Script
-1. Run the following in your VM to add the content to the script:
+1. Add the following content to the script, changing the user and password as necessary:
 ```sh
 BACKUP_DIR="/var/backups/mariadb"
 mkdir -p $BACKUP_DIR
