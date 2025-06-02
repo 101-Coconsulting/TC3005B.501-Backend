@@ -7,7 +7,6 @@ import { parse } from 'csv-parse';
 import fs, { unlink } from 'fs';
 
 const requiredColumns = ['role_name', 'department_name', 'user_name', 'password', 'workstation', 'email'];
-const saltRounds = 10;
 
 const encrypt = (data) => {
   const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(AES_SECRET_KEY), Buffer.from(AES_IV));
@@ -21,10 +20,19 @@ const hash = async (data) => {
 }
 
 const decrypt = (encryptedData) => {
-  const decipher = crypto. createDecipheriv('aes-256-cbc', Buffer.from(AES_SECRET_KEY), Buffer.from(AES_IV));
-  let decrypted = decipher.update(encryptedData, 'base64', 'utf8');
-  decrypted += decipher.final('utf8');
-  return decrypted;
+  try {
+    if (!encryptedData || typeof encryptedData !== 'string') {
+      return encryptedData; 
+    }
+
+    const decipher = crypto. createDecipheriv('aes-256-cbc', Buffer.from(AES_SECRET_KEY), Buffer.from(AES_IV));
+    let decrypted = decipher.update(encryptedData, 'base64', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+  } catch (error) {
+    console.error('Decryption error:', error);
+    return encryptedData; 
+  }
 }
 
 /*
@@ -215,13 +223,14 @@ export const parseCSV = async (filePath) => {
  */
 export async function getUserList() {
   try {
-    const userData = await Admin.getUserList();
+    const users = await Admin.getUserList();
 
-    return userData.map(user => ({
-      ...userData,
-      email: decrypt(user.email),
-      phone: decrypt(user.phone),
-    }));
+    return users.map(user => {
+      const decryptedUser = { ...user };
+      decryptedUser.email = decrypt(user.email);
+      decryptedUser.phone_number = decrypt(user.phone_number);
+      return decryptedUser;
+    });
   } catch (error) {
     throw new Error(`Error fetching user list: ${error.message}`);
   }
