@@ -25,16 +25,61 @@ export async function getUserData(req, res) {
 
     return res.status(200).json(userData);
   } catch (error) {
-    console.error('Error retrieving user data:', error);
+    console.error('Error retrieving user data', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
+
+export const login = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const result = await userService.authenticateUser(username, password);
+    //res.json(result);
+     res
+      .cookie("token", result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+        maxAge: 1000 * 60 * 60 * 24, // 1 día
+      })
+      .cookie("role", result.role, {
+        sameSite: "Strict",
+        httpOnly: true,
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      })
+      .cookie("username", result.username, {
+        sameSite: "Strict",
+        httpOnly: true,
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      })
+      .cookie("id", result.user_id.toString(), {
+        sameSite: "Strict",
+        httpOnly: true,
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      })
+      .cookie("department_id", result.department_id.toString(), {
+        sameSite: "Strict",
+        httpOnly: true,
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      })
+      .json(result);
+  } catch (error) {
+    res.status(401).json({ error: error.message });
+  }
+}
+
 export const getTravelRequestsByDeptStatus = async (req, res) => {
-  const { dept, status, n } = req.params;
+  const deptId = Number(req.params.dept_id);
+  const statusId = Number(req.params.status_id);
+  const n = req.params.n ? Number(req.params.n) : null;
 
   try {
-    const travelRequests = await User.getTravelRequestsByDeptStatus(dept, status, n);
+    const travelRequests = await User.getTravelRequestsByDeptStatus(deptId, statusId, n);
 
     if (!travelRequests || travelRequests.length === 0) {
       return res.status(404).json({ error: "No travel requests found" });
@@ -103,6 +148,46 @@ export const getTravelRequestById = async (req, res) => {
   }
 };
 
+export const getUserWallet = async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+    const user = await User.getUserWallet(user_id);
+
+    if (!user) {
+      return res.status(404).json({ error: `No user with id ${user_id} found`  });
+    }
+
+    const formatted = {
+      user_id: user.user_id,
+      user_name: user.user_name,
+      wallet: user.wallet,
+    };
+
+    return res.status(200).json(formatted);
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const formatDate = (date) => {
   return new Date(date).toISOString().split('T')[0];
+};
+
+export const logout = (req, res) => {
+  const cookieOptions = {
+    path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
+  };
+
+  res
+    .clearCookie("token", cookieOptions)
+    .clearCookie("role", cookieOptions)
+    .clearCookie("username", cookieOptions)
+    .clearCookie("id", cookieOptions)
+    .clearCookie("department_id", cookieOptions)
+    .status(200)
+    .json({ message: "Sesión cerrada correctamente" });
 };
