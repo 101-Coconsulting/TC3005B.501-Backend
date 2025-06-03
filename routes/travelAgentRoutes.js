@@ -7,6 +7,7 @@ import express from "express";
 const router = express.Router();
 import travelAgentController from "../controllers/travelAgentController.js";
 import { validateId, validateInputs } from "../middleware/validation.js";
+import { authenticateToken, authorizeRole } from "../middleware/auth.js";
 
 router.use((req, res, next) => {
     next();
@@ -14,6 +15,6 @@ router.use((req, res, next) => {
 
 // Route to attend a travel request (update status to 4)
 router.route("/attend-travel-request/:id")
-    .put(validateId, validateInputs, travelAgentController.attendTravelRequest);
+    .put(authenticateToken, authorizeRole(['Agencia de viajes']), validateId, validateInputs, travelAgentController.attendTravelRequest);
 
 export default router;
