@@ -15,7 +15,7 @@ const Admin = {
           }
           return null;
       } catch (error) {
-            console.error(`Error finding role ID for '${role_name}':`, error);
+            console.error('Error finding role ID for %s:', role_name, error);
           throw error;
       } finally {
           if (conn) conn.release();
