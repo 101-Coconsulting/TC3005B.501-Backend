@@ -10,7 +10,8 @@ const Admin = {
     let conn;
     try {
       conn = await pool.getConnection();
-      const rows = await conn.query('SELECT * FROM UserFullInfo WHERE active = 1');
+      const rows = await conn.query(`SELECT * FROM UserFullInfo 
+        WHERE active = 1 ORDER BY department_id`);
       return rows;
       
     } catch (error) {
