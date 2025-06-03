@@ -80,7 +80,7 @@ const Admin = {
           }
           return null;
       } catch (error) {
-            console.error(`Error finding department ID for '${department_name}':`, error);
+            console.error('Error finding department ID for %s:', department_name, error);
           throw error;
       } finally {
           if (conn) conn.release();
