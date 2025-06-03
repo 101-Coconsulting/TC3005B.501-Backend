@@ -26,7 +26,7 @@ export const validateId = [
     .toInt()
     .withMessage('Receipt ID must be a valid number'),
   (req, res, next) => {
-    if (!req.params.id && !req.params.user_id && !req.params.request_id) {
+    if (!req.params.id && !req.params.user_id && !req.params.request_id && !req.params.receipt_id) {
       return res.status(400).json({ error: "At least one ID needs to be provided" });
     }
     next();
