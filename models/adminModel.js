@@ -1,9 +1,68 @@
 /* 
 Admin Model
 */
+import db from '../database/config/db.js';
 import pool from '../database/config/db.js';
 
 const Admin = {
+
+  async updateUser(user_id, fieldsToUpdate) {
+    let conn;
+
+    const setClauses = [];
+    const values =[];
+
+    for (const field in fieldsToUpdate) {
+        setClauses.push(`${field} = ?`);
+        values.push(fieldsToUpdate[field]);
+      }
+
+    values.push(user_id);
+
+    const query = `
+        UPDATE User
+        SET ${setClauses.join(', ')}
+        WHERE user_id = ?
+      `;
+    try {
+      conn = await pool.getConnection();
+      const result = await conn.query(query, values);
+      return result;
+    } catch (error) {
+      throw error;
+    } finally {
+      if (conn) conn.release();
+    }
+  },
+  
+  async createMultipleUsers(users) {
+      let conn;
+
+      const values = users.map(user => [
+          user.role_id,
+          user.department_id,
+          user.user_name,
+          user.password,
+          user.workstation,
+          user.email,
+          user.phone_number
+      ]);
+
+      const query = `INSERT INTO User (role_id, department_id, user_name, password, workstation, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+      try {
+          conn = await pool.getConnection();
+          const result = await conn.batch(query, values);
+          return result.affectedRows;
+      } catch (error) {
+          console.error('Error getting completed requests:', error);
+          throw error;
+      } finally {
+          if (conn){
+              conn.release();
+          } 
+      }
+  },
 
   async findRoleID(role_name) {
       let conn;
@@ -61,53 +120,63 @@ const Admin = {
       }
   },
 
+  async createUser(userData) {
+    const connection = await db.getConnection();
+    try{
+      const existingUser = await connection.query(
+        `SELECT
+        user_id
+        FROM User
+        WHERE email = ? OR user_name = ?`,
+        [userData.email, userData.user_name]
+      );
+
+      if (existingUser.length > 0) {
+          throw new Error('User with this email or username already exists');
+      }
+
+      await connection.query(
+        `INSERT INTO User (
+          role_id,
+          department_id,
+          user_name,
+          password,
+          workstation,
+          email,
+          phone_number,
+          creation_date
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
+        [
+          userData.role_id,
+          userData.department_id,
+          userData.user_name,
+          userData.password,
+          userData.workstation,
+          userData.email,
+          userData.phone_number
+        ]
+      );
+    } finally {
+      connection.release();
+    }
+  },
+
   // Find applicant by ID
   async getUserList() {
     let conn;
     try {
-      conn = await pool.getConnection();
-      const rows = await conn.query('SELECT * FROM UserFullInfo WHERE active = 1');
+      conn = await db.getConnection();
+      const rows = await conn.query('SELECT * FROM UserFullInfo');
       return rows;
-      
     } catch (error) {
       console.error('Error finding applicant by ID:', error);
       throw error;
     } finally {
       if (conn){
         conn.release();
-      } 
-    }
-  },
-
-  async updateUser(user_id, fieldsToUpdate) {
-    let conn;
-
-    const setClauses = [];
-    const values =[];
-
-    for (const field in fieldsToUpdate) {
-        setClauses.push(`${field} = ?`);
-        values.push(fieldsToUpdate[field]);
       }
-
-    values.push(user_id);
-
-    const query = `
-        UPDATE User
-        SET ${setClauses.join(', ')}
-        WHERE user_id = ?
-      `;
-    try {
-      conn = await pool.getConnection();
-      const result = await conn.query(query, values);
-      return result;
-    } catch (error) {
-      throw error;
-    } finally {
-      if (conn) conn.release();
     }
-  },
-  
+  }
 };
 
 export default Admin;
