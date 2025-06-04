@@ -119,7 +119,6 @@ export const createTravelRequest = async (req, res) => {
       applicantId,
       travelDetails,
     );
-    console.log("TRAVEL REQUEST: ", travelRequest);
     const { user_email, user_name, requestId, status } = await mailData(travelRequest.requestId);
     await Mail(user_email, user_name, travelRequest.requestId, status);
     res.status(201).json(travelRequest);
