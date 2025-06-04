@@ -1,4 +1,5 @@
 import pool from "../../database/config/db.js";
+import { decrypt } from '../../middleware/decryption.js';
 
 async function getMailDetails(request_id){
     let conn;
@@ -13,7 +14,12 @@ async function getMailDetails(request_id){
     try {
         conn = await pool.getConnection();
         const rows = await conn.query(query, [request_id]);
-        return rows[0];
+        return {
+            "user_email": decrypt(rows[0].user_email),
+            "user_name": rows[0].user_name,
+            "request_id": rows[0].request_id,
+            "status": rows[0].status
+        };
     } catch (error) {
         console.error('Error fetching mail data:', error);
         throw error;
