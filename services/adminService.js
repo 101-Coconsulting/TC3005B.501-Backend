@@ -228,7 +228,8 @@ export const updateUserData = async (userId, newUserData) => {
         throw { status: 404, message: 'No information found for the user' };
     }
 
-    const isEmail = await Admin.findUserByEmail(newUserData.email);
+    const encryptedEmail = encrypt(newUserData.email);
+    const isEmail = await Admin.findUserByEmail(encryptedEmail);  
     if (isEmail) {
         throw { status: 400, message: 'Email already in use' };
     }
