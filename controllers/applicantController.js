@@ -100,7 +100,7 @@ export const getCostCenterByUserId = async (req, res) => {
         user_id,
       });
     }
-    res.json(costCenter);
+    res.status(200).json(costCenter);
   } catch (err) {
     res.status(500).json({ error: "Controller: Internal Server Error" });
   }
@@ -261,5 +261,5 @@ export default {
   createDraftTravelRequest,
   confirmDraftTravelRequest,
   sendExpenseValidation,
-  
+
 };
