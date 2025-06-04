@@ -27,7 +27,17 @@ const Mail = async (email, username, request_id, status) => {
 </head>
 <body style="font-family: Arial, sans-serif; color: #333;">
   <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-    <h2 style="color: #76b524;">Actualización de tu solicitud de viaje</h2>
+    
+    <table width="100%" cellspacing="0" cellpadding="0" style="margin-bottom: 20px;">
+      <tr>
+        <td style="width: 100px; vertical-align: middle;">
+          <img src="https://res.cloudinary.com/dw3ipwzwz/image/upload/v1749059816/Logo101Cocons%C3%BClting_p04mhi.png" alt="Logo del portal" style="max-width: 70px; height: auto;">
+        </td>
+        <td style="text-align: left; vertical-align: middle;">
+          <h2 style=" margin: 0;">Actualización de tu solicitud de viaje</h2>
+        </td>
+      </tr>
+    </table>
 
     <p>Hola <strong>${username}</strong>,</p>
 
