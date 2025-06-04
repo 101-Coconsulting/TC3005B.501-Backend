@@ -4,6 +4,8 @@ Applicant Controller
 import Applicant from "../models/applicantModel.js";
 import { cancelTravelRequestValidation, createExpenseValidationBatch, sendReceiptsForValidation } from '../services/applicantService.js';
 import { decrypt } from '../middleware/decryption.js';
+import { Mail } from "../services/email/mail.cjs";
+import mailData from "../services/email/mailData.js";
 
 export const getApplicantById = async (req, res) => {
   const id = req.params.id;
@@ -117,6 +119,9 @@ export const createTravelRequest = async (req, res) => {
       applicantId,
       travelDetails,
     );
+    console.log("TRAVEL REQUEST: ", travelRequest);
+    const { user_email, user_name, requestId, status } = await mailData(travelRequest.requestId);
+    await Mail(user_email, user_name, travelRequest.requestId, status);
     res.status(201).json(travelRequest);
   } catch (err) {
     console.error("Controller error:", err);
@@ -144,6 +149,8 @@ export const cancelTravelRequest = async (req, res) => {
 
   try {
     const result = await cancelTravelRequestValidation(Number(request_id));
+    const { user_email, user_name, requestId, status } = await mailData(request_id);
+    await Mail(user_email, user_name, request_id, status);
     return res.status(200).json(result);
   } catch (err) {
     if (err.status) {
@@ -225,6 +232,8 @@ export const confirmDraftTravelRequest = async (req, res) => {
 
   try {
     const result = await Applicant.confirmDraftTravelRequest(userId, requestId);
+    const { user_email, user_name, request_id, status } = await mailData(requestId);
+    await Mail(user_email, user_name, requestId, status);
     return res.status(200).json(result);
   } catch (err) {
     if (err.status) {
@@ -240,6 +249,8 @@ export const sendExpenseValidation = async (req, res) => {
 
   try {
     const result = await sendReceiptsForValidation(requestId);
+    const { user_email, user_name, request_id, status } = await mailData(requestId);
+    await Mail(user_email, user_name, requestId, status);
     return res.status(200).json(result);
   } catch (err) {
     if (err.status) {
