@@ -74,7 +74,6 @@ const validateUserRow = async (rowData, rowNumber) => {
 const getForeignKeyValues = async (rowData, rowNumber) => {
   const rowErrors = [];
   let userData = {...rowData};
-  console.log()
 
   try {
     const roleId = await Admin.findRoleID(userData.role_name);
@@ -84,11 +83,15 @@ const getForeignKeyValues = async (rowData, rowNumber) => {
       userData.role_id = roleId;
     }
 
-    const departmentId = await Admin.findDepartmentID(userData.department_name);
-    if (departmentId === null) {
-      rowErrors.push (`Invalid department name: '${userData.department_name}'`);
+    if (userData.department_name !== 'NULL') {
+      const departmentId = await Admin.findDepartmentID(userData.department_name);
+      if (departmentId === null) {
+        rowErrors.push (`Invalid department name: '${userData.department_name}'`);
+      } else {
+        userData.department_id = departmentId;
+      }
     } else {
-      userData.department_id = departmentId;
+      userData.department_id = null;
     }
 
     const hashedPassword = await hash(userData.password);
@@ -114,7 +117,7 @@ const getForeignKeyValues = async (rowData, rowNumber) => {
   return userData;
 };
 
-export const parseCSV = async (filePath) => {
+export const parseCSV = async (filePath, dummy) => {
   const results = {
     total_records: 0,
     created: 0,
@@ -190,13 +193,15 @@ export const parseCSV = async (filePath) => {
 
     results.failed = results.total_records - results.created;
   } finally {
-    try {
-      await fs.promises.unlink(filePath);
-    } catch (unlinkError) {
-      results.errors.push({
-        row_number: 'N/A',
-        error: `Error unlinking CSV file: ${error.message}`
-      });
+    if (!dummy) {
+      try {
+        await fs.promises.unlink(filePath);
+      } catch (unlinkError) {
+          results.errors.push({
+          row_number: 'N/A',
+          error: `Error unlinking CSV file: ${unlinkError.message}`
+        });
+      }
     }
   }
 
