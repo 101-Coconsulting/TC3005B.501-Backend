@@ -34,14 +34,14 @@ export async function getUserData(req, res) {
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const result = await userService.authenticateUser(username, password);
+    const result = await userService.authenticateUser(username, password, req);
     //res.json(result);
      res
       .cookie("token", result.token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "Strict",
-        maxAge: 1000 * 60 * 60 * 24, // 1 día
+        maxAge: 1000 * 60 * 60, // 1 hora
       })
       .cookie("role", result.role, {
         sameSite: "Strict",
@@ -53,19 +53,19 @@ export const login = async (req, res) => {
         sameSite: "Strict",
         httpOnly: true,
         secure: true,
-        maxAge: 1000 * 60 * 60 * 24,
+        maxAge: 1000 * 60 * 60,
       })
       .cookie("id", result.user_id.toString(), {
         sameSite: "Strict",
         httpOnly: true,
         secure: true,
-        maxAge: 1000 * 60 * 60 * 24,
+        maxAge: 1000 * 60 * 60,
       })
       .cookie("department_id", result.department_id.toString(), {
         sameSite: "Strict",
         httpOnly: true,
         secure: true,
-        maxAge: 1000 * 60 * 60 * 24,
+        maxAge: 1000 * 60 * 60,
       })
       .json(result);
   } catch (error) {
