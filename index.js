@@ -76,3 +76,5 @@ httpsServer.listen(PORT, () =>
 🚀 Server running on port ${PORT} with HTTPS
 `),
 );
+
+export default app;

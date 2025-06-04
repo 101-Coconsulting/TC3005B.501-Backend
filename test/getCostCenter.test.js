@@ -1,0 +1,35 @@
+import * as chai from 'chai';
+const { expect, should } = chai;
+import { request } from 'chai-http';
+
+import chaiHttp from 'chai-http';
+import app from '../index.js'
+
+chai.use(chaiHttp);
+should();
+
+describe('/api/applicant/get-cc/1', function () {
+
+  it('Should return 200', function (done) {
+
+    request.execute(app)
+      .get('/api/applicant/get-cc/1')
+      .end((err, res) => {
+        res.should.have.status(200);
+      })
+
+    done();
+  });
+
+  it('Should return err 404', function (done) {
+
+    request.execute(app)
+      .get('/api/applicant/get-cc/1000')
+      .end((err, res) => {
+        res.should.have.status(404);
+      })
+
+    done();
+  });
+
+});
