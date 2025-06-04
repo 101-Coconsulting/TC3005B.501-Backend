@@ -1,4 +1,5 @@
 import Admin from "../models/adminModel.js";
+import User from "../models/userModel.js";
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 const AES_SECRET_KEY = process.env.AES_SECRET_KEY;
@@ -219,6 +220,54 @@ export async function getUserList() {
   } catch (error) {
     throw new Error(`Error fetching user list: ${error.message}`);
   }
+};
+
+export const updateUserData = async (userId, newUserData) => {
+    const userData = await User.getUserData(userId);
+    if (!userData) {
+        throw { status: 404, message: 'No information found for the user' };
+    }
+
+    const isEmail = await Admin.findUserByEmail(newUserData.email);
+    if (isEmail) {
+        throw { status: 400, message: 'Email already in use' };
+    }
+
+    const updatedFields = [];
+    const fieldsToUpdateInDb = {};
+    const keysToCompare = ['role_name', 'department_name', 'user_name', 'workstation', 'email', 'phone_number'];
+
+    for (const key of keysToCompare) {
+        if (newUserData[key] !== undefined && newUserData[key] !== userData[key]) {
+            updatedFields.push(key);
+            if (key === 'role_name') {
+                const roleID = await Admin.findRoleID(newUserData[key]);
+                if (roleID !== null) {
+                    fieldsToUpdateInDb.role_id = roleID;
+                } else {
+                    throw { status: 400, message: `Invalid role name provided: ${newUserData[key]}` };
+                }
+            } else if (key === 'department_name') {
+                const deptId = await Admin.findDepartmentID(newUserData[key]);
+                if (deptId !== null) {
+                    fieldsToUpdateInDb.department_id = deptId;
+                } else {
+                    throw { status: 400, message: `Invalid department name provided: ${newUserData[key]}` };
+                }
+            } else if(key === 'email' || key === 'phone_number'){
+                fieldsToUpdateInDb[key] = encrypt(newUserData[key])
+            } else {
+                fieldsToUpdateInDb[key] = newUserData[key];
+            }
+        }
+    }
+
+    if (Object.keys(fieldsToUpdateInDb).length > 0) {
+        await Admin.updateUser(userId, fieldsToUpdateInDb);
+        return { message: 'User updated successfully', updated_fields: updatedFields };
+    }
+
+    return { message: 'No changes detected, user data is up to date' };
 };
 
 export default {
