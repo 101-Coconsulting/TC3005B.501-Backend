@@ -38,7 +38,7 @@ export async function getUserById(userId) {
  * @param {string} password - Password
  * @returns {Promise<Object>} - Authenticated user data and token
  */
-export async function authenticateUser(username, password) {
+export async function authenticateUser(username, password, req) {
   try {
     const user = await userModel.getUserUsername(username);
     
@@ -51,8 +51,12 @@ export async function authenticateUser(username, password) {
       throw new Error("Invalid username or password");
     }
 
+    if (!user.active) {
+      throw new Error("User acccount is inactive")
+    }
+
     const token = jwt.sign(
-      { user_id: user.user_id, role: user.role_name },
+      { user_id: user.user_id, role: user.role_name, userAgent: req.headers['user-agent'], ip: req.ip },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
