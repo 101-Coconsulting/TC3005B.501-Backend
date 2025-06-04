@@ -6,9 +6,9 @@ const AES_SECRET_KEY = process.env.AES_SECRET_KEY;
 const AES_IV = process.env.AES_IV;
 import { parse } from 'csv-parse';
 import fs, { unlink } from 'fs';
+import { decrypt } from '../middleware/decryption.js';
 
 const requiredColumns = ['role_name', 'department_name', 'user_name', 'password', 'workstation', 'email'];
-const saltRounds = 10;
 
 const encrypt = (data) => {
   const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(AES_SECRET_KEY), Buffer.from(AES_IV));
@@ -209,7 +209,14 @@ export const parseCSV = async (filePath) => {
  */
 export async function getUserList() {
   try {
-    return await Admin.getUserList();
+    const users = await Admin.getUserList();
+
+    return users.map(user => {
+      const decryptedUser = { ...user };
+      decryptedUser.email = decrypt(user.email);
+      decryptedUser.phone_number = decrypt(user.phone_number);
+      return decryptedUser;
+    });
   } catch (error) {
     throw new Error(`Error fetching user list: ${error.message}`);
   }

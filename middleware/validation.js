@@ -20,8 +20,13 @@ export const validateId = [
     .isInt()
     .toInt()
     .withMessage('User ID must be a valid number'),
+  param('receipt_id')
+    .optional()
+    .isInt()
+    .toInt()
+    .withMessage('Receipt ID must be a valid number'),
   (req, res, next) => {
-    if (!req.params.id && !req.params.user_id && !req.params.request_id) {
+    if (!req.params.id && !req.params.user_id && !req.params.request_id && !req.params.receipt_id) {
       return res.status(400).json({ error: "At least one ID needs to be provided" });
     }
     next();
@@ -426,7 +431,48 @@ export const validateDraftTravelRequest = [
     .bail(),
 ];
 
-
+export const validateCreateUser = [
+  body('role_id')
+    .isInt({ min: 1 })
+    .toInt()
+    .withMessage('Role ID must be a valid number'),
+  body('department_id')
+    .isInt({ min: 1 })
+    .toInt()
+    .withMessage('Department ID must be a valid number'),
+  body('user_name')
+    .isString()
+    .trim()
+    .notEmpty()
+    .escape()
+    .matches(/^\S+$/)
+    .withMessage('Username cannot be empty neither contain spaces.'),
+  body('password')
+    .isString()
+    .trim()
+    .notEmpty()
+    .escape()
+    .matches(/^\S+$/)
+    .withMessage('Password cannot be empty neither contain spaces.'),
+  body('workstation')
+    .isString()
+    .trim()
+    .notEmpty()
+    .escape()
+    .withMessage('Workstation cannot be empty.'),
+  body('email')
+    .isEmail()
+    .normalizeEmail()
+    .escape()
+    .withMessage('Email must be a valid email address'),
+  body('phone_number')
+    .optional()
+    .isString()
+    .notEmpty()
+    .trim()
+    .escape()
+    .withMessage('Phone number cannot be empty.')
+];
 
 /*
  * This reviews any errors received in previous validations
@@ -444,5 +490,6 @@ export default {
   validateTravelRequest,
   validateExpenseReceipts,
   validateInputs,
-  validateDraftTravelRequest
+  validateDraftTravelRequest,
+  validateCreateUser
 };

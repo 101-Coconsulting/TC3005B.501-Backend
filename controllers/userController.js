@@ -1,5 +1,7 @@
 import * as userService from '../services/userService.js';
 import User from '../models/userModel.js';
+import { decrypt } from '../middleware/decryption.js';
+
 /**
  * Get user data by ID
  * @param {Object} req - Express request object
@@ -112,6 +114,8 @@ export const getTravelRequestById = async (req, res) => {
     }
 
     const base = requestData[0];
+    const decryptedEmail = decrypt(base.user_email);
+    const decryptedPhone = decrypt(base.user_phone_number);
 
     const response = {
       request_id: base.request_id,
@@ -123,8 +127,8 @@ export const getTravelRequestById = async (req, res) => {
       creation_date: formatDate(base.creation_date),
       user: {
         user_name: base.user_name,
-        user_email: base.user_email,
-        user_phone_number: base.user_phone_number
+        user_email: decryptedEmail,
+        user_phone_number: decryptedPhone
       },
       routes: requestData.map((row) => ({
         router_index: row.router_index,

@@ -2,12 +2,13 @@ import express from 'express';
 const router = express.Router();
 import * as userController from '../controllers/userController.js';
 import { validateId, validateInputs, validateDeptStatus } from "../middleware/validation.js";
+import { loginRateLimiter } from '../middleware/rateLimiters.js';
 
 router.route("/get-user-data/:user_id")
     .get(validateId, validateInputs, userController.getUserData);
 
 router.route('/login')
-    .post(userController.login);
+    .post(loginRateLimiter, userController.login);
 
 router.route("/logout")
     .get(userController.logout);
