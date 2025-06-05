@@ -83,7 +83,7 @@ const User = {
     }
   },
 
-  async getTravelRequestsByDeptStatus(dept, statusId, n) {
+  async getTravelRequestsByDeptStatus(deptId, statusId, n) {
   const conn = await pool.getConnection();
   try {
     const baseQuery = `
@@ -107,13 +107,61 @@ const User = {
       ${n ? 'LIMIT ?' : ''}
     `;
 
-    const params = n ? [dept, statusId, Number(n)] : [dept, statusId];
+    const params = n ? [deptId, statusId, Number(n)] : [deptId, statusId];
     const rows = await conn.query(baseQuery, params);
     return rows;
   } finally {
     conn.release();
   }
 },
+
+/*
+ * Get user by username
+ * @param {string} username - Username
+ * @returns {Promise<Object>} - User data
+ */
+  async getUserUsername(username) {
+    const connection = await pool.getConnection();
+    try {
+      const rows = await connection.query(
+        `SELECT 
+          u.user_name,
+          u.user_id,
+          u.department_id,
+          u.password, 
+          r.role_name 
+        FROM User u
+        JOIN Role r ON u.role_id = r.role_id
+        WHERE u.user_name = ?`,
+        [username]
+      );
+
+      return rows[0];
+
+    } finally {
+      connection.release();
+    }
+  },
+
+async getUserWallet(user_id) {
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      const rows = await conn.query(
+        `SELECT 
+          user_id,
+          user_name,
+          wallet
+          FROM User
+          WHERE user_id = ?`,
+        [user_id]
+      );
+
+      return rows[0];
+    } finally {
+      if (conn) conn.release();
+    }
+  },
 
 };
 
