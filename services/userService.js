@@ -1,6 +1,7 @@
 import userModel from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { decrypt } from '../middleware/decryption.js';
 
 /**
  * Get user by ID
@@ -9,7 +10,23 @@ import bcrypt from 'bcrypt';
  */
 export async function getUserById(userId) {
   try {
-    return await userModel.getUserData(userId);
+    const userData = await userModel.getUserData(userId);
+
+    const decryptedEmail = decrypt(userData.email);
+    const decryptedPhone = decrypt(userData.phone_number);
+
+    const user = {
+      user_id: userData.user_id,
+      user_name: userData.user_name,
+      email: decryptedEmail,
+      phone_number: decryptedPhone,
+      workstation: userData.workstation,
+      department_name: userData.department_name,
+      costs_center: userData.costs_center,
+      creation_date: userData.creation_date,
+      role_name: userData.role_name
+    };
+    return user;
   } catch (error) {
     throw new Error(`Error fetching user with ID ${userId}: ${error.message}`);
   }

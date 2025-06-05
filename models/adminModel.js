@@ -10,7 +10,8 @@ const Admin = {
     let conn;
     try {
       conn = await pool.getConnection();
-      const rows = await conn.query('SELECT * FROM UserFullInfo WHERE active = 1');
+      const rows = await conn.query(`SELECT * FROM UserFullInfo 
+        WHERE active = 1 ORDER BY department_id`);
       return rows;
       
     } catch (error) {
@@ -147,23 +148,6 @@ const Admin = {
       connection.release();
     }
   },
-
-  // Find applicant by ID
-  async getUserList() {
-    let conn;
-    try {
-      conn = await db.getConnection();
-      const rows = await conn.query('SELECT * FROM UserFullInfo');
-      return rows;
-    } catch (error) {
-      console.error('Error finding applicant by ID:', error);
-      throw error;
-    } finally {
-      if (conn){
-        conn.release();
-      }
-    }
-  }
 };
 
 export default Admin;
