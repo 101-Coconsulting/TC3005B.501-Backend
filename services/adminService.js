@@ -10,10 +10,11 @@ import { decrypt } from '../middleware/decryption.js';
 const requiredColumns = ['role_name', 'department_name', 'user_name', 'password', 'workstation', 'email'];
 
 const encrypt = (data) => {
-  const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(AES_SECRET_KEY), Buffer.from(AES_IV));
+  const IV = crypto.randomBytes(16);
+  const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(AES_SECRET_KEY), IV);
   let encrypted = cipher.update(data, 'utf8', 'base64');
   encrypted += cipher.final('base64');
-  return encrypted;
+  return IV.toString('hex') + encrypted;
 }
 
 const hash = async (data) => {
