@@ -141,7 +141,11 @@ const AccountsPayable = {
                 r.request_id,
                 r.validation,
                 r.amount,
-                rt.receipt_type_name
+                rt.receipt_type_name,
+                r.pdf_file_id,
+                r.pdf_file_name,
+                r.xml_file_id,
+                r.xml_file_name
             FROM
                 Receipt r
             JOIN
@@ -178,7 +182,11 @@ const AccountsPayable = {
                     receipt_id: row.receipt_id,
                     receipt_type_name: row.receipt_type_name,
                     amount: row.amount, // Now including the amount field
-                    validation: row.validation // We use the validation as Expense_Status
+                    validation: row.validation, // We use the validation as Expense_Status
+                    pdf_id: row.pdf_file_id,
+                    pdf_name: row.pdf_file_name,
+                    xml_id: row.xml_file_id,
+                    xml_name: row.xml_file_name
                 }))
             };
 
