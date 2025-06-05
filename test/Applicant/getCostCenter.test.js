@@ -3,7 +3,7 @@ const { expect, should } = chai;
 import { request } from 'chai-http';
 
 import chaiHttp from 'chai-http';
-import app from '../index.js'
+import app from '../../index.js'
 
 chai.use(chaiHttp);
 should();
