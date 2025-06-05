@@ -29,4 +29,7 @@ router.route("/create-multiple-users")
 router.route('/update-user/:user_id')
     .put(adminController.updateUser);
 
+router.route("/delete-user/:user_id")
+    .put(adminController.deactivateUser);
+
 export default router;
