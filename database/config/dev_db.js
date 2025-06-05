@@ -3,6 +3,8 @@ import mariadb from 'mariadb';  // For connection to `mariadb` DataBase.
 
 import fs from "fs";  // For accesing the FileSystem an reading the `.sql` scripts.
 
+import { parseCSV } from "../../services/adminService.js"
+
 dotenv.config();
 
 const pool = mariadb.createPool({
@@ -43,7 +45,15 @@ async function devdb() {
 
         if (environment === 'dev') {
             console.log("Executing Dummy.sql...");
-            await conn.importFile({file: "./database/Schema/Dummy.sql"});
+            const dummySqlContent = fs.readFileSync("./database/Schema/Dummy.sql", "utf8");
+            const departmentSql = dummySqlContent.match(/(INSERT INTO Department[^;]*;)/i);
+            
+            const remainingDummySql = dummySqlContent.replace(departmentSql[0], '').trim();
+            
+            await conn.query(departmentSql[0]);
+            const res = await parseCSV("./database/config/dummy_users.csv", true);
+            console.log(res);
+            await conn.query(remainingDummySql);
             console.log("Dummy.sql executed.");
         }
 

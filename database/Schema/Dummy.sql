@@ -7,31 +7,6 @@ INSERT INTO Department (department_name, costs_center, active) VALUES
   ('Marketing', 'CC004', TRUE),
   ('Operaciones', 'CC005', FALSE);
 
-
-INSERT INTO `User` (role_id, department_id, user_name, password, workstation, email, phone_number, active) VALUES
-  (1, 1, 'andres.gomez', 'andres123', 'WS101', 'andres.gomez@empresa.com', '555-1001', TRUE),
-  (2, 1, 'paula.martinez', 'paula456', 'WS102', 'paula.martinez@empresa.com', '555-1002', TRUE),
-  (3, 1, 'carlos.ramos', 'carlos789', 'WS103', 'carlos.ramos@empresa.com', '555-1003', TRUE),
-  (4, 1, 'laura.flores', 'laura321', 'WS104', 'laura.flores@empresa.com', '555-1004', TRUE),
-  (5, 1, 'diego.hernandez', 'diego654', 'WS105', 'diego.hernandez@empresa.com', '555-1005', TRUE),
-  (1, 2, 'adminX_special', 'sup3rS3cret!', 'HACK001', 'adminx@empresaxd.com', '000-0000', TRUE),
-  (2, 2, 'xx_m4nu_xx', 'qwerty123', 'WS???', 'manuel@empresa.com', '1234567890', TRUE),
-  (3, 2, 'el_ch4p0', 'p4sSw0rd', 'SOFIA-PC', 'chapo@correo.com', NULL, TRUE),
-  (4, 2, 'sofia_r', 'm1cor4zon', 'SOFIA-PC', 'sofia_random@mail.com', '555-ABCD', TRUE),
-  (5, 2, 'miguel.de.cervantes', 'donquixote2023', 'DON-QUI', 'miguel@delamancha.com', '555-0000', TRUE),
-  (1, 3, 'jose.perez', 'jose123', 'WS106', 'jose.perez@empresa.com', '555-1006', TRUE),
-  (2, 3, 'lucia.garcia', 'lucia456', 'WS107', 'lucia.garcia@empresa.com', '555-1007', TRUE),
-  (3, 3, 'pedro.sanchez', 'pedro789', 'WS108', 'pedro.sanchez@empresa.com', '555-1008', TRUE),
-  (4, 3, 'marta.lopez', 'marta321', 'WS109', 'marta.lopez@empresa.com', '555-1009', TRUE),
-  (5, 3, 'rafael.morales', 'rafael654', 'WS110', 'rafael.morales@empresa.com', '555-1010', TRUE),
-  (1, 4, 'clara.silva', 'claraS3cret!', 'WS111', 'clara.silva@empresa.com', '555-1011', TRUE),
-  (2, 4, 'luis.palomino', 'luisqwerty123', 'WS112', 'luis.palomino@empresa.com', '1234567891', TRUE),
-  (3, 4, 'sandra.martinez', 'sandraP4ssw0rd', 'SOFIA-PC2', 'sandra.martinez@empresa.com', '555-1012', TRUE),
-  (4, 4, 'juan.gonzalez', 'juan_m1cor4zon', 'SOFIA-PC3', 'juan.gonzalez@empresa.com', '555-1013', TRUE),
-  (5, 4, 'laura.cortes', 'lauraDonquixote2023', 'DON-QUI2', 'laura.cortes@empresa.com', '555-1014', TRUE),
-  (6, NULL, 'admin', 'admin123', 'ADMIN-WS', 'ksjdjsk@sjkdjsk', '555', TRUE);
-
-
 INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_fee, request_days, active) VALUES
   (1, 1, 'Solicito viáticos para viaje a conferencia en Barcelona.', 1500.00, NULL, 3.0, TRUE),
   (1, 2, 'Reembolso por gastos médicos durante viaje.', 800.00, NULL, 1.0, TRUE),
