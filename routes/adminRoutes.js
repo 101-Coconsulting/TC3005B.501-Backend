@@ -18,8 +18,10 @@ router.use((req, res, next) => {
 
 router.route("/get-user-list")
     .get(adminController.getUserList);
+
 router.route('/create-user')
     .post(validateCreateUser, adminController.createUser);
+
 router.route("/create-multiple-users")
     .post(
         upload.single("file"),

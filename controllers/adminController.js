@@ -116,6 +116,7 @@ export const deactivateUser = async (req, res) => {
 
 export default {
     getUserList,
+    deactivateUser,
     createMultipleUsers,
-    deactivateUser
+    createUser
 };
