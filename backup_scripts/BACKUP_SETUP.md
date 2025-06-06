@@ -7,9 +7,7 @@ In the VM, create the backup script by running:
 
 ### Shell Script
 ### 1. Add the following content to the script, changing the user and password as necessary:
-```sh
-BACKUP_DIR="/var/backups/mariadb"
-```
+
 ```sh
 !#/bin/bash
 echo "[$(date)] Inicio del script" >> /home/Gwenvito/debug_cron.log
