@@ -84,6 +84,8 @@ If you see the MongoDB shell prompt, the installation was successful. You can ex
 Change your bind ip by running:
 `sudo vim /etc/mongod.conf`
 
+In the network interfaces section, change the `bindIP` value to the IP your vm is using for access to the mongodb service. By default it is set to `127.0.0.1`.
+
 
 ## Configuring MongoDB for Your Project
 
