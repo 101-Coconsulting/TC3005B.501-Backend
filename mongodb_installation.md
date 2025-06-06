@@ -92,6 +92,5 @@ In the network interfaces section, change the `bindIP` value to the IP your vm i
 After installation, update your project's `.env` file with the correct MongoDB connection information:
 
 ```
-MONGO_URI=mongodb://localhost:27017
-DB_NAME=travel_management
+MONGO_URI=mongodb://<your_bind_ip>:27017
 ```
