@@ -38,8 +38,8 @@ echo "mysqldump finalizado" >> ~/debug_cron.log
 ### 5. Schedule the script to run as you need:
 - Install cron and crontab in the VM using `sudo apt install crontab`.
 - Run `sudo crontab -e` and choose the editor of your choice (nano by default).
-- At the begginning of the file, add `0 3 * * * /home/Gwenvito/backup_mariadb.sh >> ~/mariadb_backup.log 2>&1
-`
+- At the begginning of the file, add `0 3 * * * /home/Gwenvito/backup_mariadb.sh >> ~/mariadb_backup.log 2>&1`. This will create a backup everyday at 3am and send the cron logs to the file in the home directory for your user.
+
 
 ## MongoDB
 In the VM, create the backup script by running:
