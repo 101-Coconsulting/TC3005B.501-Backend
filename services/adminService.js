@@ -231,9 +231,12 @@ export const updateUserData = async (userId, newUserData) => {
     }
 
     const encryptedEmail = encrypt(newUserData.email);
-    const isEmail = await Admin.findUserByEmail(encryptedEmail);
-    if (isEmail) {
-        throw { status: 400, message: 'Email already in use' };
+
+    if (encryptedEmail !== userData.email) {
+      const isEmail = await Admin.findUserByEmail(encryptedEmail);
+      if (isEmail) {
+          throw { status: 400, message: 'Email already in use' };
+      }
     }
 
     const updatedFields = [];
