@@ -257,6 +257,13 @@ export const updateUserData = async (userId, newUserData) => {
                 }
             } else if(key === 'email' || key === 'phone_number'){
                 fieldsToUpdateInDb[key] = encrypt(newUserData[key])
+            } else if (key === 'user_name') {
+              const userExists = await User.getUserUsername(newUserData[key]);
+              if (userExists === undefined && newUserData[key] !== fieldsToUpdateInDb[key]) {
+                fieldsToUpdateInDb[key] = newUserData[key];
+              } else {
+                throw { status: 400, message: `Invalid user_name provided: ${newUserData[key]}` };
+              }
             } else {
                 fieldsToUpdateInDb[key] = newUserData[key];
             }
