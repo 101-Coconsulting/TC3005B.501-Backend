@@ -118,5 +118,6 @@ export default {
     getUserList,
     deactivateUser,
     createMultipleUsers,
-    createUser
+    createUser,
+    updateUser
 };
