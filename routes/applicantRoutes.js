@@ -34,10 +34,10 @@ router.route("/get-completed-requests/:id")
     .get(authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2']), validateId, validateInputs, applicantController.getCompletedRequests);
 
 router.route("/get-user-request/:id")
-    .get(authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2']), validateId, validateInputs, applicantController.getApplicantRequest);
+    .get(authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2', 'Agencia de viajes']), validateId, validateInputs, applicantController.getApplicantRequest);
 
 router.route("/get-user-requests/:id")
-    .get(authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2']), validateId, validateInputs, applicantController.getApplicantRequests);
+    .get(authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2', 'Agencia de viajes']), validateId, validateInputs, applicantController.getApplicantRequests);
 
 router.route("/create-draft-travel-request/:user_id")
     .post(authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2']), validateId, validateDraftTravelRequest, validateInputs, applicantController.createDraftTravelRequest);
