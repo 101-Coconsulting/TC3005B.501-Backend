@@ -2,7 +2,8 @@ import express from 'express';
 const router = express.Router();
 import * as userController from '../controllers/userController.js';
 import { validateId, validateInputs, validateDeptStatus } from "../middleware/validation.js";
-import { authenticateToken } from '../middleware/auth.js';
+import { authenticateToken, authorizeRole } from '../middleware/auth.js';
+import { loginRateLimiter } from '../middleware/rateLimiters.js';
 
 router.route("/get-user-data/:user_id")
     .get(authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2', 'Cuentas por pagar', 'Agencia de viajes']), validateId, validateInputs, userController.getUserData);
