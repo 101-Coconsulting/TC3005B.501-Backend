@@ -18,6 +18,6 @@ router.route("/validate-receipt/:receipt_id")
     .put(authenticateToken, authorizeRole(['Cuentas por pagar']), validateId, validateInputs, AccountsPayableController.validateReceipt);
 
 router.route("/get-expense-validations/:request_id")
-    .get(authenticateToken, authorizeRole(['Cuentas por pagar']), validateId, validateInputs, AccountsPayableController.getExpenseValidations);
+    .get(authenticateToken, authorizeRole(['Cuentas por pagar', 'Solicitante', 'N1', 'N2']), validateId, validateInputs, AccountsPayableController.getExpenseValidations);
 
 export default router;
