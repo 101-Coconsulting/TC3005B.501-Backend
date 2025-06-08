@@ -19,7 +19,7 @@ router.use((req, res, next) => {
 router.route("/get-user-list")
     .get(authenticateToken, authorizeRole(['Administrador']), adminController.getUserList);
 router.route('/create-user')
-    .post(validateCreateUser, adminController.createUser);
+    .post(authenticateToken, authorizeRole(['Administrador']), validateCreateUser, adminController.createUser);
 router.route("/create-multiple-users")
     .post(
         authenticateToken, authorizeRole(['Administrador']),
