@@ -13,12 +13,12 @@ router.use((req, res, next) => {
 });
 
 router.route("/get-alerts/:dept_id/:status_id/:n")
-    .get(authenticateToken, authorizeRole(['N1', 'N2']), validateDeptStatus, validateInputs, authorizerController.getAlerts);
+    .get(generalRateLimiter, authenticateToken, authorizeRole(['N1', 'N2']), validateDeptStatus, validateInputs, authorizerController.getAlerts);
 
 router.route("/authorize-travel-request/:request_id/:user_id")
-    .put(authenticateToken, authorizeRole(['N1', 'N2']), validateId, validateInputs, generalRateLimiter, authorizerController.authorizeTravelRequest);
+    .put(generalRateLimiter, authenticateToken, authorizeRole(['N1', 'N2']), validateId, validateInputs, authorizerController.authorizeTravelRequest);
 
 router.route("/decline-travel-request/:request_id/:user_id")
-    .put(authenticateToken, authorizeRole(['N1', 'N2']), validateId, validateInputs, generalRateLimiter, authorizerController.declineTravelRequest);
+    .put(generalRateLimiter, authenticateToken, authorizeRole(['N1', 'N2']), validateId, validateInputs, authorizerController.declineTravelRequest);
 
 export default router;

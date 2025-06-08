@@ -6,7 +6,8 @@ import multer from "multer";
 const router = express.Router();
 import * as adminController from "../controllers/adminController.js"; // Add .js extension for ES modules
 import { authenticateToken, authorizeRole } from "../middleware/auth.js";
-import { validateCreateUser } from "../middleware/validation.js";
+import { validateCreateUser, validateInputs } from "../middleware/validation.js";
+import { generalRateLimiter } from "../middleware/rateLimiters.js";
 
 const upload = multer({
     dest: "uploads/"
@@ -17,11 +18,12 @@ router.use((req, res, next) => {
 });
 
 router.route("/get-user-list")
-    .get(authenticateToken, authorizeRole(['Administrador']), adminController.getUserList);
+    .get(generalRateLimiter, authenticateToken, authorizeRole(['Administrador']), adminController.getUserList);
 router.route('/create-user')
-    .post(authenticateToken, authorizeRole(['Administrador']), validateCreateUser, adminController.createUser);
+    .post(generalRateLimiter, authenticateToken, authorizeRole(['Administrador']), validateCreateUser, validateInputs, adminController.createUser);
 router.route("/create-multiple-users")
     .post(
+        generalRateLimiter,
         authenticateToken, authorizeRole(['Administrador']),
         upload.single("file"),
         adminController.createMultipleUsers
