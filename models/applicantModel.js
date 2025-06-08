@@ -468,7 +468,7 @@ const Applicant = {
             status
         FROM RequestWithRouteDetails
         WHERE user_id = ?
-            AND status = 'Finalizado'
+            AND status IN ('Finalizado', 'Cancelado', 'Rechazado')
         `;
         try {
             conn = await pool.getConnection();
