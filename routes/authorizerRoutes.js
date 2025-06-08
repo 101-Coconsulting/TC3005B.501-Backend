@@ -16,9 +16,10 @@ router.use((req, res, next) => {
 });
 
 router.route("/get-alerts/:dept_id/:status_id/:n")
-    .get(authenticateToken, authorizeRole(['N1', 'N2']), validateDeptStatus, validateInputs, authorizerController.getAlerts);
+    .get(generalRateLimiter, authenticateToken, authorizeRole(['N1', 'N2']), validateDeptStatus, validateInputs, authorizerController.getAlerts);
 
 router.route("/authorize-travel-request/:request_id/:user_id")
+<<<<<<< HEAD
 <<<<<<< HEAD
     .put(validateId, validateInputs, generalRateLimiter, authorizerController.authorizeTravelRequest);
 
@@ -30,5 +31,11 @@ router.route("/decline-travel-request/:request_id/:user_id")
 router.route("/decline-travel-request/:request_id/:user_id")
     .put(authenticateToken, authorizeRole(['N1', 'N2']), validateId, validateInputs, authorizerController.declineTravelRequest);
 >>>>>>> 7f38c61 (feat: add route protection to authorizer endpoints)
+=======
+    .put(generalRateLimiter, authenticateToken, authorizeRole(['N1', 'N2']), validateId, validateInputs, authorizerController.authorizeTravelRequest);
+
+router.route("/decline-travel-request/:request_id/:user_id")
+    .put(generalRateLimiter, authenticateToken, authorizeRole(['N1', 'N2']), validateId, validateInputs, authorizerController.declineTravelRequest);
+>>>>>>> 53d76af (chore: add rate limiters to all routes according to CodeQL)
 
 export default router;
