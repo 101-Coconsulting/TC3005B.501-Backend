@@ -9,9 +9,8 @@ export const authenticateToken = (req, res, next) => {
             }
 
             const requestIp = req.headers['x-forwarded-for'] || req.ip;
-            const requestUserAgent = req.headers['user-agent'];
 
-            if (decoded.ip !== requestIp || decoded.userAgent !== requestUserAgent) {
+            if (decoded.ip !== requestIp) {
                 return res.status(403).json({ error: 'Token mismatch: unauthorized device' });
             }
 

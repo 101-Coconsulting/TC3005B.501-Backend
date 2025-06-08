@@ -56,7 +56,7 @@ export async function authenticateUser(username, password, req) {
     }
 
     const token = jwt.sign(
-      { user_id: user.user_id, role: user.role_name, userAgent: req.headers['user-agent'], ip: req.ip },
+      { user_id: user.user_id, role: user.role_name, ip: req.ip },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
