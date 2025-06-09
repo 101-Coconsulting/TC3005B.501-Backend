@@ -1,0 +1,22 @@
+role_name,department_name,user_name,password,workstation,email,phone_number
+Solicitante,Finanzas,andres.gomez,andres123,WS101,andres.gomez@empresa.com,555-1001
+Agencia de viajes,Finanzas,paula.martinez,paula456,WS102,paula.martinez@empresa.com,555-1002
+Cuentas por pagar,Finanzas,carlos.ramos,carlos789,WS103,carlos.ramos@empresa.com,555-1003
+N1,Finanzas,laura.flores,laura321,WS104,laura.flores@empresa.com,555-1004
+N2,Finanzas,diego.hernandez,diego654,WS105,diego.hernandez@empresa.com,555-1005
+Solicitante,Recursos Humanos,adminX_special,sup3rS3cret!,HACK001,adminx@empresaxd.com,000-0000
+Agencia de viajes,Recursos Humanos,xx_m4nu_xx,qwerty123,WS???,manuel@empresa.com,1234567890
+Cuentas por pagar,Recursos Humanos,el_ch4p0,p4sSw0rd,SOFIA-PC,chapo@correo.com,NULL
+N1,Recursos Humanos,sofia_r,m1cor4zon,SOFIA-PC,sofia_random@mail.com,555-ABCD
+N2,Recursos Humanos,miguel.de.cervantes,donquixote2023,DON-QUI,miguel@delamancha.com,555-0000
+Solicitante,IT,jose.perez,jose123,WS106,jose.perez@empresa.com,555-1006
+Agencia de viajes,IT,lucia.garcia,lucia456,WS107,lucia.garcia@empresa.com,555-1007
+Cuentas por pagar,IT,pedro.sanchez,pedro789,WS108,pedro.sanchez@empresa.com,555-1008
+N1,IT,marta.lopez,marta321,WS109,marta.lopez@empresa.com,555-1009
+N2,IT,rafael.morales,rafael654,WS110,rafael.morales@empresa.com,555-1010
+Solicitante,Marketing,clara.silva,claraS3cret!,WS111,clara.silva@empresa.com,555-1011
+Agencia de viajes,Marketing,luis.palomino,luisqwerty123,WS112,luis.palomino@empresa.com,1234567891
+Cuentas por pagar,Marketing,sandra.martinez,sandraP4ssw0rd,SOFIA-PC2,sandra.martinez@empresa.com,555-1012
+N1,Marketing,juan.gonzalez,juan_m1cor4zon,SOFIA-PC3,juan.gonzalez@empresa.com,555-1013
+N2,Marketing,laura.cortes,lauraDonquixote2023,DON-QUI2,laura.cortes@empresa.com,555-1014
+Administrador,NULL,admin,admin123,ADMIN-WS,ksjdjsk@sjkdjsk,555
