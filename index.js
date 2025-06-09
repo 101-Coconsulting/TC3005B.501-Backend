@@ -15,7 +15,7 @@ import { connectMongo } from './services/fileStorage.js';
 
 // Import required modules
 import fs from "fs";
-import https from "https";
+import http from "http";
 import express from "express";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
@@ -54,16 +54,17 @@ app.get("/", (req, res) => {
 });
 
 
-// Certificates credentials for usage of HTTPS
+/* Certificates credentials for usage of HTTPS
 const privateKey = fs.readFileSync("./certs/server.key", "utf8");
 const certificate = fs.readFileSync("./certs/server.crt", "utf8");
 const ca = fs.readFileSync("./certs/ca.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate, ca: ca };
+*/
 
 // HTTPS server configuration
 console.clear();
-const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(PORT, () =>
+const httpServer = http.createServer(app);
+httpServer.listen(PORT, () =>
   console.log(`
          )         )            (   (
    (  ( /(   (  ( /(      (     )\\ ))\\ )
@@ -73,6 +74,6 @@ httpsServer.listen(PORT, () =>
 ((/ __/ _ ((/ __/ _ \\   (_)_\\(_) _ \\_ _|
  | (_| (_) | (_| (_) |   / _ \\ |  _/| |
   \\___\\___/ \\___\\___/   /_/ \\_\\|_| |___|
-🚀 Server running on port ${PORT} with HTTPS
+🚀 Server running on port ${PORT} with HTTP
 `),
 );
