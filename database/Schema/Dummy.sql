@@ -5,7 +5,7 @@ INSERT INTO Department (department_name, costs_center, active) VALUES
   ('Recursos Humanos', 'CC002', TRUE),
   ('IT', 'CC003', TRUE),
   ('Marketing', 'CC004', TRUE),
-  ('Operaciones', 'CC005', FALSE);
+  ('Operaciones', 'CC005', FALSE),
   ('Admin', 'ADMIN', TRUE);
 
 INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_fee, request_days, active) VALUES
