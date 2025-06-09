@@ -6,6 +6,7 @@ INSERT INTO Department (department_name, costs_center, active) VALUES
   ('IT', 'CC003', TRUE),
   ('Marketing', 'CC004', TRUE),
   ('Operaciones', 'CC005', FALSE);
+  ('Admin', 'ADMIN', TRUE);
 
 INSERT INTO Request (user_id, request_status_id, notes, requested_fee, imposed_fee, request_days, active) VALUES
   (1, 1, 'Solicito viáticos para viaje a conferencia en Barcelona.', 1500.00, NULL, 3.0, TRUE),
