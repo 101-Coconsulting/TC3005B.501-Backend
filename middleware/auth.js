@@ -5,13 +5,29 @@ export const authenticateToken = (req, res, next) => {
     if (token) {
         jwt.verify(token.split(' ')[1], process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
-                return res.status(403).json({ error: 'Token inválido' });
-            } else {
-                req.user = decoded;
-                next();
+                return res.status(403).json({ error: 'Invalid Token' });
             }
+
+            const requestIp = req.headers['x-forwarded-for'] || req.ip;
+
+            if (decoded.ip !== requestIp) {
+                return res.status(403).json({ error: 'Token mismatch: unauthorized device' });
+            }
+
+            req.user = decoded;
+            next();
+            
         });
     } else {
         res.status(401).json({ error: 'Token was not provided' });
     }
+};
+
+export const authorizeRole = (roles) => {
+    return (req, res, next) => {
+        if (!req.user || !roles.includes(req.user.role)) {
+            return res.status(403). json({ error: "Access denied: insuficient permissions."});
+        }
+        next();
+    };
 };
