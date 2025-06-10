@@ -130,7 +130,6 @@ const validateReceipt = async (req, res) => {
 const getExpenseValidations = async (req, res) => {
     const request_id = Number(req.params.request_id);
 
-    console.log("Request ID:", request_id);
 
     try {
         // Check if request exists

@@ -41,7 +41,6 @@ export async function createUser(userData) {
       email: encryptedEmail,
       phone_number: encryptedPhone
     };
-    console.log(newUser);
 
     return await Admin.createUser(newUser);
   } catch (error) {

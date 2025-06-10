@@ -9,19 +9,16 @@ import { decrypt } from '../middleware/decryption.js';
  * @returns {Object} JSON response with user data
  */
 export async function getUserData(req, res) {
-  try {
-    console.log('Request received for user ID:', req.params.user_id);
+  try {;
     const userId = parseInt(req.params.user_id);
 
     if (isNaN(userId)) {
-      console.log('Invalid user ID format');
       return res.status(400).json({ error: 'Invalid user ID format' });
     }
 
     const userData = await userService.getUserById(userId);
 
     if (!userData) {
-      console.log('No user found for ID:', userId);
       return res.status(404).json({ error: 'No information found for the user' });
     }
 

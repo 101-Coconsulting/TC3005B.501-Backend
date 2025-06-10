@@ -123,12 +123,10 @@ export async function createExpenseValidationBatch(receipts) {
 
 // Check if the country exists in the database If not, insert it
 export const getCountryId = async (conn, countryName) => {
-    console.log("Checking country:", countryName);
     const countryQuery = `SELECT country_id FROM Country WHERE country_name = ?`;
     const [CountryRows] = await conn.query(countryQuery, [countryName]);
     //If country does not exist, insert it
     if (CountryRows === undefined) {
-        console.log("Country not found, inserting:", countryName);
         const insertCountryQuery = `INSERT INTO Country (country_name) VALUES (?)`;
         const insertedCountry = await conn.execute(insertCountryQuery, [
             countryName,
@@ -141,7 +139,6 @@ export const getCountryId = async (conn, countryName) => {
 };
 
 export const getCityId = async (conn, cityName) => {
-    console.log("Checking city:", cityName);
     const cityQuery = `SELECT city_id FROM City WHERE city_name = ?`;
     const [CityRows] = await conn.query(cityQuery, [cityName]);
     //If city does not exist, insert it

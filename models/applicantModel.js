@@ -8,13 +8,11 @@ const Applicant = {
     // Find applicant by ID
     async findById(id) {
         let conn;
-        console.log(`Searching for user with id: ${id}`);
         try {
             conn = await pool.getConnection();
             const rows = await conn.query("SELECT * FROM User WHERE user_id = ?", [
                 id,
             ]);
-            console.log(`User found: ${rows[0].name}`);
             return rows[0];
         } catch (error) {
             console.error("Error finding applicant by ID:", error);
@@ -44,7 +42,6 @@ const Applicant = {
             `,
                 [user_id],
             );
-            console.log(rows[0]);
             return rows[0];
 
         } catch (error) {
@@ -115,18 +112,14 @@ const Applicant = {
                 [user_id],
             );
 
-            console.log("Role ID:", role[0].role_id);
             let request_status;
             if (role[0].role_id == 1) {
-                console.log("Role ID:", role[0].role_id);
                 request_status = 2; // 2 = First Revision
             }
             else if (role[0].role_id == 4) {
-                console.log("Role ID:", role[0].role_id);
                 request_status = 3; // 3 = Second Revision
             }
             else if (role[0].role_id == 5) {
-                console.log("Role ID:", role[0].role_id);
                 request_status = 4; // 4 = Trip Quote
             }
             else {
@@ -156,7 +149,6 @@ const Applicant = {
 
             for (const route of allRoutes) {
                 try {
-                    console.log("Processing route:", route);
 
                     let
                         id_origin_country,
@@ -168,13 +160,11 @@ const Applicant = {
                     id_origin_country = await getCountryId(conn, route.origin_country_name);
                     id_destination_country = await getCountryId(conn, route.destination_country_name);
 
-                    console.log("Country IDs:", id_origin_country, id_destination_country);
 
                     // Search if the city exists in the database
                     id_origin_city = await getCityId(conn, route.origin_city_name);
                     id_destination_city = await getCityId(conn, route.destination_city_name);
 
-                    console.log("City IDs:", id_origin_city, id_destination_city);
                     // Insert into Route table
 
                     const insertRouteTable = `
@@ -219,7 +209,6 @@ const Applicant = {
 
             await conn.commit();
 
-            console.log(`Travel request created with ID: ${requestId}`);
             return {
                 requestId: Number(requestId),
                 message: "Travel request successfully created",
@@ -238,7 +227,6 @@ const Applicant = {
         try {
             conn = await pool.getConnection();
             await conn.beginTransaction();
-            console.log("Editing travel request with ID:", requestId);
 
             // Destructure travel details from request body
             const {
@@ -287,7 +275,6 @@ const Applicant = {
                 `SELECT * FROM Request WHERE request_id = ?`,
                 [requestId]
             );
-            console.log("Old data:", oldData);
 
             const updateRequestTable = `
                 UPDATE Request SET
@@ -312,7 +299,6 @@ const Applicant = {
                 `SELECT * FROM Request WHERE request_id = ?`,
                 [requestId]
             );
-            console.log("New data:", newData);
 
             // =======================================
             // Step 2: Delete old routes
@@ -345,7 +331,6 @@ const Applicant = {
             for (const route of allRoutes) {
                 try {
 
-                    console.log("Processing route:", route);
 
                     let
                         id_origin_country,
@@ -406,7 +391,6 @@ const Applicant = {
 
             // Commit the transaction
             await conn.commit();
-            console.log(`Travel request ${requestId} updated successfully.`);
             return {
                 requestId: Number(requestId),
                 message: "Travel request successfully updated",
@@ -678,7 +662,6 @@ const Applicant = {
             for (const route of allRoutes) {
                 try {
 
-                    console.log("Processing route:", route);
                     let
                         id_origin_country,
                         id_destination_country,
@@ -688,12 +671,10 @@ const Applicant = {
                     // Search if the country exists in the database
                     id_origin_country = await getCountryId(conn, route.origin_country_name);
                     id_destination_country = await getCountryId(conn, route.destination_country_name);
-                    console.log("Country IDs:", id_origin_country, id_destination_country);
 
                     // Search if the city exists in the database
                     id_origin_city = await getCityId(conn, route.origin_city_name);
                     id_destination_city = await getCityId(conn, route.destination_city_name);
-                    console.log("City IDs:", id_origin_city, id_destination_city);
 
                     // Insert into Route table query
                     const insertRouteTable = `
@@ -740,7 +721,6 @@ const Applicant = {
             }
             // Commit the transaction
             await conn.commit();
-            console.log(`Draft travel request created with ID: ${requestId}`);
             return {
                 requestId: Number(requestId),
                 message: "Draft travel request successfully created",
@@ -769,15 +749,12 @@ const Applicant = {
             );
             let request_status;
             if (role[0].role_id == 1) {
-                console.log("Role ID:", role[0].role_id);
                 request_status = 2; // 2 = First Revision
             }
             else if (role[0].role_id == 4) {
-                console.log("Role ID:", role[0].role_id);
                 request_status = 3; // 3 = Second Revision
             }
             else if (role[0].role_id == 5) {
-                console.log("Role ID:", role[0].role_id);
                 request_status = 4; // 4 = Trip Quote
             }
             else {
@@ -799,7 +776,6 @@ const Applicant = {
 
             // Commit the transaction
             await conn.commit();
-            console.log(`Draft travel request ${requestId} confirmed successfully.`);
             return {
                 requestId: Number(requestId),
                 message: "Draft travel request successfully confirmed",
