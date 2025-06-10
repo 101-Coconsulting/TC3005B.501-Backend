@@ -43,7 +43,7 @@ export const createMultipleUsers = async (req, res) => {
     const filePath = req.file.path;
 
     try {
-        const result = await adminService.parseCSV(filePath);
+        const result = await adminService.parseCSV(filePath, false);
         res.status(200).json(result);
     } catch (error) {
         console.error(error);

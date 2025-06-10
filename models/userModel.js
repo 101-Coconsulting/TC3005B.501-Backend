@@ -128,7 +128,8 @@ const User = {
           u.user_name,
           u.user_id,
           u.department_id,
-          u.password, 
+          u.password,
+          u.active, 
           r.role_name 
         FROM User u
         JOIN Role r ON u.role_id = r.role_id
