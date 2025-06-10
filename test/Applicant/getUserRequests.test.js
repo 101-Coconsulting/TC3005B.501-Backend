@@ -16,6 +16,7 @@ describe('/api/applicant/get-user-requests/1', function () {
       .get('/api/applicant/get-user-requests/1')
       .end((err, res) => {
         res.should.have.status(200);
+        res.body.should.be.a('array');
       })
 
     done();
