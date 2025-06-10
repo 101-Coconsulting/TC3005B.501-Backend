@@ -9,7 +9,7 @@ import { decrypt } from '../middleware/decryption.js';
  * @returns {Object} JSON response with user data
  */
 export async function getUserData(req, res) {
-  try {;
+  try {
     const userId = parseInt(req.params.user_id);
 
     if (isNaN(userId)) {
