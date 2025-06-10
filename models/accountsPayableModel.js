@@ -7,8 +7,12 @@ import pool from "../database/config/db.js";
 
 const AccountsPayable = {
     // Update request status to 5 (Atención Agencia de Viajes)
-    async attendTravelRequest(requestId, imposedFee, new_status) {
+    async attendTravelRequest(requestId, imposedFee, new_status, user_id) {
         let conn;
+        const logQuery = `
+            INSERT INTO Request_log (request_id, request_status_id, user_id)
+            VALUES (?, ?, (SELECT user_id FROM Request WHERE request_id  = ?))
+        `;
         try {
             conn = await pool.getConnection();
             const result = await conn.query(
@@ -16,7 +20,9 @@ const AccountsPayable = {
                 WHERE request_id = ?`,
                 [new_status, imposedFee, requestId],
             );
-
+            if (result.affectedRows > 0) {
+                await conn.query(logQuery, [requestId, new_status, requestId]);
+            }
             return result.affectedRows > 0;
         } catch (error) {
             console.error("Error updating travel request status:", error);
