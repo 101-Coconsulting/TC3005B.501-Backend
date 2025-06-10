@@ -3,6 +3,8 @@ Authorizer Controller
 */
 import Authorizer from "../models/authorizerModel.js";
 import authorizerServices from "../services/authorizerService.js";
+import { Mail } from "../services/email/mail.cjs";
+import mailData from "../services/email/mailData.js"
 
 const getAlerts = async (req, res) => {
   const id = Number(req.params.dept_id);
@@ -24,6 +26,8 @@ const authorizeTravelRequest = async (req, res) => {
 
   try {
     const { new_status } = await authorizerServices.authorizeRequest(Number(request_id), Number(user_id));
+    const { user_email, user_name, requestId, status } = await mailData(request_id);
+    await Mail(user_email, user_name, request_id, status);
     return res.status(200).json({
       message: "Request status updated successfully",
       new_status
@@ -42,7 +46,9 @@ const declineTravelRequest = async (req, res) => {
 
   try {
     const result = await authorizerServices.declineRequest(Number(request_id), Number(user_id));
-    return res.status(200).json(result);
+    const { user_email, user_name, requestId, status } = await mailData(request_id);
+    await Mail(user_email, user_name, request_id, status);
+    return res.status(200).json(result); 
   } catch (err) {
     if (err.status) {
       return res.status(err.status).json({ error: err.message });
