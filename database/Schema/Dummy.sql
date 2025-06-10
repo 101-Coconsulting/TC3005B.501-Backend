@@ -304,6 +304,7 @@ INSERT INTO Route_Request (request_id, route_id) VALUES
 
 
 INSERT INTO Receipt (receipt_type_id, request_id, validation, amount, validation_date) VALUES
+  (1, 6, 'Pendiente', 1500.00, '2025-05-01 08:00:00'),
   (4, 7, 'Pendiente', 300.00, '2025-04-19 09:00:00'),
   (2, 7, 'Aprobado', 300.00, '2025-04-19 09:03:00'),
   (3, 8, 'Rechazado', 1000.00, '2025-04-19 18:00:00'),
