@@ -83,15 +83,11 @@ const getForeignKeyValues = async (rowData, rowNumber) => {
       userData.role_id = roleId;
     }
 
-    if (userData.department_name !== 'NULL') {
-      const departmentId = await Admin.findDepartmentID(userData.department_name);
-      if (departmentId === null) {
-        rowErrors.push (`Invalid department name: '${userData.department_name}'`);
-      } else {
-        userData.department_id = departmentId;
-      }
+    const departmentId = await Admin.findDepartmentID(userData.department_name);
+    if (departmentId === null) {
+      rowErrors.push (`Invalid department name: '${userData.department_name}'`);
     } else {
-      userData.department_id = null;
+      userData.department_id = departmentId;
     }
 
     const hashedPassword = await hash(userData.password);
