@@ -231,7 +231,7 @@ export const updateUserData = async (userId, newUserData) => {
     const encryptedEmail = encrypt(newUserData.email);
 
     if (encryptedEmail !== userData.email) {
-      const isEmail = await Admin.findUserByEmail(encryptedEmail);  
+      const isEmail = await Admin.findUserByEmail(encryptedEmail);
       if (isEmail) {
           throw { status: 400, message: 'Email already in use' };
       }
@@ -284,5 +284,6 @@ export const updateUserData = async (userId, newUserData) => {
 export default {
   createUser,
   getUserList,
-  parseCSV
+  parseCSV,
+  updateUserData
 };

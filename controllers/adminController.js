@@ -74,7 +74,6 @@ export const updateUser = async (req, res) => {
 
         const result = await adminService.updateUserData(userId, req.body);
         return res.status(200).json(result);
-        
     } catch (error) {
         console.error('An error occurred updating the user:', error);
         return res.status(error.status || 500).json({ error: error.message || 'Internal server error' });
