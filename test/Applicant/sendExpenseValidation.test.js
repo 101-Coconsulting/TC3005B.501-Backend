@@ -6,12 +6,15 @@ import app from '../../index.js';
 chai.use(chaiHttp);
 should();
 
-describe('PUT /api/applicant/send-expense-validation/1  ', function () {
+describe('PUT /api/applicant/send-expense-validation/:request_id', function () {
   it('Should return 200 when request status is 6', function (done) {
     request.execute(app)
       .put('/api/applicant/send-expense-validation/6')
       .end((err, res) => {
         expect(res).to.have.status(200);
+        expect(res.body).to.have.property('request_id', 6);
+        expect(res.body).to.have.property('updated_status', 7);
+        expect(res.body).to.have.property('message');
         done();
       });
   });
