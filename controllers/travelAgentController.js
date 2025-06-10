@@ -6,7 +6,7 @@ Manages parameters and checks for Travel Agent endpoints
 import TravelAgent from "../models/travelAgentModel.js";
 
 const attendTravelRequest = async (req, res) => {
-    const requestId = req.params.id;
+    const requestId = req.params.request_id;
 
     try {
         // Check if request exists

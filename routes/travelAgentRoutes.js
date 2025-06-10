@@ -15,7 +15,7 @@ router.use((req, res, next) => {
 });
 
 // Route to attend a travel request (update status to 4)
-router.route("/attend-travel-request/:id")
+router.route("/attend-travel-request/:request_id")
     .put(generalRateLimiter, authenticateToken, authorizeRole(['Agencia de viajes']), validateId, validateInputs, travelAgentController.attendTravelRequest);
 
 export default router;

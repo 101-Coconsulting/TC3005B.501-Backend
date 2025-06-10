@@ -456,7 +456,7 @@ const Applicant = {
         }
     },
 
-    async getCompletedRequests(id) {
+    async getCompletedRequests(userId) {
         let conn;
         const query = `
         SELECT request_id,
@@ -472,7 +472,7 @@ const Applicant = {
         `;
         try {
             conn = await pool.getConnection();
-            const rows = await conn.query(query, [id]);
+            const rows = await conn.query(query, [userId]);
             return rows;
         } catch (error) {
             console.error('Error getting completed requests:', error);
@@ -484,7 +484,7 @@ const Applicant = {
         }
     },
 
-    async getApplicantRequests(id) {
+    async getApplicantRequests(userId) {
         let conn;
         const query = `
       SELECT
@@ -504,7 +504,7 @@ const Applicant = {
     `;
         try {
             conn = await pool.getConnection();
-            const rows = await conn.query(query, [id]);
+            const rows = await conn.query(query, [userId]);
             return rows;
         } catch (error) {
             console.error("Error in getApplicantRequests:", error);
@@ -514,7 +514,7 @@ const Applicant = {
         }
     },
 
-    async getApplicantRequest(id) {
+    async getApplicantRequest(userId) {
         let conn;
         const query = `
       SELECT
@@ -558,7 +558,7 @@ const Applicant = {
     `;
         try {
             conn = await pool.getConnection();
-            const rows = await conn.query(query, [id]);
+            const rows = await conn.query(query, [userId]);
             return rows;
         } catch (error) {
             console.error("Error in getApplicantRequest:", error);

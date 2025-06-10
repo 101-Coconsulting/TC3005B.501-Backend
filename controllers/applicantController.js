@@ -23,9 +23,9 @@ export const getApplicantById = async (req, res) => {
 };
 
 export const getApplicantRequests = async (req, res) => {
-  const id = req.params.id;
+  const userId = req.params.user_id;
   try {
-    const applicantRequests = await Applicant.getApplicantRequests(id);
+    const applicantRequests = await Applicant.getApplicantRequests(userId);
 
     if (!applicantRequests || applicantRequests.length === 0) {
       return res.status(404).json({ error: "No user requests found" });
@@ -47,9 +47,9 @@ export const getApplicantRequests = async (req, res) => {
 };
 
 export const getApplicantRequest = async (req, res) => {
-  const id = req.params.id;
+  const userId = req.params.user_id;
   try {
-    const requestData = await Applicant.getApplicantRequest(id);
+    const requestData = await Applicant.getApplicantRequest(userId);
     if (!requestData || requestData.length === 0) {
       return res.status(404).json({ error: "No user request found" });
     }
@@ -110,7 +110,7 @@ export const getCostCenterByUserId = async (req, res) => {
 };
 
 export const createTravelRequest = async (req, res) => {
-  const applicantId = Number(req.params.id);
+  const applicantId = Number(req.params.user_id);
   const travelDetails = req.body;
   try {
     const travelRequest = await Applicant.createTravelRequest(
@@ -125,7 +125,7 @@ export const createTravelRequest = async (req, res) => {
 };
 
 export const editTravelRequest = async (req, res) => {
-  const travelRequestId = Number(req.params.id);
+  const travelRequestId = Number(req.params.user_id);
   const travelDetails = req.body;
   try {
     const updatedTravelRequest = await Applicant.editTravelRequest(
@@ -171,12 +171,12 @@ export async function createExpenseValidationHandler(req, res) {
 }
 
 export const getCompletedRequests = async (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  if (!Number.isInteger(id)) {
+  const userId = parseInt(req.params.user_id, 10);
+  if (!Number.isInteger(userId)) {
     return res.status(400).json({ error: "Invalid user ID" });
   }
   try {
-    const completedRequests = await Applicant.getCompletedRequests(id);
+    const completedRequests = await Applicant.getCompletedRequests(userId);
     if (!completedRequests || completedRequests.length === 0) {
       return res.status(404).json({ error: "No completed requests found for the user" });
     }
