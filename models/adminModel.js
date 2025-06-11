@@ -149,6 +149,25 @@ const Admin = {
     }
   },
 
+  async getAllEmails() {
+    let conn;
+
+    const query = `
+        SELECT email FROM User;
+    `;
+
+    try {
+      conn = await pool.getConnection();
+      
+      const allEmails = conn.query(query);
+      return allEmails;
+    } catch (error) {
+      throw error;
+    } finally {
+      if (conn) conn.release();
+    }
+  },
+
   async updateUser(user_id, fieldsToUpdate) {
     let conn;
 

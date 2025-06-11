@@ -230,13 +230,19 @@ export const updateUserData = async (userId, newUserData) => {
         throw { status: 404, message: 'No information found for the user' };
     }
 
-    const encryptedEmail = encrypt(newUserData.email);
+    const currUserEmail = decrypt(userData.email);
+    const currPhoneNumber = decrypt(userData.phone_number);
 
-    if (encryptedEmail !== userData.email) {
-      const isEmail = await Admin.findUserByEmail(encryptedEmail);
-      if (isEmail) {
-          throw { status: 400, message: 'Email already in use' };
-      }
+    if (newUserData.email !== currUserEmail) {
+      const allEmails = await Admin.getAllEmails();
+      const isEmailAlreadyInUse = allEmails.some(encryptedEmail => {
+            const existingDecryptedEmail = decrypt(encryptedEmail);
+            return existingDecryptedEmail === newUserData.email;
+        });
+      
+      if (isEmailAlreadyInUse) {
+            throw { status: 400, message: 'Email already in use by another user' };
+        }
     }
 
     const updatedFields = [];
