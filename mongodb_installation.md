@@ -1,6 +1,8 @@
 # MongoDB Installation Guide for Debian
 
-This guide provides step-by-step instructions for installing MongoDB on Debian systems, specifically addressing common dependency issues with newer Debian versions.
+This guide provides step-by-step instructions for installing MongoDB on Debian
+systems, specifically addressing common dependency issues with newer Debian
+versions.
 
 ## Prerequisites
 
@@ -12,7 +14,8 @@ This guide provides step-by-step instructions for installing MongoDB on Debian s
 
 ### 1. Remove any incorrect repository configuration
 
-If you previously attempted to install MongoDB using Ubuntu repositories, remove those configurations:
+If you previously attempted to install MongoDB using Ubuntu repositories,
+remove those configurations:
 
 ```bash
 sudo rm -f /etc/apt/sources.list.d/mongodb-org-6.0.list
@@ -32,7 +35,8 @@ echo "deb [signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg] http://repo.mon
 
 ### 4. Install libssl1.1 dependency
 
-MongoDB requires libssl1.1, which may not be available in newer Debian repositories. Install it from Debian Bullseye repositories:
+MongoDB requires libssl1.1, which may not be available in newer Debian
+repositories. Install it from Debian Bullseye repositories:
 
 ```bash
 # Create a temporary sources list file for Debian Bullseye
@@ -77,19 +81,23 @@ You should see output indicating that the service is active (running).
 ```bash
 mongosh
 ```
-If you see the MongoDB shell prompt, the installation was successful. You can exit the shell by typing `exit`.
+
+If you see the MongoDB shell prompt, the installation was successful. You can
+exit the shell by typing `exit`.
 
 ### 9. Setup bind IP
 
 Change your bind ip by running:
 `sudo vim /etc/mongod.conf`
 
-In the network interfaces section, change the `bindIP` value to the IP your vm is using for access to the mongodb service. By default it is set to `127.0.0.1`.
+In the network interfaces section, change the `bindIP` value to the IP your vm
+is using for access to the mongodb service. By default it is set to `127.0.0.1`.
 
 
 ## Configuring MongoDB for Your Project
 
-After installation, update your project's `.env` file with the correct MongoDB connection information:
+After installation, update your project's `.env` file with the correct MongoDB
+connection information:
 
 ```
 MONGO_URI=mongodb://<your_bind_ip>:27017
