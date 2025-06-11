@@ -25,10 +25,10 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h localhost -u root -proot"
+          --health-cmd="mysqladmin ping -uroot -proot"
           --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+          --health-timeout=10s
+          --health-retries=10
       
       mongodb:
         image: mongo:latest
@@ -54,6 +54,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     
+    - name: Install MySQL client
+      run: sudo apt-get update && sudo apt-get install -y default-mysql-client
+    
     - name: Install Node dependencies
       run: npm ci
     
@@ -74,10 +77,10 @@ jobs:
     
     - name: Wait for MariaDB
       run: |
-        timeout=30
+        timeout=60
         counter=0
         echo "Waiting for MariaDB to be ready..."
-        until mysql -h127.0.0.1 -P3306 -utest_user -ptest_password -e "SELECT 1" &> /dev/null
+        until mysql -h127.0.0.1 -P3306 -uroot -proot -e "SELECT 1" &> /dev/null
         do
           if [ $counter -gt $timeout ]; then
             echo "Timed out waiting for MariaDB to start"
@@ -91,5 +94,6 @@ jobs:
     
     - name: Setup Database Schema
       run: node database/config/dev_db.js dev
+    
     - name: Run Unit Tests
       run: npm test
