@@ -16,7 +16,17 @@ describe('/get-alerts/:dept_id/:status_id/:n', function () {
       .get('/api/authorizer/get-alerts/1/1/5')
       .end((err, res) => {
         res.should.have.status(200);
-      })
+        res.body.should.be.an('array').and.not.be.empty;
+        res.body.forEach((alert) => {
+          expect(alert).to.be.an('object');
+          expect(alert).to.have.property('alert_id');
+          expect(alert).to.have.property('user_name');
+          expect(alert).to.have.property('request_id');
+          expect(alert).to.have.property('message_text');
+          expect(alert).to.have.property('alert_date');
+          expect(alert).to.have.property('alert_time');
+        });
+      });
 
     done();
   });
@@ -28,6 +38,15 @@ describe('/get-alerts/:dept_id/:status_id/:n', function () {
                 res.should.have.status(200);
                 res.body.should.be.an('array');
                 res.body.should.have.lengthOf(13);
+                res.body.forEach((alert) => {
+                expect(alert).to.be.an('object');
+                expect(alert).to.have.property('alert_id');
+                expect(alert).to.have.property('user_name');
+                expect(alert).to.have.property('request_id');
+                expect(alert).to.have.property('message_text');
+                expect(alert).to.have.property('alert_date');
+                expect(alert).to.have.property('alert_time');
+              });
                 done();
             });
     });
@@ -38,6 +57,7 @@ describe('/get-alerts/:dept_id/:status_id/:n', function () {
       .get('/api/authorizer/get-alerts/999/999/0')
       .end((err, res) => {
         res.should.have.status(200);
+        res.body.should.be.an('array').and.be.empty;
       })
 
     done();
@@ -50,6 +70,7 @@ describe('/get-alerts/:dept_id/:status_id/:n', function () {
       .get('/api/authorizer/get-alerts/invalid_id/999/0')
       .end((err, res) => {
         res.should.have.status(400);
+        res.body.should.be.an('object');
       })
 
     done();
