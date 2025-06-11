@@ -235,11 +235,6 @@ export const updateUserData = async (userId, newUserData) => {
     }
     const currUserEmail = decrypt(userData.email);
 
-    if (typeof userData.phone_number !== 'string') {
-        // Warning, not an error, as this field might not be strictly critical
-    }
-    const currPhoneNumber = decrypt(userData.phone_number);
-
     if (newUserData.email !== undefined && newUserData.email !== currUserEmail) {
       const allEmailRecords = await Admin.getAllEmails(); 
       
