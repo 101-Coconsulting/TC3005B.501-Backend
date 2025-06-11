@@ -4,9 +4,11 @@ Miguel Soria 09.05/25
 Manages parameters and checks for CPP endpoints
 */
 import AccountsPayable from "../models/accountsPayableModel.js";
+import Authorizer from "../models/authorizerModel.js";
 
 const attendTravelRequest = async (req, res) => {
     const requestId = req.params.request_id;
+    const user_id = req.body.user_id;
     const imposedFee = req.body.imposed_fee;
 
     try {
@@ -14,6 +16,12 @@ const attendTravelRequest = async (req, res) => {
         const request = await AccountsPayable.requestExists(requestId);
         if (!request) {
             return res.status(404).json({ error: "Travel request not found" });
+        }
+
+        //Check if user exists
+        const role_id = await Authorizer.getUserRole(user_id);
+        if (!role_id) {
+            throw { status: 404, message: "User not found" };
         }
 
         const current_status = request.request_status_id;
@@ -29,7 +37,7 @@ const attendTravelRequest = async (req, res) => {
             new_status = 5;
            }
 
-            const updated = await AccountsPayable.attendTravelRequest(requestId, imposedFee, new_status);
+            const updated = await AccountsPayable.attendTravelRequest(requestId, imposedFee, new_status, user_id);
 
             if (updated) {
                 return res.status(200).json({
