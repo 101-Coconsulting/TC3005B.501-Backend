@@ -230,6 +230,12 @@ export const updateUserData = async (userId, newUserData) => {
         throw { status: 404, message: 'No information found for the user' };
     }
 
+    if (typeof userData.phone_number !== 'string') {
+        throw { status: 500, message: 'Internal server error: Invalid phone number format in database.' };
+    }
+
+    const currPhoneNumber = decrypt(userData.phone_number);
+
     if (typeof userData.email !== 'string') {
         throw { status: 500, message: 'Internal server error: Invalid email format in database.' };
     }
