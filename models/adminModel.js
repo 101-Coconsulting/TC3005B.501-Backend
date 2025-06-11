@@ -148,6 +148,26 @@ const Admin = {
       connection.release();
     }
   },
+
+    async getAllEmails() {
+    let conn;
+
+    const query = `
+        SELECT email FROM User;
+    `;
+
+    try {
+      conn = await pool.getConnection();
+      
+      const allEmails = conn.query(query);
+      return allEmails;
+    } catch (error) {
+      throw error;
+    } finally {
+      if (conn) conn.release();
+    }
+  },
+  
 };
 
 export default Admin;
