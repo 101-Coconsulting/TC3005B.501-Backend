@@ -24,10 +24,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-<<<<<<< HEAD
-=======
-        "cookie-parser": "^1.4.7",
->>>>>>> 8103590 (fix: remove duplicate in package.json)
         "bcrypt": "^6.0.0",
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
