@@ -267,10 +267,12 @@ export const updateUserData = async (userId, newUserData) => {
                     throw { status: 400, message: `Invalid department name provided: ${newUserData[key]}` };
                 }
             } else if(key === 'email' || key === 'phone_number'){
+              if (newUserData[key] !== decrypt(userData[key])) {
                 fieldsToUpdateInDb[key] = encrypt(newUserData[key])
+              }
             } else if (key === 'user_name') {
               const userExists = await User.getUserUsername(newUserData[key]);
-              if (userExists === undefined && newUserData[key] !== fieldsToUpdateInDb[key]) {
+              if (!userExists || userExists.id === userId) {
                 fieldsToUpdateInDb[key] = newUserData[key];
               } else {
                 throw { status: 400, message: `Invalid user_name provided: ${newUserData[key]}` };
