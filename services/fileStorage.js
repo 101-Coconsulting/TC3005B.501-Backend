@@ -1,6 +1,7 @@
 import { MongoClient, GridFSBucket, ObjectId } from 'mongodb';
 import dotenv from 'dotenv';
 import { Readable } from 'stream';
+import sanitize from 'mongo-sanitize';
 
 dotenv.config();
 
@@ -26,14 +27,19 @@ async function connectMongo() {
 
 // Upload a file to GridFS
 async function uploadFile(fileBuffer, fileName, fileType, metadata = {}) {
+  // Sanitize file name and metadata
+  const sanitizedFileName = sanitize(fileName);
+  const sanitizedFileType = sanitize(fileType);
+  const sanitizedMetadata = sanitize(metadata);
+
   const readableStream = new Readable();
   readableStream.push(fileBuffer);
   readableStream.push(null);
 
-  const uploadStream = bucket.openUploadStream(fileName, {
-    contentType: fileType,
+  const uploadStream = bucket.openUploadStream(sanitizedFileName, {
+    contentType: sanitizedFileType,
     metadata: {
-      ...metadata,
+      ...sanitizedMetadata,
       uploadDate: new Date()
     }
   });
@@ -44,14 +50,23 @@ async function uploadFile(fileBuffer, fileName, fileType, metadata = {}) {
     readableStream.pipe(uploadStream)
       .on('error', reject)
       .on('finish', () => {
-        resolve({ fileId, fileName });
+        resolve({ fileId, fileName: sanitizedFileName });
       });
   });
 }
 
 // Get a file stream from GridFS
 async function getFile(fileId) {
-  return bucket.openDownloadStream(new ObjectId(fileId));
+  // Ensure fileId is an ObjectId instance
+  if (!(fileId instanceof ObjectId)) {
+    if (typeof fileId === 'string') {
+      fileId = new ObjectId(sanitize(fileId));
+    } else {
+      fileId = new ObjectId(fileId);
+    }
+  }
+
+  return bucket.openDownloadStream(fileId);
 }
 
 export { connectMongo, uploadFile, getFile, db, bucket };

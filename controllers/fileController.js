@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import sanitize from 'mongo-sanitize';
 import { uploadReceiptFiles, getReceiptFile, getReceiptFilesMetadata } from '../services/receiptFileService.js';
 import { db } from '../services/fileStorage.js';
 
@@ -9,13 +10,22 @@ export const uploadReceiptFilesController = async (req, res) => {
     return res.status(400).json({ error: 'Both PDF and XML files are required' });
   }
 
-  const receiptId = parseInt(req.params.receipt_id, 10);
+  // Sanitize the receipt ID
+  const receiptId = parseInt(sanitize(req.params.receipt_id), 10);
 
   try {
+    // Sanitize file metadata before uploading
+    const pdfFile = req.files.pdf[0];
+    const xmlFile = req.files.xml[0];
+    
+    // Sanitize filenames to prevent injection in metadata
+    pdfFile.originalname = sanitize(pdfFile.originalname);
+    xmlFile.originalname = sanitize(xmlFile.originalname);
+    
     const result = await uploadReceiptFiles(
       receiptId,
-      req.files.pdf[0],
-      req.files.xml[0]
+      pdfFile,
+      xmlFile
     );
 
     res.status(201).json({
@@ -38,7 +48,15 @@ export const uploadReceiptFilesController = async (req, res) => {
 // Get receipt file (PDF or XML)
 export const getReceiptFileController = async (req, res) => {
   try {
-    const fileId = new ObjectId(req.params.file_id);
+    // Sanitize the file ID
+    const fileIdStr = sanitize(req.params.file_id);
+    
+    // Validate it's a proper ObjectId before querying MongoDB
+    if (!ObjectId.isValid(fileIdStr)) {
+      return res.status(400).json({ error: 'Invalid file ID format' });
+    }
+    
+    const fileId = new ObjectId(fileIdStr);
 
     // Get file metadata from MongoDB
     const file = await db.collection('fs.files').findOne({ _id: fileId });
@@ -46,9 +64,9 @@ export const getReceiptFileController = async (req, res) => {
       return res.status(404).json({ error: 'File not found' });
     }
 
-    // Set appropriate headers
-    res.set('Content-Type', file.contentType);
-    res.set('Content-Disposition', `attachment; filename="${file.filename}"`);
+    // Set appropriate headers with sanitized values
+    res.set('Content-Type', sanitize(file.contentType));
+    res.set('Content-Disposition', `attachment; filename="${sanitize(file.filename)}"`);
 
     // Stream the file to the response
     const downloadStream = await getReceiptFile(fileId);
@@ -61,7 +79,8 @@ export const getReceiptFileController = async (req, res) => {
 
 // Get receipt files metadata
 export const getReceiptFilesMetadataController = async (req, res) => {
-  const receiptId = parseInt(req.params.receipt_id, 10);
+  // Sanitize the receipt ID
+  const receiptId = parseInt(sanitize(req.params.receipt_id), 10);
 
   try {
     const metadata = await getReceiptFilesMetadata(receiptId);

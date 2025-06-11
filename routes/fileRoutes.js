@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { generalRateLimiter } from '../middleware/rateLimiters.js';
+import { sanitizeMongoInputs } from '../middleware/mongoSanitize.js';
 import {
   uploadReceiptFilesController,
   getReceiptFileController,
@@ -9,6 +10,9 @@ import {
 
 const router = express.Router();
 const upload = multer();
+
+// Apply sanitization middleware to all routes
+router.use(sanitizeMongoInputs);
 
 // Upload both PDF and XML files for a receipt
 router.post('/upload-receipt-files/:receipt_id',
