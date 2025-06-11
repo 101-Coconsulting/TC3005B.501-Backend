@@ -19,10 +19,10 @@ router.route("/:id")
 router.route("/get-cc/:user_id")
     .get(generalRateLimiter, authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2']), validateId, validateInputs, applicantController.getCostCenterByUserId);
 
-router.route("/create-travel-request/:id")
+router.route("/create-travel-request/:user_id")
     .post(generalRateLimiter, authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2']), validateId, validateTravelRequest, validateInputs, applicantController.createTravelRequest);
 
-router.route("/edit-travel-request/:id")
+router.route("/edit-travel-request/:user_id")
     .put(generalRateLimiter, authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2']), validateId, validateTravelRequest, validateInputs, applicantController.editTravelRequest);
 
 router.route("/cancel-travel-request/:request_id")
@@ -31,13 +31,13 @@ router.route("/cancel-travel-request/:request_id")
 router.route("/create-expense-validation")
     .post(generalRateLimiter, authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2']), validateExpenseReceipts, validateInputs, applicantController.createExpenseValidationHandler);
 
-router.route("/get-completed-requests/:id")
+router.route("/get-completed-requests/:user_id")
     .get(generalRateLimiter, authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2']), validateId, validateInputs, applicantController.getCompletedRequests);
 
-router.route("/get-user-request/:id")
+router.route("/get-user-request/:user_id")
     .get(generalRateLimiter, authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2', 'Agencia de viajes']), validateId, validateInputs, applicantController.getApplicantRequest);
 
-router.route("/get-user-requests/:id")
+router.route("/get-user-requests/:user_id")
     .get(generalRateLimiter, authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2', 'Agencia de viajes']), validateId, validateInputs, applicantController.getApplicantRequests);
 
 router.route("/create-draft-travel-request/:user_id")

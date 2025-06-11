@@ -8,7 +8,7 @@ import { Mail } from "../services/email/mail.cjs";
 import mailData from "../services/email/mailData.js";
 
 const attendTravelRequest = async (req, res) => {
-    const requestId = req.params.id;
+    const requestId = req.params.request_id;
 
     try {
         // Check if request exists
