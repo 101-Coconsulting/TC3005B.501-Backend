@@ -8,52 +8,48 @@ import app from '../../index.js'
 chai.use(chaiHttp);
 should();
 
-describe('/api/user/get-user-data/:user_id', function () {
-
-  it('Should return 200 for valid user ID', function (done) {
-    request.execute(app)
+describe('/api/user/get-user-data/:user_id', () => {
+  it('Should return 200 for valid user ID', async () => {
+    const res = await request(app)
       .get('/api/user/get-user-data/1')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.an('object');
-        res.body.should.have.property('user_id');
-        done();
-      });
+      .set('Authorization', 'Bearer your-test-token-here');
+    
+    expect(res.status).to.equal(200);
+    expect(res.body).to.have.property('user_id');
   });
 
-  it('Should return 404 for non-existent user ID', function (done) {
-    request.execute(app)
+  it('Should return 404 for non-existent user ID', async () => {
+    const res = await request(app)
       .get('/api/user/get-user-data/1000')
-      .end((err, res) => {
-        res.should.have.status(404);
-        res.body.should.have.property('error', 'No information found for the user');
-        done();
-      });
+      .set('Authorization', 'Bearer your-test-token-here');
+    
+    expect(res.status).to.equal(404);
+    expect(res.body).to.have.property('message', 'User not found');
   });
 
-  it('Should return 400 for invalid user ID format', function (done) {
-    request.execute(app)
+  it('Should return 400 for invalid user ID format', async () => {
+    const res = await request(app)
       .get('/api/user/get-user-data/invalid')
-      .end((err, res) => {
-        res.should.have.status(400);
-        res.body.should.have.property('error', 'Invalid user ID format');
-        done();
-      });
+      .set('Authorization', 'Bearer your-test-token-here');
+    
+    expect(res.status).to.equal(400);
+    expect(res.body).to.have.property('message', 'Invalid user ID format');
   });
 
-  it('Should include the correct user data properties', function (done) {
-    request.execute(app)
+  it('Should include the correct user data properties', async () => {
+    const res = await request(app)
       .get('/api/user/get-user-data/1')
-      .end((err, res) => {
-        expect(res.body).to.be.an('object');
-        expect(res.body).to.have.property('user_id');
-        expect(res.body).to.have.property('user_name');
-        expect(res.body).to.have.property('email');
-        expect(res.body).to.have.property('role_name');
-        expect(res.body).to.have.property('department_name');
-        expect(res.body).to.have.property('phone_number');
-        done();
-      });
+      .set('Authorization', 'Bearer your-test-token-here');
+    
+    expect(res.status).to.equal(200);
+    expect(res.body).to.have.all.keys([
+      'user_id',
+      'user_name',
+      'email',
+      'role_name',
+      'department_name',
+      'phone_number'
+    ]);
   });
 });
 
