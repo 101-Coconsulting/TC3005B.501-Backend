@@ -19,7 +19,7 @@ jobs:
         image: mariadb:11.7.2
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: travel_management
+          MYSQL_DATABASE: CocoScheme
           MYSQL_USER: test_user
           MYSQL_PASSWORD: test_password
         ports:
@@ -63,7 +63,7 @@ jobs:
         echo "NODE_ENV=test" >> .env
         echo "DB_HOST=localhost" >> .env
         echo "DB_PORT=3306" >> .env
-        echo "DB_NAME=travel_management" >> .env
+        echo "DB_NAME=CocoScheme" >> .env
         echo "DB_USER=test_user" >> .env
         echo "DB_PASSWORD=test_password" >> .env
         echo "MONGO_URI=mongodb://localhost:27017" >> .env
