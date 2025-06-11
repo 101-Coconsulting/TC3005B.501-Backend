@@ -88,7 +88,10 @@ exit the shell by typing `exit`.
 ### 9. Setup bind IP
 
 Change your bind ip by running:
-`sudo vim /etc/mongod.conf`
+
+```bash
+sudo vim /etc/mongod.conf
+```
 
 In the network interfaces section, change the `bindIP` value to the IP your vm
 is using for access to the mongodb service. By default it is set to `127.0.0.1`.
@@ -99,6 +102,6 @@ is using for access to the mongodb service. By default it is set to `127.0.0.1`.
 After installation, update your project's `.env` file with the correct MongoDB
 connection information:
 
-```
+```bash
 MONGO_URI=mongodb://<your_bind_ip>:27017
 ```

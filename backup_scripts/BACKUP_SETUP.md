@@ -5,13 +5,16 @@
 ### Location
 
 In the VM hosting your mariadb database, create the backup script by running:
-`sudo vim /usr/local/bin/backup-mariadb.sh`
+
+```bash
+sudo vim /usr/local/bin/backup-mariadb.sh
+```
 
 ### Shell Script
 
 ### 1. Add the following content to the script, changing the user and password, as well as the paths as necessary:
 
-```sh
+```bash
 #!/bin/bash
 echo "[$(date)] Inicio del script" >> ~/debug_cron.log
 USER="db_user"
@@ -57,43 +60,68 @@ fi
 
 ### 2. Make the script an executable:
 
-`sudo chmod +x /usr/local/bin/backup-mariadb.sh`
+```bash
+sudo chmod +x /usr/local/bin/backup-mariadb.sh
+```
 
 ### 3. Verify the script runs:
 
-`sudo /usr/local/bin/backup-mariadb.sh`
+```bash
+sudo /usr/local/bin/backup-mariadb.sh
+```
 
 ### 4. Check the backup was created succesfully locally and in the remote backup machine:
 
 #### Locally
 
-`ls -la /var/backups/mariadb`
+```bash
+ls -la /var/backups/mariadb
+```
 
 #### Remote machine
 
-`ls -la /your/backup/path`
+```bash
+ls -la /your/backup/path
+```
 
 ### 5. Schedule the script to run as you need:
 
-- Install cron and crontab in the VM using `sudo apt install crontab`.
+- Install cron and crontab in the VM using
 
-- Run `sudo crontab -e` and choose the editor of your choice (nano by default).
+    ```bash
+    sudo apt install crontab
+    ```
+
+- Run
+
+    ```bash
+    sudo crontab -e
+    ```
+
+    and choose the editor of your choice (nano by default).
 
 - At the beginning of the file, add
-    `0 3 * * * /usr/local/bin/backup_mariadb.sh >> ~/mariadb_backup.log 2>&1`.
+
+    ```bash
+    0 3 * * * /usr/local/bin/backup_mariadb.sh >> ~/mariadb_backup.log 2>&1
+    ```
+
     This will create a backup everyday at 3am and send the cron logs to the
     file in the home directory for your user.
 
 ## MongoDB
 
 In the VM hosting your mongodb database, create the backup script by running:
-`sudo vim /usr/local/bin/backup-mongodb.sh`
+
+```bash
+sudo vim /usr/local/bin/backup-mongodb.sh
+```
 
 ### Shell Script
 
 ### 1. Add the following content to the script, changing the user and password, as well as the paths as necessary:
 
-```sh 
+```bash
 #!/bin/bash
 echo "[$(date)] Inicio del script de backup MongoDB" >> ~/debug_cron.log
 
@@ -166,29 +194,51 @@ fi
 
 ### 2. Make the script an executable:
 
-`sudo chmod +x /usr/local/bin/backup-mongodb.sh`
+```bash
+sudo chmod +x /usr/local/bin/backup-mongodb.sh
+```
 
 ### 3. Verify the script runs:
 
-`sudo /usr/local/bin/backup-mongodb.sh`
+```bash
+sudo /usr/local/bin/backup-mongodb.sh
+```
 
 ### 4. Check the backup was created succesfully locally and in the remote backup machine:
 
 #### Locally
 
-`ls -la /var/backups/mongodb`
+```bash
+ls -la /var/backups/mongodb
+```
 
 #### Remote machine
 
-`ls -la /your/backup/path`
+```bash
+ls -la /your/backup/path
+```
 
 ### 5. Schedule the script to run as you need:
 
-- Install cron and crontab in the VM using `sudo apt install crontab`.
+- Install cron and crontab in the VM using
 
-- Run `sudo crontab -e` and choose the editor of your choice (nano by default).
+    ```bash
+    sudo apt install crontab
+    ```
+
+- Run
+
+    ```bash
+    sudo crontab -e
+    ```
+
+    and choose the editor of your choice (nano by default).
 
 - At the beginning of the file, add
-    `0 3 * * * /usr/local/bin/backup_mongodb.sh >> ~/mongodb_backup.log 2>&1`.
+
+    ```bash
+    0 3 * * * /usr/local/bin/backup_mongodb.sh >> ~/mongodb_backup.log 2>&1
+    ```
+
     This will create a backup everyday at 3am and send the cron logs to the
     file in the home directory for your user.
