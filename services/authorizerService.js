@@ -19,7 +19,7 @@ const authorizeRequest = async (request_id, user_id) => {
       throw { status: 400, message: "User role not authorized to approve request" };
     }
 
-    await Authorizer.authorizeTravelRequest(request_id, new_status_id);
+    await Authorizer.authorizeTravelRequest(request_id, new_status_id, user_id);
 
     return {
       new_status: role_id === 4 ? "Segunda Revisión" : "Cotizacion de Viaje"
@@ -42,7 +42,7 @@ const declineRequest = async (request_id, user_id) => {
       throw { status: 400, message: "User role not authorized to decline request" };
     }
 
-    await Authorizer.declineTravelRequest(request_id);
+    await Authorizer.declineTravelRequest(request_id, user_id);
 
     return {
       message: "Request declined successfully",
