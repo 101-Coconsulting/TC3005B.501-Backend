@@ -845,6 +845,7 @@ const Applicant = {
         let conn;
         try {
             conn = await pool.getConnection();
+            await conn.beginTransaction();
             
             // First check if the receipt exists
             const [receipt] = await conn.query(
@@ -866,8 +867,10 @@ const Applicant = {
                 throw new Error('Failed to delete receipt');
             }
             
+            await conn.commit();
             return true;
         } catch (error) {
+            if (conn) await conn.rollback();
             console.error('Error deleting receipt:', error);
             throw error;
         } finally {

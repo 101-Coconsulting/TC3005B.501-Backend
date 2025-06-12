@@ -265,6 +265,13 @@ export const deleteReceipt = async (req, res) => {
   const { receipt_id } = req.params;
   
   try {
+    // Import the service to delete files from MongoDB
+    const { deleteReceiptFiles } = await import('../services/receiptFileService.js');
+    
+    // First delete the files from MongoDB
+    await deleteReceiptFiles(Number(receipt_id));
+    
+    // Then delete the receipt record from the database
     await Applicant.deleteReceipt(Number(receipt_id));
     
     return res.status(200).json({
