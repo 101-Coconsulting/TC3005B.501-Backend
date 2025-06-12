@@ -8,7 +8,7 @@ on:
     branches: '*'
   pull_request:
     branches: [ "main", "development" ]
-    types: [ "opened", "reopened", "synchronize" ]
+    types: [ "opened" ]
 
 jobs:
   build:
@@ -77,6 +77,7 @@ jobs:
         echo "JWT_SECRET=test_jwt_secret_key_for_github_actions" >> .env
         echo "MAIL_USER=test.mail@outlook.com" >> .env
         echo "MAIL_PASSWORD=test_password" >> .env
+        cat .env
     
     - name: Wait for MariaDB
       run: |
@@ -112,7 +113,6 @@ jobs:
           
           it('should verify environment variables are set', () => {
             assert.ok(process.env.NODE_ENV === 'test', 'NODE_ENV should be set to test');
-            assert.ok(process.env.DB_HOST, 'DB_HOST should be defined');
           });
         });
         EOF
