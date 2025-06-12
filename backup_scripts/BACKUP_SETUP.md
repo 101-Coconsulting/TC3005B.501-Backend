@@ -17,8 +17,8 @@ sudo vim /usr/local/bin/backup-mariadb.sh
 ```bash
 #!/bin/bash
 echo "[$(date)] Inicio del script" >> ~/debug_cron.log
-USER="db_user"
-PASSWORD="your_secure_password"
+USER="CocoAdmin"
+PASSWORD="CocoPassword"
 DATABASE="CocoScheme"
 BACKUP_DIR="/var/backups/mariadb"
 DATE=$(date +"%Y%m%d_%H%M%S")
@@ -29,32 +29,33 @@ rm -fr $BACKUP_DIR
 mkdir -p $BACKUP_DIR
 
 # Create backup
-echo "Ejecutando mysqldump..." >> ~/debug_cron.log
+echo "Ejecutando mysqldump..." >> /var/backups/mariadb/debug_cron.log
 mysqldump -u $USER -p$PASSWORD $DATABASE > "$BACKUP_DIR/$FILENAME"
-echo "mysqldump finalizado" >> ~/debug_cron.log
+echo "mysqldump finalizado" >> /var/backups/mariadb/debug_cron.log
 
 # SCP transfer to remote VM
-REMOTE_USER="remote_username"
-REMOTE_HOST="remote_vm_ip_or_hostname"
-REMOTE_DIR="/path/to/backup/destination"
+REMOTE_USER="backupUser"
+REMOTE_PASSWORD="backupPassword"
+REMOTE_HOST="172.16.61.151"
+REMOTE_DIR="~/backups"
 
 # Clean up remote backup directory before transferring new backup
-echo "Limpiando directorio remoto..." >> ~/debug_cron.log
-ssh ${REMOTE_USER}@${REMOTE_HOST} "rm -fr ${REMOTE_DIR}/* && mkdir -p ${REMOTE_DIR}"
+echo "Limpiando directorio remoto..." >> /var/backups/mariadb/debug_cron.log
+sshpass -p "${REMOTE_PASSWORD}" ssh ${REMOTE_USER}@${REMOTE_HOST} "rm -fr ${REMOTE_DIR}/* && mkdir -p ${REMOTE_DIR}"
 SSH_STATUS=$?
 
 if [ $SSH_STATUS -ne 0 ]; then
-    echo "Error al limpiar directorio remoto (cÃ³digo: $SSH_STATUS)" >> ~/debug_cron.log
+    echo "Error al limpiar directorio remoto (c—digo: $SSH_STATUS)" >> ~/debug_cron.log
 fi
 
-echo "Iniciando transferencia SCP..." >> ~/debug_cron.log
-scp "$BACKUP_DIR/$FILENAME" ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_DIR}/
+echo "Iniciando transferencia SCP..." >> /var/backups/mariadb/debug_cron.log
+sshpass -p "${REMOTE_PASSWORD}" scp "$BACKUP_DIR/$FILENAME" ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_DIR}/
 SCP_STATUS=$?
 
 if [ $SCP_STATUS -eq 0 ]; then
-    echo "Transferencia SCP completada exitosamente" >> ~/debug_cron.log
+    echo "Transferencia SCP completada exitosamente" >> /var/backups/mariadb/debug_cron.log
 else
-    echo "Error en la transferencia SCP (c—digo: $SCP_STATUS)" >> ~/debug_cron.log
+    echo "Error en la transferencia SCP (c?digo: $SCP_STATUS)" >/var/backups/mariadb/debug_cron.log
 fi
 ```
 
@@ -103,11 +104,24 @@ ls -la /your/backup/path
 - At the beginning of the file, add
 
     ```bash
-    0 3 * * * /usr/local/bin/backup_mariadb.sh >> ~/mariadb_backup.log 2>&1
+    0 3 * * * /usr/local/bin/backup-mariadb.sh >> ~/mariadb_backup.log 2>&1
     ```
 
     This will create a backup everyday at 3am and send the cron logs to the
     file in the home directory for your user.
+
+- Run `sudo systemctl enable --now`. You may need to install or specify a locale for crontab to be able to interpret the executable properly.
+You can use the following commands for this.
+
+```Shell
+sudo apt-get update
+sudo apt-get install locales
+sudo locale-gen en_US.UTF-8
+```
+
+Then run `sudo dpkg-reconfigure locales`. In the menu, select `"en_US.UTF-8 UTF-8"` and `"en_US.UTF-8"` as the default locale.
+
+Now you can update your locale with `sudo update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8`.
 
 ## MongoDB
 
@@ -237,7 +251,7 @@ ls -la /your/backup/path
 - At the beginning of the file, add
 
     ```bash
-    0 3 * * * /usr/local/bin/backup_mongodb.sh >> ~/mongodb_backup.log 2>&1
+    0 3 * * * /usr/local/bin/backup-mongodb.sh >> ~/mongodb_backup.log 2>&1
     ```
 
     This will create a backup everyday at 3am and send the cron logs to the
