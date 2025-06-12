@@ -838,6 +838,42 @@ const Applicant = {
         }
     },
 
+    /**
+     * Deletes a receipt by ID
+     */
+    async deleteReceipt(receiptId) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            
+            // First check if the receipt exists
+            const [receipt] = await conn.query(
+                `SELECT * FROM Receipt WHERE receipt_id = ?`,
+                [receiptId]
+            );
+            
+            if (!receipt) {
+                throw new Error('Receipt not found');
+            }
+            
+            // Delete the receipt
+            const result = await conn.query(
+                `DELETE FROM Receipt WHERE receipt_id = ?`,
+                [receiptId]
+            );
+            
+            if (result.affectedRows === 0) {
+                throw new Error('Failed to delete receipt');
+            }
+            
+            return true;
+        } catch (error) {
+            console.error('Error deleting receipt:', error);
+            throw error;
+        } finally {
+            if (conn) conn.release();
+        }
+    }
 };
 
 export default Applicant;
