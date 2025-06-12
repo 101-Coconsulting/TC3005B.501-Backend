@@ -49,4 +49,7 @@ router.route("/confirm-draft-travel-request/:user_id/:request_id")
 router.route("/send-expense-validation/:request_id")
     .put(generalRateLimiter, authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2']), validateId, validateInputs, applicantController.sendExpenseValidation);
 
+router.route("/delete-receipt/:receipt_id")
+    .delete(generalRateLimiter, authenticateToken, authorizeRole(['Solicitante', 'N1', 'N2']), validateId, validateInputs, applicantController.deleteReceipt);
+
 export default router;

@@ -261,6 +261,33 @@ export const sendExpenseValidation = async (req, res) => {
 };
 
 
+export const deleteReceipt = async (req, res) => {
+  const { receipt_id } = req.params;
+  
+  try {
+    // Import the service to delete files from MongoDB
+    const { deleteReceiptFiles } = await import('../services/receiptFileService.js');
+    
+    // First delete the files from MongoDB
+    await deleteReceiptFiles(Number(receipt_id));
+    
+    // Then delete the receipt record from the database
+    await Applicant.deleteReceipt(Number(receipt_id));
+    
+    return res.status(200).json({
+      message: "Receipt deleted successfully",
+      receipt_id: Number(receipt_id)
+    });
+  } catch (err) {
+    if (err.message === 'Receipt not found') {
+      return res.status(404).json({ error: "Receipt not found" });
+    }
+    console.error("Error in deleteReceipt controller:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 export default {
   getApplicantById,
   getApplicantRequests,
@@ -274,5 +301,5 @@ export default {
   createDraftTravelRequest,
   confirmDraftTravelRequest,
   sendExpenseValidation,
-  
+  deleteReceipt,
 };
