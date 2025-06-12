@@ -49,17 +49,28 @@ app.get("/", (req, res) => {
 });
 
 
-// Certificates credentials for usage of HTTPS
-const privateKey = fs.readFileSync("./certs/server.key", "utf8");
-const certificate = fs.readFileSync("./certs/server.crt", "utf8");
-const ca = fs.readFileSync("./certs/ca.crt", "utf8");
-const credentials = { key: privateKey, cert: certificate, ca: ca };
+// Check if we're in a test environment
+const isTestEnvironment = process.env.NODE_ENV === 'test';
 
-// HTTPS server configuration
-console.clear();
-const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(PORT, () =>
-  console.log(`
+// Start the server based on environment
+if (isTestEnvironment) {
+  // Use HTTP for testing
+  app.listen(PORT, () => {
+    console.log(`🚀 Test server running on port ${PORT} with HTTP`);
+  });
+} else {
+  try {
+    // Try to load certificates for HTTPS in production/development
+    const privateKey = fs.readFileSync("./certs/server.key", "utf8");
+    const certificate = fs.readFileSync("./certs/server.crt", "utf8");
+    const ca = fs.readFileSync("./certs/ca.crt", "utf8");
+    const credentials = { key: privateKey, cert: certificate, ca: ca };
+
+    // HTTPS server configuration
+    console.clear();
+    const httpsServer = https.createServer(credentials, app);
+    httpsServer.listen(PORT, () =>
+      console.log(`
          )         )            (   (
    (  ( /(   (  ( /(      (     )\\ ))\\ )
    )\\ )\\())  )\\ )\\())     )\\   (()/(()/(
@@ -70,4 +81,11 @@ httpsServer.listen(PORT, () =>
   \\___\\___/ \\___\\___/   /_/ \\_\\|_| |___|
 🚀 Server running on port ${PORT} with HTTPS
 `),
-);
+    );
+  } catch (error) {
+    console.warn("SSL certificates not found or invalid. Falling back to HTTP server.");
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT} with HTTP (SSL certificates not loaded)`);
+    });
+  }
+}

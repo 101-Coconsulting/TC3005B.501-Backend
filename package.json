@@ -9,7 +9,7 @@
         "dev": "nodemon index.js",
         "dummy_db": "node ./database/config/dev_db.js dev",
         "empty_db": "node ./database/config/dev_db.js prod",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "mocha \"test/**/*.js\""
     },
     "repository": {
         "type": "git",
