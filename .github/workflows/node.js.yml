@@ -118,4 +118,4 @@ jobs:
         EOF
     
     - name: Run Unit Tests
-      run: npm test
+      run: NODE_ENV=test npm test
