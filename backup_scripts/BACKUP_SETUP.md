@@ -104,7 +104,7 @@ ls -la /your/backup/path
 - At the beginning of the file, add
 
     ```bash
-    0 3 * * * /usr/local/bin/backup-mariadb.sh >> ~/mariadb_backup.log 2>&1
+    0 3 * * * /usr/local/bin/backup-mariadb.sh
     ```
 
     This will create a backup everyday at 3am and send the cron logs to the
@@ -251,8 +251,22 @@ ls -la /your/backup/path
 - At the beginning of the file, add
 
     ```bash
-    0 3 * * * /usr/local/bin/backup-mongodb.sh >> ~/mongodb_backup.log 2>&1
+    0 3 * * * /usr/local/bin/backup-mongodb.sh
     ```
 
     This will create a backup everyday at 3am and send the cron logs to the
     file in the home directory for your user.
+
+- Run `sudo systemctl enable --now`. You may need to install or specify a locale for crontab to be able to interpret the executable properly.
+You can use the following commands for this.
+
+```Shell
+sudo apt-get update
+sudo apt-get install locales
+sudo locale-gen en_US.UTF-8
+```
+
+Then run `sudo dpkg-reconfigure locales`. In the menu, select `"en_US.UTF-8 UTF-8"` and `"en_US.UTF-8"` as the default locale.
+
+Now you can update your locale with `sudo update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8`.
+
