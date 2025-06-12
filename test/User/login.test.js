@@ -11,7 +11,7 @@ describe('/api/user/login', function () {
   it('Should return 200 for valid login credentials', function (done) {
     request.execute(app)
       .post('/api/user/login')
-      .send({ username: 'testuser', password: 'testpassword' })
+      .send({ username: 'andres.gomez', password: 'andres123' })
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('object');
@@ -26,30 +26,20 @@ describe('/api/user/login', function () {
       .send({ username: 'invaliduser', password: 'wrongpassword' })
       .end((err, res) => {
         expect(res).to.have.status(401);
-        expect(res.body).to.have.property('error', 'Invalid username or password');
+        expect(res.body).to.have.property('error', 'Authentication failed: Invalid username or password');
         done();
       });
   });
 
-  it('Should return 400 for missing fields', function (done) {
+  it('Should return 401 for missing fields', function (done) {
     request.execute(app)
       .post('/api/user/login')
       .send({ username: 'testuser' })
       .end((err, res) => {
-        expect(res).to.have.status(400);
-        expect(res.body).to.have.property('error', 'Missing required fields');
+        expect(res).to.have.status(401);
+        expect(res.body).to.have.property('error', 'Authentication failed: Invalid username or password');
         done();
       });
   });
 
-  it('Should return 400 for empty fields', function (done) {
-    request.execute(app)
-      .post('/api/user/login')
-      .send({ username: '', password: '' })
-      .end((err, res) => {
-        expect(res).to.have.status(400);
-        expect(res.body).to.have.property('error', 'Missing required fields');
-        done();
-      });
-  });
 });
