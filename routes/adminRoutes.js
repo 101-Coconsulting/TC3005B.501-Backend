@@ -19,8 +19,10 @@ router.use((req, res, next) => {
 
 router.route("/get-user-list")
     .get(generalRateLimiter, authenticateToken, authorizeRole(['Administrador']), adminController.getUserList);
+
 router.route('/create-user')
     .post(generalRateLimiter, authenticateToken, authorizeRole(['Administrador']), validateCreateUser, validateInputs, adminController.createUser);
+
 router.route("/create-multiple-users")
     .post(
         generalRateLimiter,
@@ -28,5 +30,11 @@ router.route("/create-multiple-users")
         upload.single("file"),
         adminController.createMultipleUsers
     );
+
+router.route('/update-user/:user_id')
+    .put(adminController.updateUser);
+
+router.route("/delete-user/:user_id")
+    .put(adminController.deactivateUser);
 
 export default router;

@@ -62,7 +62,7 @@ const Admin = {
           }
           return null;
       } catch (error) {
-            console.error(`Error finding role ID for '${role_name}':`, error);
+            console.error('Error finding role ID for %s:', role_name, error);
           throw error;
       } finally {
           if (conn) conn.release();
@@ -80,7 +80,7 @@ const Admin = {
           }
           return null;
       } catch (error) {
-            console.error(`Error finding department ID for '${department_name}':`, error);
+            console.error('Error finding department ID for %s:', department_name, error);
           throw error;
       } finally {
           if (conn) conn.release();
@@ -148,6 +148,78 @@ const Admin = {
       connection.release();
     }
   },
+
+  async getAllEmails() {
+    let conn;
+
+    const query = `
+        SELECT email FROM User;
+    `;
+
+    try {
+      conn = await pool.getConnection();
+      
+      const allEmails = conn.query(query);
+      return allEmails;
+    } catch (error) {
+      throw error;
+    } finally {
+      if (conn) conn.release();
+    }
+  },
+
+  async updateUser(user_id, fieldsToUpdate) {
+    let conn;
+
+    const setClauses = [];
+    const values =[];
+
+    for (const field in fieldsToUpdate) {
+        setClauses.push(`${field} = ?`);
+        values.push(fieldsToUpdate[field]);
+      }
+
+    values.push(user_id);
+
+    const query = `
+        UPDATE User
+        SET ${setClauses.join(', ')}
+        WHERE user_id = ?
+      `;
+    try {
+      conn = await pool.getConnection();
+      const result = await conn.query(query, values);
+      return result;
+    } catch (error) {
+      throw error;
+    } finally {
+      if (conn) conn.release();
+    }
+  },
+
+  /**
+   * Deactivate a user (soft delete)
+   * @param {number} userId - User ID to deactivate
+   * @returns {Promise<boolean>} - True if successful
+   */
+  async deactivateUserById(userId) {
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      const result = await conn.query(
+        `UPDATE User SET active = FALSE WHERE user_id = ?`,
+        [userId]
+      );
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error('Error deactivating user:', error);
+      throw error;
+    } finally {
+      if (conn) {
+        conn.release();
+      }
+    }
+  }
 };
 
 export default Admin;
