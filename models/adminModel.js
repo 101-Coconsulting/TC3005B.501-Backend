@@ -62,7 +62,7 @@ const Admin = {
           }
           return null;
       } catch (error) {
-            console.error(`Error finding role ID for '${role_name}':`, error);
+            console.error('Error finding role ID for %s:', role_name, error);
           throw error;
       } finally {
           if (conn) conn.release();
@@ -80,7 +80,7 @@ const Admin = {
           }
           return null;
       } catch (error) {
-            console.error(`Error finding department ID for '${department_name}':`, error);
+            console.error('Error finding department ID for %s:', department_name, error);
           throw error;
       } finally {
           if (conn) conn.release();
@@ -146,6 +146,54 @@ const Admin = {
       );
     } finally {
       connection.release();
+    }
+  },
+
+  async getAllEmails() {
+    let conn;
+
+    const query = `
+        SELECT email FROM User;
+    `;
+
+    try {
+      conn = await pool.getConnection();
+      
+      const allEmails = conn.query(query);
+      return allEmails;
+    } catch (error) {
+      throw error;
+    } finally {
+      if (conn) conn.release();
+    }
+  },
+
+  async updateUser(user_id, fieldsToUpdate) {
+    let conn;
+
+    const setClauses = [];
+    const values =[];
+
+    for (const field in fieldsToUpdate) {
+        setClauses.push(`${field} = ?`);
+        values.push(fieldsToUpdate[field]);
+      }
+
+    values.push(user_id);
+
+    const query = `
+        UPDATE User
+        SET ${setClauses.join(', ')}
+        WHERE user_id = ?
+      `;
+    try {
+      conn = await pool.getConnection();
+      const result = await conn.query(query, values);
+      return result;
+    } catch (error) {
+      throw error;
+    } finally {
+      if (conn) conn.release();
     }
   },
 

@@ -1,4 +1,5 @@
 import Admin from "../models/adminModel.js";
+import User from "../models/userModel.js";
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 const AES_SECRET_KEY = process.env.AES_SECRET_KEY;
@@ -223,8 +224,108 @@ export async function getUserList() {
   }
 };
 
+export const updateUserData = async (userId, newUserData) => {
+    const userData = await User.getUserData(userId);
+    if (!userData) {
+        throw { status: 404, message: 'No information found for the user' };
+    }
+
+    if (typeof userData.phone_number !== 'string') {
+        throw { status: 500, message: 'Internal server error: Invalid phone number format in database.' };
+    }
+
+    const currPhoneNumber = decrypt(userData.phone_number);
+
+    if (typeof userData.email !== 'string') {
+        throw { status: 500, message: 'Internal server error: Invalid email format in database.' };
+    }
+    const currUserEmail = decrypt(userData.email);
+
+    if (newUserData.email !== undefined && newUserData.email !== currUserEmail) {
+      const allEmailRecords = await Admin.getAllEmails(); 
+      
+      const isEmailAlreadyInUse = allEmailRecords.some(emailRecord => {
+            const encryptedEmailString = emailRecord.email; 
+
+            if (typeof encryptedEmailString !== 'string') {
+                return false;
+            }
+
+            const existingDecryptedEmail = decrypt(encryptedEmailString);
+            
+            const matchFound = existingDecryptedEmail === newUserData.email && encryptedEmailString !== userData.email;
+            return matchFound;
+        });
+      
+      if (isEmailAlreadyInUse) {
+            throw { status: 400, message: 'Email already in use by another user' };
+        }
+    }
+
+    const updatedFields = [];
+    const fieldsToUpdateInDb = {};
+    const keysToCompare = ['role_name', 'department_name', 'user_name', 'workstation', 'email', 'phone_number'];
+
+    for (const key of keysToCompare) {
+        if (newUserData[key] !== undefined) {
+            let actualCurrentValue;
+
+            if (key === 'email') {
+                actualCurrentValue = currUserEmail;
+            } else if (key === 'phone_number') {
+                actualCurrentValue = currPhoneNumber;
+            } else {
+                actualCurrentValue = userData[key];
+            }
+
+            if (newUserData[key] !== actualCurrentValue) {
+                if (key === 'role_name') {
+                    const roleID = await Admin.findRoleID(newUserData[key]);
+                    if (roleID !== null) {
+                        fieldsToUpdateInDb.role_id = roleID;
+                        updatedFields.push(key);
+                    } else {
+                        throw { status: 400, message: `Invalid role name provided: ${newUserData[key]}` };
+                    }
+                } else if (key === 'department_name') {
+                    const deptId = await Admin.findDepartmentID(newUserData[key]);
+                    if (deptId !== null) {
+                        fieldsToUpdateInDb.department_id = deptId;
+                        updatedFields.push(key);
+                    } else {
+                        throw { status: 400, message: `Invalid department name provided: ${newUserData[key]}` };
+                    }
+                } else if (key === 'email' || key === 'phone_number') {
+                    const encryptedNewValue = encrypt(newUserData[key]);
+                    fieldsToUpdateInDb[key] = encryptedNewValue;
+                    updatedFields.push(key);
+                } else if (key === 'user_name') {
+                    const userExists = await User.getUserUsername(newUserData[key]);
+                    if (!userExists || userExists.user_id === userId) {
+                        fieldsToUpdateInDb[key] = newUserData[key];
+                        updatedFields.push(key);
+                    } else {
+                        throw { status: 400, message: `Username already in use by another user: ${newUserData[key]}` };
+                    }
+                } else {
+                    fieldsToUpdateInDb[key] = newUserData[key];
+                    updatedFields.push(key);
+                }
+            }
+        }
+    }
+
+    if (Object.keys(fieldsToUpdateInDb).length > 0) {
+        await Admin.updateUser(userId, fieldsToUpdateInDb);
+        return { message: 'User updated successfully', updated_fields: updatedFields };
+    }
+
+    return { message: 'No changes detected, user data is up to date' };
+};
+
 export default {
   createUser,
   getUserList,
-  parseCSV
+  parseCSV,
+  updateUserData
 };

@@ -68,6 +68,19 @@ export const createUser = async (req, res) => {
     }
 }
 
+export const updateUser = async (req, res) => {
+    try {
+        const userId = req.params.user_id;
+
+        const result = await adminService.updateUserData(userId, req.body);
+        return res.status(200).json(result);
+
+    } catch (error) {
+        console.error('An error occurred updating the user:', error);
+        return res.status(error.status || 500).json({ error: error.message || 'Internal server error' });
+    }
+};
+
 export const deactivateUser = async (req, res) => {
     try {
         /* This doesn't work currently because there's no login yet
@@ -105,5 +118,6 @@ export default {
     getUserList,
     deactivateUser,
     createMultipleUsers,
-    createUser
+    createUser,
+    updateUser
 };
