@@ -10,7 +10,7 @@ should();
 
 describe('/api/user/logout', function () {
     it('Should return 200 and correct message for logout', function (done) {
-        request(app)
+        request.execute(app)
         .get('/api/user/logout')
         .end((err, res) => {
             res.should.have.status(200);
