@@ -29,6 +29,22 @@ const hash = async (data) => {
 export async function createUser(userData) {
   try {
     const hashedPassword = await hash(userData.password);
+
+    const allEmails = await Admin.getAllEmails();
+
+    const emailExists = allEmails.some(email => {
+    const encryptedEmailString = email.email;
+
+    const existingDecryptedEmail = decrypt(encryptedEmailString);
+
+    const matchFound = existingDecryptedEmail === userData.email;
+    return matchFound;
+  });
+
+  if (emailExists) {
+    throw { status: 400, message: 'Email already in use by another user' };
+  }
+  
     const encryptedEmail = encrypt(userData.email);
     const encryptedPhone = encrypt(userData.phone_number);
 
