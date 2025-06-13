@@ -29,7 +29,7 @@ describe('/api/authorizer/authorize-travel-request/2/4', function () {
       .put('/api/authorizer/authorize-travel-request/2/1')
       .end((err, res) => {
         res.should.have.status(400);
-        res.should.have.property("error", "User role not authorized to approve request");
+        res.body.should.have.property("error", "User role not authorized to approve request");
       })
 
     done();
