@@ -1,0 +1,58 @@
+paths:
+  /get-user-wallet/{user_id}:
+    get:
+      summary: Get wallet balance of a user
+      description: Returns the wallet balance for a user given their user ID.
+      tags:
+        - Users
+      operationId: getUserWallet
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Wallet information successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                  user_name:
+                    type: string
+                  wallet:
+                    type: number
+                    format: float
+              example:
+                user_id: 7
+                user_name: "andres.gomez"
+                wallet: 2890.75
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "No user with id 7 found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Internal server error"

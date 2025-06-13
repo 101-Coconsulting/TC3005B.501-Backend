@@ -1,0 +1,78 @@
+paths:
+  /get-user-requests/{user_id}:
+    get:
+      summary: Get list of user travel requests by user
+      description: Returns a list of travel requests submitted by the user, including destination country, dates, and status.
+      tags:
+        - Requests
+      operationId: getUserRequests
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user in the database
+          schema:
+            type: integer
+      security:
+        - TokenAuth: []
+      responses:
+        "200":
+          description: List of travel requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    request_id:
+                      type: integer
+                    destination_country:
+                      type: string
+                    beginning_date:
+                      type: string
+                      format: date
+                    ending_date:
+                      type: string
+                      format: date
+                    status:
+                      type: string
+                example:
+                  - request_id: 12312369
+                    destination_country: "Argentina"
+                    beginning_date: "2025-02-15"
+                    ending_date: "2025-03-20"
+                    status: "En Proceso"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Unauthorized access"
+        "404":
+          description: No user requests found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "No user requests found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Internal server error"

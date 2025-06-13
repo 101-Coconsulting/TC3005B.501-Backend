@@ -1,0 +1,82 @@
+paths:
+  /authorize-travel-request/{request_id}/{user_id}:
+    put:
+      summary: Authorize travel request by role-based flow (N1 → N2)
+      description: Updates the request_status_id based on the authorizer’s role: N1 → “Segunda Revisión”, N2 → “Cotizacion de Viaje”.
+      tags:
+        - Authorization
+      operationId: authorizeTravelRequest
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: request_id
+          in: path
+          required: true
+          description: ID of the travel request to be updated
+          schema:
+            type: integer
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user attempting the authorization
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Travel request status updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  new_status:
+                    type: string
+                example:
+                  message: "Request status updated successfully"
+                  new_status: "Segunda Revisión"
+        "400":
+          description: User role not authorized to approve request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "User role not authorized to approve request"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Unauthorized access"
+        "404":
+          description: User or request not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "User not found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"

@@ -1,0 +1,85 @@
+paths:
+  /upload-receipt-files/{receipt_id}:
+    post:
+      summary: Upload both PDF and XML files for a receipt
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: receipt_id
+          in: path
+          required: true
+          description: ID of the receipt to attach files to
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - pdf
+                - xml
+              properties:
+                pdf:
+                  type: string
+                  format: binary
+                  description: PDF file for the receipt
+                xml:
+                  type: string
+                  format: binary
+                  description: XML file for the receipt
+      responses:
+        "201":
+          description: Files uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  pdf:
+                    type: object
+                    properties:
+                      fileId:
+                        type: integer
+                      fileName:
+                        type: string
+                  xml:
+                    type: object
+                    properties:
+                      fileId:
+                        type: integer
+                      fileName:
+                        type: string
+                example:
+                  message: "Files uploaded successfully"
+                  pdf:
+                    fileId: 789
+                    fileName: "receipt_789.pdf"
+                  xml:
+                    fileId: 790
+                    fileName: "receipt_790.xml"
+        "400":
+          description: Both PDF and XML files are required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Both PDF and XML files are required"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"

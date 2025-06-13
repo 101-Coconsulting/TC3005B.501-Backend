@@ -1,0 +1,118 @@
+paths:
+  /update-user/{user_id}:
+    put:
+      summary: Update user information
+      description: Updates fields of an existing user. Only accessible by administrators. All provided fields will be updated.
+      tags:
+        - Admin
+      operationId: updateUser
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user to update
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role_id:
+                  type: integer
+                department_id:
+                  type: integer
+                user_name:
+                  type: string
+                password:
+                  type: string
+                  format: password
+                workstation:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone_number:
+                  type: string
+              example:
+                role_id: 2
+                department_id: 3
+                user_name: "john.doe"
+                password: "NewSecurePass456"
+                workstation: "PC-567"
+                email: "john.doe@company.com"
+                phone_number: "555-678-9012"
+      responses:
+        "200":
+          description: User updated successfully or no changes detected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  updated_fields:
+                    type: array
+                    items:
+                      type: string
+              examples:
+                updated:
+                  summary: User updated
+                  value:
+                    message: "User updated successfully"
+                    updated_fields:
+                      - email
+                      - password
+                noChanges:
+                  summary: No changes
+                  value:
+                    message: "No changes detected, user data is up to date"
+        "400":
+          description: Invalid input or field conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Email already in use by another user"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "No information found for the user"
+        "401":
+          description: Admin privileges required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Admin privileges required"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Internal server error"

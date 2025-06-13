@@ -1,0 +1,79 @@
+paths:
+  /get-user-list:
+    get:
+      summary: Get the list of all users with their roles
+      description: Returns a list of users including their role names, department names, and phone numbers. Only accessible by administrators.
+      tags:
+        - Admin
+      operationId: getUserList
+      security:
+        - TokenAuth: []
+      responses:
+        "200":
+          description: List of users with roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    user_id:
+                      type: integer
+                    user_name:
+                      type: string
+                    email:
+                      type: string
+                      format: email
+                    role_name:
+                      type: string
+                    department_name:
+                      type: string
+                    phone_number:
+                      type: string
+                example:
+                  - user_id: 1
+                    user_name: "admin"
+                    email: "admin@example.com"
+                    role_name: "Administrator"
+                    department_name: "Finance"
+                    phone_number: "555-000-1111"
+                  - user_id: 2
+                    user_name: "jdoe"
+                    email: "john.doe@example.com"
+                    role_name: "Employee"
+                    department_name: "Logistics"
+                    phone_number: "555-222-3333"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Access denied"
+        "404":
+          description: No users found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "No users found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"

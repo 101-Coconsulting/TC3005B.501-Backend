@@ -1,0 +1,85 @@
+paths:
+  /cancel-travel-request/{request_id}:
+    put:
+      summary: Cancel a travel request if not yet reached 'Atención Agencia de Viajes' (status_id ≤ 5)
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: request_id
+          in: path
+          required: true
+          description: ID of the travel request to cancel
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Travel request cancelled successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  request_id:
+                    type: integer
+                  request_status_id:
+                    type: integer
+                  active:
+                    type: boolean
+                example:
+                  message: "Travel request cancelled successfully"
+                  request_id: 1025
+                  request_status_id: 9
+                  active: false
+        "400":
+          description: Cancellation not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                examples:
+                  alreadyCancelled:
+                    summary: Already cancelled
+                    value:
+                      error: "Request has already been cancelled."
+                  tooLateToCancel:
+                    summary: Too late to cancel
+                    value:
+                      error: "Request cannot be cancelled after reaching 'Atención Agencia de Viajes'"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "You are not authorized to cancel this request"
+        "404":
+          description: Travel request not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Travel request not found"
+        "500":
+          description: Unexpected server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Unexpected error while cancelling request"

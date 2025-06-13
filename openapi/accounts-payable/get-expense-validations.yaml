@@ -1,0 +1,106 @@
+paths:
+  /get-expense-validations/{request_id}:
+    get:
+      summary: Get all receipts and validation status for a specific travel request
+      description: >
+        Returns a detailed list of all receipts linked to a given request, including validation status, amount, and file references.
+      tags:
+        - Expense Validations
+      operationId: getExpenseValidations
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: request_id
+          in: path
+          required: true
+          description: ID of the travel request to retrieve expense validations for
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Detailed list of receipts for the given request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: integer
+                  status:
+                    type: string
+                    description: Global status of the expense validation (e.g., Pendiente or Sin Pendientes)
+                  Expenses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        receipt_id:
+                          type: integer
+                        receipt_type_name:
+                          type: string
+                        amount:
+                          type: number
+                          format: float
+                        validation:
+                          type: string
+                        pdf_id:
+                          type: integer
+                        pdf_name:
+                          type: string
+                        xml_id:
+                          type: integer
+                        xml_name:
+                          type: string
+                example:
+                  request_id: 1023
+                  status: "Pendiente"
+                  Expenses:
+                    - receipt_id: 45
+                      receipt_type_name: "Comida"
+                      amount: 1245.50
+                      validation: "Pendiente"
+                      pdf_id: 123
+                      pdf_name: "receipt45.pdf"
+                      xml_id: 456
+                      xml_name: "receipt45.xml"
+                    - receipt_id: 46
+                      receipt_type_name: "Hospedaje"
+                      amount: 875.00
+                      validation: "Aprobado"
+                      pdf_id: 124
+                      pdf_name: "receipt46.pdf"
+                      xml_id: 457
+                      xml_name: "receipt46.xml"
+        "400":
+          description: Failed to retrieve expense validations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Failed to retrieve expense validations"
+        "404":
+          description: Travel request not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Travel request not found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Internal Server Error"

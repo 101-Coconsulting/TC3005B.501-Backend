@@ -1,0 +1,124 @@
+paths:
+  /create-draft-travel-request/{user_id}:
+    post:
+      summary: Create a draft travel request for a user
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user in the database
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                router_index:
+                  type: integer
+                notes:
+                  type: string
+                requested_fee:
+                  type: number
+                  format: float
+                imposed_fee:
+                  type: number
+                  format: float
+                origin_country_name:
+                  type: string
+                origin_city_name:
+                  type: string
+                destination_country_name:
+                  type: string
+                destination_city_name:
+                  type: string
+                beginning_date:
+                  type: string
+                  format: date
+                beginning_time:
+                  type: string
+                  format: time
+                ending_date:
+                  type: string
+                  format: date
+                ending_time:
+                  type: string
+                  format: time
+                plane_needed:
+                  type: boolean
+                hotel_needed:
+                  type: boolean
+                additionalRoutes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      router_index:
+                        type: integer
+                      origin_country_name:
+                        type: string
+                      origin_city_name:
+                        type: string
+                      destination_country_name:
+                        type: string
+                      destination_city_name:
+                        type: string
+                      beginning_date:
+                        type: string
+                        format: date
+                      beginning_time:
+                        type: string
+                        format: time
+                      ending_date:
+                        type: string
+                        format: date
+                      ending_time:
+                        type: string
+                        format: time
+                      plane_needed:
+                        type: boolean
+                      hotel_needed:
+                        type: boolean
+              example:
+                router_index: 0
+                notes: ""
+                requested_fee: 0
+                imposed_fee: 0
+                origin_country_name: "notSelected"
+                origin_city_name: "notSelected"
+                destination_country_name: "notSelected"
+                destination_city_name: "notSelected"
+                beginning_date: "0000-01-01"
+                beginning_time: "00:00:00"
+                ending_date: "0000-01-01"
+                ending_time: "00:00:00"
+                plane_needed: false
+                hotel_needed: false
+                additionalRoutes: []
+      responses:
+        "201":
+          description: Draft travel request successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requestId:
+                    type: integer
+                example:
+                  requestId: 1001
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"

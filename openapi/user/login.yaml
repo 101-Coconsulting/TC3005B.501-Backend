@@ -1,0 +1,61 @@
+paths:
+  /login:
+    post:
+      summary: Authenticate user and issue JWT token
+      description: Authenticates a user and sets HTTP-only cookies for token, role, username, id, and department_id.
+      tags:
+        - Auth
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                  format: password
+              example:
+                username: "jdoe"
+                password: "SecurePass123!"
+      responses:
+        "200":
+          description: Authentication successful; cookies set
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  role:
+                    type: string
+                  username:
+                    type: string
+                  user_id:
+                    type: integer
+                  department_id:
+                    type: integer
+                example:
+                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  role: "Employee"
+                  username: "jdoe"
+                  user_id: 2
+                  department_id: 3
+        "401":
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Authentication failed: Invalid username or password"

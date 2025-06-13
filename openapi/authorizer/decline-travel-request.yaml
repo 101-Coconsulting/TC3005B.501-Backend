@@ -1,0 +1,71 @@
+paths:
+  /decline-travel-request/{request_id}/{user_id}:
+    put:
+      summary: Decline travel request by authorized user
+      description: Changes the request status to 'Rechazado'. Only accessible by roles N1 or N2.
+      tags:
+        - Authorization
+      operationId: declineTravelRequest
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: request_id
+          in: path
+          required: true
+          description: ID of the travel request to be declined
+          schema:
+            type: integer
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user performing the decline action
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Travel request declined successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  new_status:
+                    type: string
+                example:
+                  message: "Request declined successfully"
+                  new_status: "Rechazado"
+        "400":
+          description: User role not authorized to decline request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "User role not authorized to decline request"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "User not found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"

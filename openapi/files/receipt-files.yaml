@@ -1,0 +1,62 @@
+paths:
+  /receipt-files/{receipt_id}:
+    get:
+      summary: Retrieve metadata for both PDF and XML files related to a specific receipt
+      parameters:
+        - name: receipt_id
+          in: path
+          required: true
+          description: ID of the receipt
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Metadata of PDF and XML files for the receipt
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pdf:
+                    type: object
+                    properties:
+                      fileId:
+                        type: integer
+                      fileName:
+                        type: string
+                  xml:
+                    type: object
+                    properties:
+                      fileId:
+                        type: integer
+                      fileName:
+                        type: string
+              example:
+                pdf:
+                  fileId: 789
+                  fileName: "receipt_789.pdf"
+                xml:
+                  fileId: 790
+                  fileName: "receipt_790.xml"
+        "404":
+          description: Receipt not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Receipt not found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Internal server error"

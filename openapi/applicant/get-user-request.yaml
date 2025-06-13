@@ -1,0 +1,136 @@
+paths:
+  /get-user-request/{user_id}:
+    get:
+      summary: Get full details of a travel request by ID
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the travel request
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Travel request full data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: integer
+                  request_status:
+                    type: string
+                  notes:
+                    type: string
+                  requested_fee:
+                    type: number
+                    format: float
+                  imposed_fee:
+                    type: number
+                    format: float
+                  request_days:
+                    type: number
+                    format: float
+                  creation_date:
+                    type: string
+                    format: date
+                  user:
+                    type: object
+                    properties:
+                      user_name:
+                        type: string
+                      user_email:
+                        type: string
+                      user_phone_number:
+                        type: string
+                  routes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        router_index:
+                          type: integer
+                        origin_country:
+                          type: string
+                        origin_city:
+                          type: string
+                        destination_country:
+                          type: string
+                        destination_city:
+                          type: string
+                        beginning_date:
+                          type: string
+                          format: date
+                        beginning_time:
+                          type: string
+                          format: time
+                        ending_date:
+                          type: string
+                          format: date
+                        ending_time:
+                          type: string
+                          format: time
+                        hotel_needed:
+                          type: boolean
+                        plane_needed:
+                          type: boolean
+              example:
+                request_id: 101
+                request_status: "Primera Revisión"
+                notes: "Viaje de negocios con paradas múltiples"
+                requested_fee: 1200.00
+                imposed_fee: 1100.00
+                request_days: 7
+                creation_date: "2025-02-10"
+                user:
+                  user_name: "Andrea Pérez"
+                  user_email: "andrea.perez@email.com"
+                  user_phone_number: "555-123-4567"
+                routes:
+                  - router_index: 1
+                    origin_country: "México"
+                    origin_city: "CDMX"
+                    destination_country: "Colombia"
+                    destination_city: "Bogotá"
+                    beginning_date: "2025-02-15"
+                    beginning_time: "07:00:00"
+                    ending_date: "2025-02-18"
+                    ending_time: "13:00:00"
+                    hotel_needed: true
+                    plane_needed: true
+                  - router_index: 2
+                    origin_country: "Colombia"
+                    origin_city: "Bogotá"
+                    destination_country: "Argentina"
+                    destination_city: "Buenos Aires"
+                    beginning_date: "2025-02-18"
+                    beginning_time: "15:00:00"
+                    ending_date: "2025-02-22"
+                    ending_time: "20:00:00"
+                    hotel_needed: true
+                    plane_needed: true
+        "404":
+          description: No user request found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "No user request found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"
