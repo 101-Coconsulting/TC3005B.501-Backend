@@ -32,9 +32,9 @@ router.route("/create-multiple-users")
     );
 
 router.route('/update-user/:user_id')
-    .put(adminController.updateUser);
+    .put(generalRateLimiter, authenticateToken, authorizeRole(['Administrador']), adminController.updateUser);
 
 router.route("/delete-user/:user_id")
-    .put(adminController.deactivateUser);
+    .put(generalRateLimiter, authenticateToken, authorizeRole(['Administrador']), adminController.deactivateUser);
 
 export default router;
