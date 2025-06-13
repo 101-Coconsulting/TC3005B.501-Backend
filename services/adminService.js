@@ -30,6 +30,22 @@ const hash = async (data) => {
 export async function createUser(userData) {
   try {
     const hashedPassword = await hash(userData.password);
+
+    const allEmails = await Admin.getAllEmails();
+
+    const emailExists = allEmails.some(email => {
+    const encryptedEmailString = email.email;
+
+    const existingDecryptedEmail = decrypt(encryptedEmailString);
+
+    const matchFound = existingDecryptedEmail === userData.email;
+    return matchFound;
+  });
+
+  if (emailExists) {
+    throw { status: 400, message: 'Email already in use by another user' };
+  }
+  
     const encryptedEmail = encrypt(userData.email);
     const encryptedPhone = encrypt(userData.phone_number);
 
@@ -50,7 +66,7 @@ export async function createUser(userData) {
   }
 };
 
-const validateUserRow = async (rowData, rowNumber) => {
+const validateUserRow = async (rowData, rowNumber, existingEmailsInCsv, existingUsernamesInCsv) => {
   const rowErrors = [];
 
   requiredColumns.forEach(col => {
@@ -59,10 +75,31 @@ const validateUserRow = async (rowData, rowNumber) => {
     }
   });
 
-  const emailExists = await Admin.findUserByEmail(rowData.email);
+  const allEmails = await Admin.getAllEmails();
+
+  const emailExists = allEmails.some(email => {
+    const encryptedEmailString = email.email;
+
+    const existingDecryptedEmail = decrypt(encryptedEmailString);
+
+    const matchFound = existingDecryptedEmail === rowData.email;
+    return matchFound;
+  });
 
   if (emailExists) {
     rowErrors.push(`Email '${rowData.email}' already exists`);
+  }
+
+  if (existingEmailsInCsv.has(rowData.email)) {
+    rowErrors.push(`Email '${rowData.email}' is a duplicate within the CSV file`);
+  } else {
+    existingEmailsInCsv.add(rowData.email);
+  }
+
+  if (existingUsernamesInCsv.has(rowData.username)) {
+    rowErrors.push(`Username '${rowData.username}' is a duplicate within the CSV file`);
+  } else if (rowData.username) {
+    existingUsernamesInCsv.add(rowData.username);
   }
 
   if (rowErrors.length > 0) {
@@ -124,6 +161,9 @@ export const parseCSV = async (filePath, dummy) => {
   let rowNumber = 0;
   const usersToCreate = [];
 
+  const existingEmailsInCsv = new Set();
+  const existingUsernamesInCsv = new Set();
+
   try {
     await fs.promises.access(filePath, fs.constants.F_OK);
 
@@ -149,7 +189,7 @@ export const parseCSV = async (filePath, dummy) => {
       rowNumber++;
       results.total_records++;
 
-      const rowValidationError = await validateUserRow(record, rowNumber);
+      const rowValidationError = await validateUserRow(record, rowNumber,existingEmailsInCsv, existingUsernamesInCsv);
 
       if (rowValidationError) {
         results.failed++;
