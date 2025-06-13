@@ -1,0 +1,38 @@
+paths:
+  /receipt-file/{file_id}:
+    get:
+      summary: Retrieve the content of a specific receipt file (PDF or XML)
+      parameters:
+        - name: file_id
+          in: path
+          required: true
+          description: ID of the file stored in GridFS
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Binary file content
+          content:
+            application/octet-stream: {}
+        "404":
+          description: File not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "File not found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"

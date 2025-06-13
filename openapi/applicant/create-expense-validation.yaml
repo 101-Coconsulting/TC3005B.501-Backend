@@ -1,0 +1,77 @@
+paths:
+  /create-expense-validation:
+    post:
+      summary: Create a new expense validation
+      security:
+        - TokenAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - receipts
+              properties:
+                receipts:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - receipt_type_id
+                      - request_id
+                      - amount
+                    properties:
+                      receipt_type_id:
+                        type: integer
+                        description: ID of the receipt type (e.g., 1 for Comida, 2 for Vuelo)
+                      request_id:
+                        type: integer
+                      amount:
+                        type: number
+                        format: float
+              example:
+                receipts:
+                  - receipt_type_id: 1
+                    request_id: 12312369
+                    amount: 1250.00
+                  - receipt_type_id: 3
+                    request_id: 12312369
+                    amount: 450.50
+      responses:
+        "201":
+          description: Expense receipts created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  message:
+                    type: string
+                example:
+                  count: 2
+                  message: "Expense receipts created successfully"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: 'Each receipt must include "receipt_type_id", "request_id", and "amount" (all as numbers)'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"

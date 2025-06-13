@@ -1,0 +1,82 @@
+paths:
+  /get-alerts/{dept_id}/{status_id}/{n}:
+    get:
+      summary: Get alerts of travel requests by department and status
+      description: Returns a list of travel alerts related to users in a department and filtered by the request status. The number of alerts returned can be limited using 'n'.
+      tags:
+        - Travel Alerts
+      operationId: getTravelAlerts
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: dept_id
+          in: path
+          required: true
+          description: Identification number of the department
+          schema:
+            type: integer
+        - name: status_id
+          in: path
+          required: true
+          description: ID of the travel request status
+          schema:
+            type: integer
+        - name: n
+          in: path
+          required: true
+          description: Limit of the number of travel alerts to retrieve. Use 0 to retrieve all.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of travel alerts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    alert_id:
+                      type: integer
+                    user_name:
+                      type: string
+                    request_id:
+                      type: integer
+                    message_text:
+                      type: string
+                    alert_date:
+                      type: string
+                      format: date
+                    alert_time:
+                      type: string
+                      format: time
+                example:
+                  - alert_id: 8759
+                    user_name: "ramiro"
+                    request_id: 1234
+                    message_text: "You need to check Ramiro's request"
+                    alert_date: "2025-11-05"
+                    alert_time: "08:37:45"
+        "404":
+          description: No alerts found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Not found"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Bad Request"

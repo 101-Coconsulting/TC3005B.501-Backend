@@ -1,0 +1,86 @@
+paths:
+  /create-multiple-users:
+    post:
+      summary: Bulk user creation from CSV file
+      description: Allows administrators to upload a CSV file to create multiple users at once. Each row must include the required user fields as defined in the schema.
+      tags:
+        - Admin
+      operationId: createMultipleUsers
+      security:
+        - TokenAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: CSV file with user data. Required columns: role_id, department_id, user_name, password, workstation, email. Optional: phone_number.
+      responses:
+        "200":
+          description: Users processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_records:
+                    type: integer
+                  created:
+                    type: integer
+                  failed:
+                    type: integer
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        row_number:
+                          type: string
+                        error:
+                          type: string
+                example:
+                  total_records: 3
+                  created: 2
+                  failed: 1
+                  errors:
+                    - row_number: "3"
+                      error: "Duplicate email"
+        "400":
+          description: No CSV file uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "No CSV file uploaded"
+        "401":
+          description: Admin privileges required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Admin privileges required"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"

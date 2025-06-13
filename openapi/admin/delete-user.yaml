@@ -1,0 +1,68 @@
+paths:
+  /delete-user/{user_id}:
+    put:
+      summary: Deactivate a user (soft delete)
+      description: Marks the user as inactive by setting the `active` field to false. Only accessible by administrators.
+      tags:
+        - Admin
+      operationId: deactivateUser
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user to deactivate
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User deactivated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  user_id:
+                    type: integer
+                  active:
+                    type: boolean
+                example:
+                  message: "User successfully deactivated"
+                  user_id: 17
+                  active: false
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "User not found"
+        "401":
+          description: Admin privileges required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Admin privileges required"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Unexpected error while deactivating user"

@@ -1,0 +1,56 @@
+paths:
+  /confirm-draft-travel-request/{user_id}/{request_id}:
+    put:
+      summary: Confirm a draft travel request for a user
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user in the database
+          schema:
+            type: integer
+        - name: request_id
+          in: path
+          required: true
+          description: ID of the draft travel request to confirm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Draft travel request successfully confirmed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requestId:
+                    type: integer
+                  message:
+                    type: string
+                example:
+                  requestId: 1001
+                  message: "Draft travel request successfully confirmed"
+        "401":
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Unauthorized access"
+        "500":
+          description: Unexpected error while confirming draft request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Unexpected error while confirming draft request"

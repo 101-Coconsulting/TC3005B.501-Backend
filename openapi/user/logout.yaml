@@ -1,0 +1,29 @@
+paths:
+  /logout:
+    get:
+      summary: Logout user and clear authentication cookies
+      security:
+        - TokenAuth: []
+      responses:
+        "200":
+          description: Logout successful; authentication cookies cleared
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Logged out successfully"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"

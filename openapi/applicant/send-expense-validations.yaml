@@ -1,0 +1,68 @@
+paths:
+  /send-expense-validation/{request_id}:
+    put:
+      summary: Submit expense receipts for validation
+      description: Allows the applicant to send all uploaded receipts for a travel request to the validation phase. Changes the request status from 6 (Expense verification) to 7 (Receipt validation).
+      tags:
+        - Expense Validations
+      operationId: sendExpenseValidation
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: request_id
+          in: path
+          required: true
+          description: ID of the travel request
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Request status successfully updated to 'Receipt validation'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: integer
+                  updated_status:
+                    type: integer
+                  message:
+                    type: string
+                example:
+                  request_id: 123
+                  updated_status: 7
+                  message: "Request status updated to 'Validación de comprobantes'"
+        "400":
+          description: Request must be in status 6 to be submitted for validation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Request must be in status 6 (Comprobación gastos del viaje) to send for validation"
+        "404":
+          description: Request not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "No request found with id 123"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"

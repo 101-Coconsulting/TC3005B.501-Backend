@@ -1,0 +1,100 @@
+paths:
+  /get-user-data/{user_id}:
+    get:
+      summary: Get user data by ID
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user in the database
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: All user data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                  user_name:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  phone_number:
+                    type: string
+                  workstation:
+                    type: string
+                  department_name:
+                    type: string
+                  costs_center:
+                    type: string
+                  creation_date:
+                    type: string
+                    format: date-time
+                  role_name:
+                    type: string
+                example:
+                  user_id: 1
+                  user_name: "Arturo López"
+                  email: "arturoperez59@hotmail.com"
+                  phone_number: "(719) 860-5684"
+                  workstation: "Arturo's workstation"
+                  department_name: "Technology Department"
+                  costs_center: "TECH01"
+                  creation_date: "2021-04-17T00:00:00Z"
+                  role_name: "N2"
+        "400":
+          description: Invalid user ID format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Invalid user ID format"
+        "401":
+          description: Invalid or missing authentication token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Invalid or missing authentication token"
+        "404":
+          description: No information found for the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "No information found for the user"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"
+components:
+  securitySchemes:
+    TokenAuth:
+      type: http
+      scheme: bearer
