@@ -4,9 +4,11 @@ Miguel Soria 26/04/25
 Manages parameters and checks for Travel Agent endpoints
 */
 import TravelAgent from "../models/travelAgentModel.js";
+import { Mail } from "../services/email/mail.cjs";
+import mailData from "../services/email/mailData.js";
 
 const attendTravelRequest = async (req, res) => {
-    const requestId = req.params.id;
+    const requestId = req.params.request_id;
 
     try {
         // Check if request exists
@@ -19,6 +21,8 @@ const attendTravelRequest = async (req, res) => {
         const updated = await TravelAgent.attendTravelRequest(requestId);
 
         if (updated) {
+            const { user_email, user_name, request_id, status } = await mailData(requestId);
+            await Mail(user_email, user_name, request_id, status);
             return res.status(200).json({
                 message: "Travel request status updated successfully",
                 requestId: requestId,

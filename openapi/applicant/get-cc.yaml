@@ -1,0 +1,53 @@
+paths:
+  /get-cc/{user_id}:
+    get:
+      summary: Get cost center info by user ID
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user in the database
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cost center and department name of the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  department_name:
+                    type: string
+                  costs_center:
+                    type: string
+                example:
+                  department_name: "Administrativo"
+                  costs_center: "34239845782394"
+        "404":
+          description: Cost center not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  user_id:
+                    type: integer
+                example:
+                  error: "Cost center not found for user_id 123"
+                  user_id: 123
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Controller: Internal Server Error"

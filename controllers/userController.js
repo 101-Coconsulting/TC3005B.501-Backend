@@ -1,5 +1,7 @@
 import * as userService from '../services/userService.js';
 import User from '../models/userModel.js';
+import { decrypt } from '../middleware/decryption.js';
+
 /**
  * Get user data by ID
  * @param {Object} req - Express request object
@@ -25,8 +27,51 @@ export async function getUserData(req, res) {
 
     return res.status(200).json(userData);
   } catch (error) {
-    console.error('Error retrieving user data:', error);
+    console.error('Error retrieving user data', error);
     return res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+
+export const login = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const result = await userService.authenticateUser(username, password, req);
+    //res.json(result);
+     res
+      .cookie("token", result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+        maxAge: 1000 * 60 * 60, // 1 hora
+      })
+      .cookie("role", result.role, {
+        sameSite: "Strict",
+        httpOnly: true,
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      })
+      .cookie("username", result.username, {
+        sameSite: "Strict",
+        httpOnly: true,
+        secure: true,
+        maxAge: 1000 * 60 * 60,
+      })
+      .cookie("id", result.user_id.toString(), {
+        sameSite: "Strict",
+        httpOnly: true,
+        secure: true,
+        maxAge: 1000 * 60 * 60,
+      })
+      .cookie("department_id", result.department_id.toString(), {
+        sameSite: "Strict",
+        httpOnly: true,
+        secure: true,
+        maxAge: 1000 * 60 * 60,
+      })
+      .json(result);
+  } catch (error) {
+    res.status(401).json({ error: error.message });
   }
 }
 
@@ -69,6 +114,8 @@ export const getTravelRequestById = async (req, res) => {
     }
 
     const base = requestData[0];
+    const decryptedEmail = decrypt(base.user_email);
+    const decryptedPhone = decrypt(base.user_phone_number);
 
     const response = {
       request_id: base.request_id,
@@ -80,8 +127,8 @@ export const getTravelRequestById = async (req, res) => {
       creation_date: formatDate(base.creation_date),
       user: {
         user_name: base.user_name,
-        user_email: base.user_email,
-        user_phone_number: base.user_phone_number
+        user_email: decryptedEmail,
+        user_phone_number: decryptedPhone
       },
       routes: requestData.map((row) => ({
         router_index: row.router_index,
@@ -129,4 +176,22 @@ export const getUserWallet = async (req, res) => {
 
 const formatDate = (date) => {
   return new Date(date).toISOString().split('T')[0];
+};
+
+export const logout = (req, res) => {
+  const cookieOptions = {
+    path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
+  };
+
+  res
+    .clearCookie("token", cookieOptions)
+    .clearCookie("role", cookieOptions)
+    .clearCookie("username", cookieOptions)
+    .clearCookie("id", cookieOptions)
+    .clearCookie("department_id", cookieOptions)
+    .status(200)
+    .json({ message: "Sesión cerrada correctamente" });
 };

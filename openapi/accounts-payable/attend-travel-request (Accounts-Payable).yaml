@@ -1,0 +1,88 @@
+paths:
+  /attend-travel-request/{request_id}:
+    put:
+      summary: Attend a travel request by accounts payable
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: request_id
+          in: path
+          required: true
+          description: ID of the travel request to attend
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - imposed_fee
+              properties:
+                imposed_fee:
+                  type: number
+                  format: float
+                  description: Fee imposed by accounts payable
+      responses:
+        "200":
+          description: Travel request status updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  requestId:
+                    type: integer
+                  imposedFee:
+                    type: number
+                    format: float
+                  newStatus:
+                    type: integer
+                example:
+                  message: "Travel request status updated successfully"
+                  requestId: 8759
+                  imposedFee: 350.00
+                  newStatus: 5
+        "400":
+          description: Failed to update travel request status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Failed to update travel request status"
+        "404":
+          description: Travel request not found or cannot be attended by accounts payable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                notFound:
+                  summary: Request not found
+                  value:
+                    error: "Travel request not found"
+                invalidStatus:
+                  summary: Cannot attend this request
+                  value:
+                    error: "This request cannot be attended by accounts payable"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal Server Error"

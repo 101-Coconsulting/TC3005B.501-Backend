@@ -3,6 +3,9 @@ Applicant Controller
 */
 import Applicant from "../models/applicantModel.js";
 import { cancelTravelRequestValidation, createExpenseValidationBatch, sendReceiptsForValidation } from '../services/applicantService.js';
+import { decrypt } from '../middleware/decryption.js';
+import { Mail } from "../services/email/mail.cjs";
+import mailData from "../services/email/mailData.js";
 
 export const getApplicantById = async (req, res) => {
   const id = req.params.id;
@@ -22,9 +25,9 @@ export const getApplicantById = async (req, res) => {
 };
 
 export const getApplicantRequests = async (req, res) => {
-  const id = req.params.id;
+  const userId = req.params.user_id;
   try {
-    const applicantRequests = await Applicant.getApplicantRequests(id);
+    const applicantRequests = await Applicant.getApplicantRequests(userId);
 
     if (!applicantRequests || applicantRequests.length === 0) {
       return res.status(404).json({ error: "No user requests found" });
@@ -46,14 +49,16 @@ export const getApplicantRequests = async (req, res) => {
 };
 
 export const getApplicantRequest = async (req, res) => {
-  const id = req.params.id;
+  const userId = req.params.user_id;
   try {
-    const requestData = await Applicant.getApplicantRequest(id);
+    const requestData = await Applicant.getApplicantRequest(userId);
     if (!requestData || requestData.length === 0) {
       return res.status(404).json({ error: "No user request found" });
     }
 
     const baseData = requestData[0];
+    const decryptedEmail = decrypt(baseData.user_email);
+    const decryptedPhone = decrypt(baseData.user_phone_number);
 
     const response = {
       request_id: baseData.request_id,
@@ -65,8 +70,8 @@ export const getApplicantRequest = async (req, res) => {
       creation_date: formatDate(baseData.creation_date),
       user: {
         user_name: baseData.user_name,
-        user_email: baseData.user_email,
-        user_phone_number: baseData.user_phone_number,
+        user_email: decryptedEmail,
+        user_phone_number: decryptedPhone,
       },
       routes: requestData.map((row) => ({
         router_index: row.router_index,
@@ -107,13 +112,15 @@ export const getCostCenterByUserId = async (req, res) => {
 };
 
 export const createTravelRequest = async (req, res) => {
-  const applicantId = Number(req.params.id);
+  const applicantId = Number(req.params.user_id);
   const travelDetails = req.body;
   try {
     const travelRequest = await Applicant.createTravelRequest(
       applicantId,
       travelDetails,
     );
+    const { user_email, user_name, requestId, status } = await mailData(travelRequest.requestId);
+    await Mail(user_email, user_name, travelRequest.requestId, status);
     res.status(201).json(travelRequest);
   } catch (err) {
     console.error("Controller error:", err);
@@ -122,7 +129,7 @@ export const createTravelRequest = async (req, res) => {
 };
 
 export const editTravelRequest = async (req, res) => {
-  const travelRequestId = Number(req.params.id);
+  const travelRequestId = Number(req.params.user_id);
   const travelDetails = req.body;
   try {
     const updatedTravelRequest = await Applicant.editTravelRequest(
@@ -141,6 +148,8 @@ export const cancelTravelRequest = async (req, res) => {
 
   try {
     const result = await cancelTravelRequestValidation(Number(request_id));
+    const { user_email, user_name, requestId, status } = await mailData(request_id);
+    await Mail(user_email, user_name, request_id, status);
     return res.status(200).json(result);
   } catch (err) {
     if (err.status) {
@@ -168,12 +177,12 @@ export async function createExpenseValidationHandler(req, res) {
 }
 
 export const getCompletedRequests = async (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  if (!Number.isInteger(id)) {
+  const userId = parseInt(req.params.user_id, 10);
+  if (!Number.isInteger(userId)) {
     return res.status(400).json({ error: "Invalid user ID" });
   }
   try {
-    const completedRequests = await Applicant.getCompletedRequests(id);
+    const completedRequests = await Applicant.getCompletedRequests(userId);
     if (!completedRequests || completedRequests.length === 0) {
       return res.status(404).json({ error: "No completed requests found for the user" });
     }
@@ -222,6 +231,8 @@ export const confirmDraftTravelRequest = async (req, res) => {
 
   try {
     const result = await Applicant.confirmDraftTravelRequest(userId, requestId);
+    const { user_email, user_name, request_id, status } = await mailData(requestId);
+    await Mail(user_email, user_name, requestId, status);
     return res.status(200).json(result);
   } catch (err) {
     if (err.status) {
@@ -237,12 +248,41 @@ export const sendExpenseValidation = async (req, res) => {
 
   try {
     const result = await sendReceiptsForValidation(requestId);
+    const { user_email, user_name, request_id, status } = await mailData(requestId);
+    await Mail(user_email, user_name, requestId, status);
     return res.status(200).json(result);
   } catch (err) {
     if (err.status) {
       return res.status(err.status).json({ error: err.message });
     }
     console.error("Unexpected error in sendExpenseValidation controller:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+export const deleteReceipt = async (req, res) => {
+  const { receipt_id } = req.params;
+  
+  try {
+    // Import the service to delete files from MongoDB
+    const { deleteReceiptFiles } = await import('../services/receiptFileService.js');
+    
+    // First delete the files from MongoDB
+    await deleteReceiptFiles(Number(receipt_id));
+    
+    // Then delete the receipt record from the database
+    await Applicant.deleteReceipt(Number(receipt_id));
+    
+    return res.status(200).json({
+      message: "Receipt deleted successfully",
+      receipt_id: Number(receipt_id)
+    });
+  } catch (err) {
+    if (err.message === 'Receipt not found') {
+      return res.status(404).json({ error: "Receipt not found" });
+    }
+    console.error("Error in deleteReceipt controller:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -261,5 +301,5 @@ export default {
   createDraftTravelRequest,
   confirmDraftTravelRequest,
   sendExpenseValidation,
-  
+  deleteReceipt,
 };

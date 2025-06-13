@@ -1,0 +1,93 @@
+paths:
+  /get-travel-requests/{dept_id}/{status_id}/{n}:
+    get:
+      summary: Get travel requests filtered by department and status
+      description: Returns a list of travel requests filtered by department and request status. Can also limit the number of results shown.
+      tags:
+        - Travel Requests
+      operationId: getTravelRequestsByDeptStatus
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: dept_id
+          in: path
+          required: true
+          description: Department ID to filter the requests
+          schema:
+            type: integer
+        - name: status_id
+          in: path
+          required: true
+          description: Status ID of the travel request to filter by
+          schema:
+            type: integer
+        - name: n
+          in: path
+          required: false
+          description: Number of requests to return. If omitted, all matching requests will be returned.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of filtered travel requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    request_id:
+                      type: integer
+                    user_id:
+                      type: integer
+                    destination_country:
+                      type: string
+                    beginning_date:
+                      type: string
+                      format: date
+                    ending_date:
+                      type: string
+                      format: date
+                    request_status:
+                      type: string
+                example:
+                  - request_id: 8759
+                    user_id: 56
+                    destination_country: "Argentina"
+                    beginning_date: "2025-02-15"
+                    ending_date: "2025-03-20"
+                    request_status: "Primera Revisión"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Unauthorized access"
+        "404":
+          description: No travel requests found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "No travel requests found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Internal server error"

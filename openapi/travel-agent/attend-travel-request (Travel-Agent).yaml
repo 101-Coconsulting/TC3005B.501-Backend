@@ -1,0 +1,65 @@
+paths:
+  /attend-travel-request/{request_id}:
+    put:
+      summary: Attend a travel request by travel agent
+      description: Marks the travel request as “Comprobación Estado de Viaje” (status 6).
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: request_id
+          in: path
+          required: true
+          description: ID of the travel request to attend
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Travel request status updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  requestId:
+                    type: integer
+                  newStatus:
+                    type: integer
+                example:
+                  message: "Travel request status updated successfully"
+                  requestId: 8759
+                  newStatus: 6
+        "400":
+          description: Failed to update travel request status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Failed to update travel request status"
+        "404":
+          description: Travel request not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Travel request not found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal Server Error"

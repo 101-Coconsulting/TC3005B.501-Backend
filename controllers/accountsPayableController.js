@@ -5,6 +5,8 @@ Manages parameters and checks for CPP endpoints
 */
 import AccountsPayable from "../models/accountsPayableModel.js";
 import AccountsPayableService from '../services/accountsPayableService.js';
+import mailData from "../services/email/mailData.js";
+import { Mail } from "../services/email/mail.cjs";
 
 const attendTravelRequest = async (req, res) => {
     const requestId = req.params.request_id;
@@ -33,6 +35,8 @@ const attendTravelRequest = async (req, res) => {
             const updated = await AccountsPayable.attendTravelRequest(requestId, imposedFee, new_status);
 
             if (updated) {
+                const { user_email, user_name, request_id, status } = await mailData(requestId);
+                await Mail(user_email, user_name, requestId, status);
                 return res.status(200).json({
                     message: "Travel request status updated successfully",
                     requestId: requestId,
@@ -59,6 +63,8 @@ const validateReceiptsHandler = async (req, res) => {
 
     try {
         const result = await AccountsPayableService.validateReceiptsAndUpdateStatus(requestId);
+        const { user_email, user_name, request_id, status } = await mailData(requestId);
+        await Mail(user_email, user_name, requestId, status);
         res.status(200).json(result);
     } catch (err) {
         console.error('Error in validateReceiptsHandler:', err);

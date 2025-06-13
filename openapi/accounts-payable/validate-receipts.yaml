@@ -1,0 +1,109 @@
+paths:
+  /validate-receipt/{receipt_id}:
+    put:
+      summary: Validate a single receipt by ID
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: receipt_id
+          in: path
+          required: true
+          description: ID of the receipt to validate
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - approval
+              properties:
+                approval:
+                  type: integer
+                  description: Approval flag (1 = approved, 0 = rejected)
+                  enum: [0, 1]
+      responses:
+        "200":
+          description: Receipt validated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  summary:
+                    type: string
+                  value:
+                    type: object
+                    properties:
+                      receipt_id:
+                        type: integer
+                      new_status:
+                        type: string
+                      message:
+                        type: string
+              examples:
+                approved:
+                  summary: Receipt approved
+                  value:
+                    summary: "Receipt approved"
+                    value:
+                      receipt_id: 123
+                      new_status: "Aprobado"
+                      message: "Receipt has been approved."
+                rejected:
+                  summary: Receipt rejected
+                  value:
+                    summary: "Receipt rejected"
+                    value:
+                      receipt_id: 123
+                      new_status: "Rechazado"
+                      message: "Receipt has been rejected."
+        "400":
+          description: Invalid input or update failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                invalidApproval:
+                  summary: Invalid approval value
+                  value:
+                    error: "Invalid input (only values 0 or 1 accepted for approval)"
+                updateFailed:
+                  summary: Update failed
+                  value:
+                    error: "Failed to update travel request status"
+        "404":
+          description: Receipt not found or already validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                notFound:
+                  summary: Receipt not found
+                  value:
+                    error: "Receipt not found"
+                alreadyValidated:
+                  summary: Already validated
+                  value:
+                    error: "Receipt already approved or rejected"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal Server Error"

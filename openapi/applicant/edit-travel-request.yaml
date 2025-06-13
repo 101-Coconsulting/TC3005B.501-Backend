@@ -1,0 +1,120 @@
+paths:
+  /edit-travel-request/{request_id}:
+    put:
+      summary: Edit Travel Request by ID
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: request_id
+          in: path
+          required: true
+          description: ID of the travel request
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                request_status_id:
+                  type: integer
+                origin_country_name:
+                  type: string
+                origin_city_name:
+                  type: string
+                destination_country_name:
+                  type: string
+                destination_city_name:
+                  type: string
+                beginning_date:
+                  type: string
+                  format: date
+                beginning_time:
+                  type: string
+                  format: time
+                ending_date:
+                  type: string
+                  format: date
+                ending_time:
+                  type: string
+                  format: time
+                requested_fee:
+                  type: number
+                  format: float
+                imposed_fee:
+                  type: number
+                  format: float
+                plane_needed:
+                  type: boolean
+                hotel_needed:
+                  type: boolean
+                notes:
+                  type: string
+                additionalRoutes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      destination_country_name:
+                        type: string
+                      destination_city_name:
+                        type: string
+                      beginning_date:
+                        type: string
+                        format: date
+                      beginning_time:
+                        type: string
+                        format: time
+                      ending_date:
+                        type: string
+                        format: date
+                      ending_time:
+                        type: string
+                        format: time
+                      plane_needed:
+                        type: boolean
+                      hotel_needed:
+                        type: boolean
+              example:
+                request_status_id: 2
+                origin_country_name: "MX"
+                origin_city_name: "CDMX"
+                destination_country_name: "AR"
+                destination_city_name: "BUE"
+                beginning_date: "2025-02-16"
+                beginning_time: "08:00:00"
+                ending_date: "2025-02-23"
+                ending_time: "20:00:00"
+                requested_fee: 100
+                imposed_fee: 80
+                plane_needed: true
+                hotel_needed: false
+                notes: "Updated notes"
+                additionalRoutes: []
+      responses:
+        "200":
+          description: Updated travel request object
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

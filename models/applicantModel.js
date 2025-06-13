@@ -456,7 +456,7 @@ const Applicant = {
         }
     },
 
-    async getCompletedRequests(id) {
+    async getCompletedRequests(userId) {
         let conn;
         const query = `
         SELECT request_id,
@@ -468,11 +468,11 @@ const Applicant = {
             status
         FROM RequestWithRouteDetails
         WHERE user_id = ?
-            AND status = 'Finalizado'
+            AND status IN ('Finalizado', 'Cancelado', 'Rechazado')
         `;
         try {
             conn = await pool.getConnection();
-            const rows = await conn.query(query, [id]);
+            const rows = await conn.query(query, [userId]);
             return rows;
         } catch (error) {
             console.error('Error getting completed requests:', error);
@@ -484,7 +484,7 @@ const Applicant = {
         }
     },
 
-    async getApplicantRequests(id) {
+    async getApplicantRequests(userId) {
         let conn;
         const query = `
       SELECT
@@ -504,7 +504,7 @@ const Applicant = {
     `;
         try {
             conn = await pool.getConnection();
-            const rows = await conn.query(query, [id]);
+            const rows = await conn.query(query, [userId]);
             return rows;
         } catch (error) {
             console.error("Error in getApplicantRequests:", error);
@@ -514,7 +514,7 @@ const Applicant = {
         }
     },
 
-    async getApplicantRequest(id) {
+    async getApplicantRequest(userId) {
         let conn;
         const query = `
       SELECT
@@ -558,7 +558,7 @@ const Applicant = {
     `;
         try {
             conn = await pool.getConnection();
-            const rows = await conn.query(query, [id]);
+            const rows = await conn.query(query, [userId]);
             return rows;
         } catch (error) {
             console.error("Error in getApplicantRequest:", error);
@@ -838,6 +838,45 @@ const Applicant = {
         }
     },
 
+    /**
+     * Deletes a receipt by ID
+     */
+    async deleteReceipt(receiptId) {
+        let conn;
+        try {
+            conn = await pool.getConnection();
+            await conn.beginTransaction();
+            
+            // First check if the receipt exists
+            const [receipt] = await conn.query(
+                `SELECT * FROM Receipt WHERE receipt_id = ?`,
+                [receiptId]
+            );
+            
+            if (!receipt) {
+                throw new Error('Receipt not found');
+            }
+            
+            // Delete the receipt
+            const result = await conn.query(
+                `DELETE FROM Receipt WHERE receipt_id = ?`,
+                [receiptId]
+            );
+            
+            if (result.affectedRows === 0) {
+                throw new Error('Failed to delete receipt');
+            }
+            
+            await conn.commit();
+            return true;
+        } catch (error) {
+            if (conn) await conn.rollback();
+            console.error('Error deleting receipt:', error);
+            throw error;
+        } finally {
+            if (conn) conn.release();
+        }
+    }
 };
 
 export default Applicant;

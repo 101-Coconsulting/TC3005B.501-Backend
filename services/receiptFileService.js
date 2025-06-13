@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { uploadFile, getFile } from './fileStorage.js';
+import { uploadFile, getFile, db, bucket } from './fileStorage.js';
 import pool from "../database/config/db.js";
 
 // Upload both PDF and XML files for a receipt
@@ -84,6 +84,48 @@ export async function getReceiptFilesMetadata(receiptId) {
         fileName: receipt.xml_file_name
       }
     };
+  } finally {
+    conn.release();
+  }
+}
+
+// Delete receipt files from MongoDB
+export async function deleteReceiptFiles(receiptId) {
+  const conn = await pool.getConnection();
+  try {
+    // Get file IDs before deleting the receipt
+    const [receipt] = await conn.query(
+      `SELECT pdf_file_id, xml_file_id
+       FROM Receipt
+       WHERE receipt_id = ?`,
+      [receiptId]
+    );
+
+    if (!receipt) {
+      throw new Error('Receipt not found');
+    }
+
+    // Delete files from MongoDB if they exist
+    if (receipt.pdf_file_id) {
+      try {
+        await bucket.delete(new ObjectId(receipt.pdf_file_id));
+      } catch (err) {
+        console.error(`Error deleting PDF file ${receipt.pdf_file_id}:`, err);
+      }
+    }
+
+    if (receipt.xml_file_id) {
+      try {
+        await bucket.delete(new ObjectId(receipt.xml_file_id));
+      } catch (err) {
+        console.error(`Error deleting XML file ${receipt.xml_file_id}:`, err);
+      }
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error deleting receipt files:', error);
+    throw error;
   } finally {
     conn.release();
   }

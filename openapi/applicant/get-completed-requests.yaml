@@ -1,0 +1,81 @@
+paths:
+  /get-completed-requests/{user_id}:
+    get:
+      summary: Get completed travel requests for a specific user
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user in the database
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of completed travel requests for the user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    request_id:
+                      type: integer
+                    origin_country:
+                      type: string
+                    destination_country:
+                      type: string
+                    beginning_date:
+                      type: string
+                      format: date-time
+                    ending_date:
+                      type: string
+                      format: date-time
+                    request_date:
+                      type: string
+                      format: date
+                    status:
+                      type: string
+                  example:
+                    request_id: 12312369
+                    origin_country: "México"
+                    destination_country: "Perú"
+                    beginning_date: "2025-02-18T00:00:00Z"
+                    ending_date: "2025-02-20T00:00:00Z"
+                    request_date: "2025-02-15"
+                    status: "En Proceso"
+        "400":
+          description: Invalid user ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Invalid user ID"
+        "404":
+          description: No completed requests found for the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "No completed requests found for the user"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"

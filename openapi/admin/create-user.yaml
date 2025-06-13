@@ -1,0 +1,93 @@
+paths:
+  /create-user:
+    post:
+      summary: Create a new user
+      description: Creates a new user in the system. Only accessible by administrators.
+      tags:
+        - Admin
+      operationId: createUser
+      security:
+        - TokenAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - role_id
+                - department_id
+                - user_name
+                - password
+                - workstation
+                - email
+              properties:
+                role_id:
+                  type: integer
+                department_id:
+                  type: integer
+                user_name:
+                  type: string
+                password:
+                  type: string
+                  format: password
+                workstation:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone_number:
+                  type: string
+              example:
+                role_id: 2
+                department_id: 3
+                user_name: "jdoe"
+                password: "SecurePass123!"
+                workstation: "DESKTOP-ABC123"
+                email: "john.doe@example.com"
+                phone_number: "555-123-4567"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "User created succesfully"
+        "400":
+          description: Invalid input or missing fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Missing required field: email"
+        "401":
+          description: Admin privileges required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Admin privileges required"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Internal server error"
