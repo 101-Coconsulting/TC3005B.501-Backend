@@ -56,6 +56,7 @@ BEGIN
     END IF;
 END;
 
+/*
 CREATE OR REPLACE TRIGGER ResetRejectedReceipts
 AFTER UPDATE ON Request
 FOR EACH ROW
@@ -67,3 +68,4 @@ BEGIN
         AND validation = 'Rechazado';
     END IF;
 END;
+*/
